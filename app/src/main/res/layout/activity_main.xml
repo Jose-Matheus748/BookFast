@@ -5,15 +5,86 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#242424"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <!--
+    ImageView usado para exibir a logo/ícone do aplicativo na tela.
+       Neste caso:
+        - usa a imagem logo_bookfast
+        - fica posicionado mais próximo do topo
+        - fica centralizado horizontalmente e verticalmente
+    -->
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="180dp"
+        android:layout_height="140dp"
+        android:layout_marginTop="120dp"
+        android:contentDescription="@string/logo_do_aplicativo"
+        android:scaleType="fitCenter"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/logo_bookfast"
+        />
+
+    <TextView
+        android:id="@id/text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginTop="268dp"
+
+        android:text="@string/como_podemos_te_chamar"
+        android:textSize="42sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:textAlignment="center"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+    
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/textName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+
+        android:hint="@string/digite_seu_nome"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#AAAAAA"
+        android:inputType="textPersonName"
+        android:padding="12dp"
+
+        app:layout_constraintTop_toBottomOf="@id/text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        android:layout_marginTop="44dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        />
+    
+    <Button
+        android:id="@+id/btnNext"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+
+        android:text="@string/proximo"
+        android:textStyle="bold"
+        android:backgroundTint="#19A1E4"
+
+        app:layout_constraintTop_toBottomOf="@+id/textName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:cornerRadius="8dp"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
