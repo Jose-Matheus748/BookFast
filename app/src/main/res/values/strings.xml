@@ -4,4 +4,8 @@
     <string name="como_podemos_te_chamar">Como podemos te chamar?</string>
     <string name="digite_seu_nome">Digite seu nome:</string>
     <string name="proximo">Próximo</string>
+    <string name="prev"><![CDATA[<]]></string>
+    <string name="next"><![CDATA[>]]></string>
+    <string name="aquisicoes">Novas aquisições:</string>
+    <string name="pesquisa_cientifica">Pesquisa Científica:</string>
 </resources>
