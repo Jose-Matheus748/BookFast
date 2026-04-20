@@ -3,23 +3,306 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#242424"
-    >
+    android:layout_height="match_parent">
 
-    <!-- Aproveitando componente de cabeçalho -->
-    <include
-        android:id="@+id/headerInclude"
-        layout="@layout/component_header"
+    <!-- ScrollView aplicado para permitir scroll na tela quando faltar espaço -->
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <!-- Layout principal da tela -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/mainLayoutHomepage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#242424">
+
+            <!-- Aproveitando componente de cabeçalho -->
+            <include
+                android:id="@+id/headerInclude"
+                layout="@layout/component_header"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- Seção do carrossel de livros -->
+            <LinearLayout
+                android:id="@+id/layoutCarrossel"
+                android:layout_width="300dp"
+                android:layout_height="230dp"
+                android:layout_marginTop="81dp"
+                android:gravity="center|bottom"
+                android:orientation="horizontal"
+                android:weightSum="3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/img1"
+                    android:layout_width="0dp"
+                    android:layout_height="170dp"
+                    android:layout_margin="4dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:contentDescription="Img Livro1"
+                    android:focusable="true"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/livro1" />
+
+                <ImageView
+                    android:id="@+id/img2"
+                    android:layout_width="0dp"
+                    android:layout_height="170dp"
+                    android:layout_margin="4dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:contentDescription="Img Livro2"
+                    android:focusable="true"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/livro2" />
+
+                <ImageView
+                    android:id="@+id/img3"
+                    android:layout_width="0dp"
+                    android:layout_height="170dp"
+                    android:layout_margin="4dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:contentDescription="Img Livro3"
+                    android:focusable="true"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/livro3" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnAnterior"
+                android:layout_width="32dp"
+                android:layout_height="42dp"
+                android:layout_marginEnd="6dp"
+                android:backgroundTint="#19A1E4"
+                android:padding="6dp"
+                android:text="@string/prev"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:cornerRadius="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/layoutCarrossel"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.26" />
+
+            <Button
+                android:id="@+id/btnProximo"
+                android:layout_width="32dp"
+                android:layout_height="42dp"
+                android:layout_marginStart="6dp"
+                android:backgroundTint="#19A1E4"
+                android:padding="6dp"
+                android:text="@string/next"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:cornerRadius="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/layoutCarrossel"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.26" />
+
+            <TextView
+                android:id="@+id/textView13"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="14dp"
+                android:layout_marginTop="28dp"
+                android:layout_marginEnd="14dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="@string/aquisicoes"
+                android:textColor="#FFFFFF"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:typeface="normal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layoutCarrossel" />
+
+            <LinearLayout
+                android:id="@+id/linearLayoutAquisicoes"
+                android:layout_width="match_parent"
+                android:layout_height="170dp"
+                android:layout_marginStart="14dp"
+                android:layout_marginTop="68dp"
+                android:layout_marginEnd="14dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layoutCarrossel">
+
+                <ImageView
+                    android:id="@+id/img4"
+                    android:layout_width="0dp"
+                    android:layout_height="150dp"
+                    android:layout_margin="4dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:contentDescription="Img Livro4"
+                    android:focusable="true"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/livro4" />
+
+                <ImageView
+                    android:id="@+id/img5"
+                    android:layout_width="0dp"
+                    android:layout_height="150dp"
+                    android:layout_margin="4dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:contentDescription="Img Livro5"
+                    android:focusable="true"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/livro5" />
+
+                <ImageView
+                    android:id="@+id/img6"
+                    android:layout_width="0dp"
+                    android:layout_height="150dp"
+                    android:layout_margin="4dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:contentDescription="Img Livro6"
+                    android:focusable="true"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/livro6" />
+
+                <ImageView
+                    android:id="@+id/img7"
+                    android:layout_width="0dp"
+                    android:layout_height="150dp"
+                    android:layout_margin="4dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:contentDescription="Img Livro7"
+                    android:focusable="true"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/livro1" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="14dp"
+                android:layout_marginTop="300dp"
+                android:layout_marginEnd="14dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="Pesquisa Científica"
+                android:textColor="#FFFFFF"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:typeface="normal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layoutCarrossel" />
+
+            <LinearLayout
+                android:id="@+id/linearLayoutPesquisaCientifica"
+                android:layout_width="match_parent"
+                android:layout_height="170dp"
+                android:layout_marginStart="14dp"
+                android:layout_marginTop="340dp"
+                android:layout_marginEnd="14dp"
+                android:layout_marginBottom="150dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="4"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layoutCarrossel"
+                app:layout_constraintVertical_bias="0.0">
+
+                <ImageView
+                    android:id="@+id/img8"
+                    android:layout_width="0dp"
+                    android:layout_height="150dp"
+                    android:layout_margin="4dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:contentDescription="Img Livro7"
+                    android:focusable="true"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/livro7" />
+
+                <ImageView
+                    android:id="@+id/img9"
+                    android:layout_width="0dp"
+                    android:layout_height="150dp"
+                    android:layout_margin="4dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:contentDescription="Img Livro8"
+                    android:focusable="true"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/livro8" />
+
+                <ImageView
+                    android:id="@+id/img10"
+                    android:layout_width="0dp"
+                    android:layout_height="150dp"
+                    android:layout_margin="4dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:contentDescription="Img Livro9"
+                    android:focusable="true"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/livro9" />
+
+                <ImageView
+                    android:id="@+id/img11"
+                    android:layout_width="0dp"
+                    android:layout_height="150dp"
+                    android:layout_margin="4dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:contentDescription="Img Livro10"
+                    android:focusable="true"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/livro10" />
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="72dp"
+        android:layout_marginTop="900dp"
+        android:background="#19A1E4"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:weightSum="4"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/scrollView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintStart_toStartOf="parent">
 
-
-
-
-
-
-
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
