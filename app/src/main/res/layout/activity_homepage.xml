@@ -16,7 +16,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/mainLayoutHomepage"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="#242424">
 
             <!-- Aproveitando componente de cabeçalho -->
@@ -208,7 +208,7 @@
                 android:layout_marginEnd="14dp"
                 android:layout_weight="1"
                 android:fontFamily="@font/poppins_semibold"
-                android:text="Pesquisa Científica"
+                android:text="@string/pesquisa_cientifica"
                 android:textColor="#FFFFFF"
                 android:textSize="24sp"
                 android:textStyle="bold"
@@ -225,7 +225,7 @@
                 android:layout_marginStart="14dp"
                 android:layout_marginTop="340dp"
                 android:layout_marginEnd="14dp"
-                android:layout_marginBottom="150dp"
+                android:layout_marginBottom="200dp"
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:weightSum="4"
@@ -289,18 +289,46 @@
     </ScrollView>
 
     <LinearLayout
+        android:id="@+id/layoutFuncionalidades"
         android:layout_width="0dp"
-        android:layout_height="72dp"
-        android:layout_marginTop="900dp"
+        android:layout_height="48dp"
         android:background="#19A1E4"
         android:gravity="center"
         android:orientation="horizontal"
-        android:weightSum="4"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
+        android:weightSum="4"
         app:layout_constraintBottom_toBottomOf="@+id/scrollView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/imageHome"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/material_symbols_house_rounded" />
+
+        <ImageView
+            android:id="@+id/imageBooks"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/material_symbols_menu_book_outline" />
+
+        <ImageView
+            android:id="@+id/imageMessages"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/ic_baseline_email" />
+
+        <ImageView
+            android:id="@+id/imageAccount"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/mdi_account" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

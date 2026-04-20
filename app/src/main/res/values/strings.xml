@@ -7,4 +7,5 @@
     <string name="prev"><![CDATA[<]]></string>
     <string name="next"><![CDATA[>]]></string>
     <string name="aquisicoes">Novas aquisições:</string>
+    <string name="pesquisa_cientifica">Pesquisa Científica:</string>
 </resources>
