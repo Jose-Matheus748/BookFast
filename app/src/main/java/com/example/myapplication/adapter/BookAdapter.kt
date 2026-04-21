@@ -1,11 +1,12 @@
-package com.example.myapplication
+package com.example.myapplication.adapter
 
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.view.LayoutInflater
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.R
 import com.example.myapplication.model.Book
 
 class BookAdapter( // Adapter: ele pega a lista de livros e mostra na tela
