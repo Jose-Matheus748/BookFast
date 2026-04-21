@@ -6,6 +6,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.view.LayoutInflater
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.model.Book
 
 class BookAdapter( // Adapter: ele pega a lista de livros e mostra na tela
     private var books: List<Book>
