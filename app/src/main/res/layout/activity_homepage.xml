@@ -288,49 +288,13 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
-    <LinearLayout
-        android:id="@+id/layoutFuncionalidades"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:background="#19A1E4"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:weightSum="4"
-        app:layout_constraintBottom_toBottomOf="@+id/scrollView"
+    <!-- Aproveitando componente de rodapé -->
+    <include
+        android:id="@+id/componentFooter"
+        layout="@layout/component_footer"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <ImageView
-            android:id="@+id/imageHome"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_weight="1"
-            app:srcCompat="@drawable/material_symbols_house_rounded" />
-
-        <ImageView
-            android:id="@+id/imageBooks"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_weight="1"
-            app:srcCompat="@drawable/material_symbols_menu_book_outline" />
-
-        <ImageView
-            android:id="@+id/imageMessages"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_weight="1"
-            app:srcCompat="@drawable/ic_baseline_email" />
-
-        <ImageView
-            android:id="@+id/imageAccount"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_weight="1"
-            app:srcCompat="@drawable/mdi_account" />
-
-    </LinearLayout>
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
