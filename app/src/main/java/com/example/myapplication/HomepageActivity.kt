@@ -1,5 +1,6 @@
 package com.example.myapplication
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -49,9 +50,8 @@ class HomepageActivity : AppCompatActivity() {
         etSearch = findViewById(R.id.etSearch)
 
         btnSearch.setOnClickListener {
-            btnSearch.visibility = View.GONE
-            etSearch.visibility = View.VISIBLE
-            etSearch.requestFocus()
+          val intent = Intent(this, SearchListActivity::class.java)
+            startActivity(intent)
         }
 
         etSearch.setOnClickListener {
