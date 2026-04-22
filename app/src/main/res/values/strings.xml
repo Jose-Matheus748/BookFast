@@ -12,4 +12,5 @@
     <string name="pesquisar">Pesquisar...</string>
     <string name="filtro_livros_selecionados">Selecionados</string>
     <string name="filtro_livros_reservados">Reservados</string>
+    <string name="btn_reservar">Reservar</string>
 </resources>

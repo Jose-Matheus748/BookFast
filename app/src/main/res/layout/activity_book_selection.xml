@@ -7,9 +7,8 @@
     android:background="#242424">
 
     <!-- Área scrollavel -->
-
-    <!-- Componente Footer (fixo) -->
     <ScrollView
+        android:id="@+id/AreaScrollavel"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -24,7 +23,7 @@
             android:id="@+id/main"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".BookSelection">
+            tools:context=".BookSelectionActivity">
 
             <!-- Componente Header (não fixo) -->
             <include
@@ -65,7 +64,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="transparent"
+                    android:background="@android:color/transparent"
                     android:gravity="center"
                     android:text="@string/filtro_livros_reservados"
                     android:textColor="@color/white"
@@ -80,7 +79,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="64dp"
+                android:layout_marginTop="68dp"
                 android:layout_marginEnd="242dp"
                 android:text="Disponíveis:"
                 android:textColor="@color/white"
@@ -95,7 +94,7 @@
                 android:id="@+id/cardLivros"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 app:cardCornerRadius="16dp"
@@ -193,7 +192,7 @@
                 android:id="@+id/cardLivros2"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginTop="168dp"
+                android:layout_marginTop="184dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 app:cardCornerRadius="16dp"
@@ -205,7 +204,7 @@
 
                 <!-- Layout do livro -->
                 <LinearLayout
-                    android:id="@+id/layoutLivro"
+                    android:id="@+id/layoutLivro2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="#EFEBEB"
@@ -214,7 +213,7 @@
 
                     <!-- Capa do livro-->
                     <androidx.cardview.widget.CardView
-                        android:id="@+id/capaDoLivro"
+                        android:id="@+id/capaDoLivro2"
                         android:layout_width="80dp"
                         android:layout_height="120dp"
                         android:layout_gravity="center|start"
@@ -223,7 +222,7 @@
                         app:cardElevation="0dp">
 
                         <ImageView
-                            android:id="@+id/imgLivro1"
+                            android:id="@+id/imgLivro2"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:scaleType="centerCrop"
@@ -232,7 +231,7 @@
 
                     <!-- Informações -->
                     <LinearLayout
-                        android:id="@+id/layoutInformacoes"
+                        android:id="@+id/layoutInformacoes2"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
@@ -240,9 +239,8 @@
                         android:layout_weight="1"
                         android:orientation="vertical">
 
-
                         <TextView
-                            android:id="@+id/tituloLivro"
+                            android:id="@+id/tituloLivro2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Livro 2"
@@ -251,7 +249,7 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/autoresLivro"
+                            android:id="@+id/autoresLivro2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
@@ -272,7 +270,7 @@
 
                         <!-- Checkbox -->
                         <CheckBox
-                            android:id="@+id/checkLivro1"
+                            android:id="@+id/checkLivro2"
                             android:layout_width="40dp"
                             android:layout_height="40dp"
                             android:layout_gravity="center|right"
@@ -290,7 +288,7 @@
                 android:id="@+id/cardLivros3"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginTop="324dp"
+                android:layout_marginTop="348dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 app:cardCornerRadius="16dp"
@@ -302,7 +300,7 @@
 
                 <!-- Layout do livro -->
                 <LinearLayout
-                    android:id="@+id/layoutLivro"
+                    android:id="@+id/layoutLivro3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="#EFEBEB"
@@ -311,7 +309,7 @@
 
                     <!-- Capa do livro-->
                     <androidx.cardview.widget.CardView
-                        android:id="@+id/capaDoLivro"
+                        android:id="@+id/capaDoLivro3"
                         android:layout_width="80dp"
                         android:layout_height="120dp"
                         android:layout_gravity="center|start"
@@ -320,7 +318,7 @@
                         app:cardElevation="0dp">
 
                         <ImageView
-                            android:id="@+id/imgLivro1"
+                            android:id="@+id/imgLivro3"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:scaleType="centerCrop"
@@ -329,7 +327,7 @@
 
                     <!-- Informações -->
                     <LinearLayout
-                        android:id="@+id/layoutInformacoes"
+                        android:id="@+id/layoutInformacoes3"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
@@ -337,9 +335,8 @@
                         android:layout_weight="1"
                         android:orientation="vertical">
 
-
                         <TextView
-                            android:id="@+id/tituloLivro"
+                            android:id="@+id/tituloLivro3"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Livro 3"
@@ -348,7 +345,7 @@
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/autoresLivro"
+                            android:id="@+id/autoresLivro3"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="2dp"
@@ -369,7 +366,7 @@
 
                         <!-- Checkbox -->
                         <CheckBox
-                            android:id="@+id/checkLivro1"
+                            android:id="@+id/checkLivro3"
                             android:layout_width="40dp"
                             android:layout_height="40dp"
                             android:layout_gravity="center|right"
@@ -382,16 +379,34 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-
+            <!-- Botão de reservar livros -->
+            <Button
+                android:id="@+id/btnReservarLivros"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="760dp"
+                android:layout_marginBottom="150dp"
+                android:backgroundTint="#19A1E4"
+                android:text="@string/btn_reservar"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:cornerRadius="12dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
+    <!-- Componente Footer (fixo) -->
     <include
         android:id="@+id/componentFooter"
         layout="@layout/component_footer"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
