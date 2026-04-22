@@ -1,5 +1,6 @@
 package com.example.myapplication
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
@@ -31,5 +32,12 @@ class MainActivity : AppCompatActivity() {
         } else {
             Toast.makeText(this, "Olá, $name!", Toast.LENGTH_SHORT).show()
         }
+        validateData()
+    }
+
+    private fun validateData() {
+        var intention = Intent(this,RegisterActivity::class.java)
+        intention.putExtra("name", nameInputText.text.toString())
+        startActivity(intention)
     }
 }
