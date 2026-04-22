@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         nameInputText = findViewById(R.id.textName)
-        btnNext = findViewById(R.id.btnNext)
+        btnNext = findViewById(R.id.btnSelecionar)
 
         btnNext.setOnClickListener {
             showUserName()

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/AboutPage"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#242424"
+    tools:context=".AboutActivity">
+
+    <include
+        android:id="@+id/headerInclude"
+        layout="@layout/component_header"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/arrowBackId"
+        android:layout_width="71dp"
+        android:layout_height="69dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="340dp"
+        android:src="@drawable/arrow_back"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <include
+        android:id="@+id/componentFooter"
+        layout="@layout/component_footer"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/lbAboutAppId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="66dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="233dp"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="Sobre o aplicativo"
+        android:textAlignment="viewStart"
+        android:textColor="#F0F0F0"
+        android:textSize="42sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.194"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/arrowBackId" />
+
+    <ImageView
+        android:id="@+id/imgLogo"
+        android:layout_width="137dp"
+        android:layout_height="111dp"
+        android:layout_marginBottom="14dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.047"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lbAboutAppId"
+        app:layout_constraintVertical_bias="0.057"
+        app:srcCompat="@drawable/logo_bookfast"
+        app:tint="#FFFFFF" />
+
+    <TextView
+        android:id="@+id/lbVersionId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="88dp"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="Versão 1.0.0"
+        android:textColor="#F0F0F0"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.851"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lbAboutAppId" />
+
+    <View
+        android:id="@+id/linhaDivisoriaId"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="16dp"
+        android:background="#F0F0F0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgLogo" />
+
+    <TextView
+        android:id="@+id/lbDescricao"
+        android:layout_width="371dp"
+        android:layout_height="95dp"
+        android:layout_marginStart="33dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="320dp"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="O aplicativo BookFast é uma ferramenta para controlar e consultar a biblioteca da Unifor"
+        android:textAlignment="center"
+        android:textColor="#F0F0F0"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.041"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linhaDivisoriaId" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
