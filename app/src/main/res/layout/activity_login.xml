@@ -11,7 +11,7 @@
         android:layout_width="213dp"
         android:layout_height="173dp"
         android:layout_marginTop="32dp"
-        android:contentDescription="Logo BookFast"
+        android:contentDescription="@string/logo_bookfast"
         android:scaleType="fitCenter"
         android:src="@drawable/logo_bookfast"
         app:layout_constraintEnd_toEndOf="parent"
@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
         android:fontFamily="@font/poppins_semibold"
-        android:text="Olá, acesse sua conta"
+        android:text="@string/ol_acesse_sua_conta"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="#EFF0F0"
         android:textSize="28sp"
@@ -38,7 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:fontFamily="@font/poppins_semibold"
-        android:text="Digite seu email:"
+        android:text="@string/digite_seu_email"
         android:textColor="#03A9F4"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -54,7 +54,7 @@
         android:layout_marginTop="28dp"
         android:layout_marginEnd="294dp"
         android:fontFamily="@font/poppins_semibold"
-        android:text="Digite sua senha:"
+        android:text="@string/digite_sua_senha"
         android:textColor="#03A9F4"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -69,7 +69,7 @@
         android:layout_marginTop="20dp"
         android:backgroundTint="#FFF4F4"
         android:ems="10"
-        android:hint="Senha"
+        android:hint="@string/senha"
         android:inputType="textPassword"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
@@ -87,7 +87,7 @@
         android:layout_marginTop="16dp"
         android:backgroundTint="#FFF4F4"
         android:ems="10"
-        android:hint="Email"
+        android:hint="@string/email"
         android:inputType="textEmailAddress"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
@@ -99,14 +99,14 @@
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <Button
-        android:id="@+id/btnNext"
+        android:id="@+id/btnSelecionar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="48dp"
         android:layout_marginEnd="24dp"
         android:backgroundTint="#19A1E4"
-        android:text="Login"
+        android:text="@string/login"
         android:textStyle="bold"
         app:cornerRadius="8dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -119,12 +119,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_semibold"
-        android:text="Ainda não possui uma conta? "
+        android:text="@string/ainda_n_o_possui_uma_conta"
         android:textColor="#F0E9E9"
         app:layout_constraintEnd_toStartOf="@+id/textView5"
         app:layout_constraintHorizontal_bias="0.96"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnNext" />
+        app:layout_constraintTop_toBottomOf="@+id/btnSelecionar" />
 
     <TextView
         android:id="@+id/textView5"
@@ -133,11 +133,11 @@
         android:clickable="true"
         android:focusable="true"
         android:fontFamily="@font/poppins_semibold"
-        android:text="Cadastre-se"
+        android:text="@string/cadastre_se"
         android:textColor="#03A9F4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.831"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnNext" />
+        app:layout_constraintTop_toBottomOf="@+id/btnSelecionar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
