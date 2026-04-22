@@ -39,36 +39,39 @@
                 android:id="@+id/filtroDeLivrosLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="82dp"
+                android:layout_marginTop="80dp"
                 android:orientation="horizontal"
                 android:weightSum="2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/componentHeader">
 
-                <TextView
+                <Button
                     android:id="@+id/tabSelecionados"
                     android:layout_width="wrap_content"
-                    android:layout_height="52dp"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:background="#333131"
+                    android:backgroundTint="#333131"
                     android:gravity="center"
                     android:text="@string/filtro_livros_selecionados"
                     android:textColor="@color/white"
                     android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    app:cornerRadius="0dp" />
 
-                <TextView
+                <Button
                     android:id="@+id/tabReservados"
                     android:layout_width="wrap_content"
-                    android:layout_height="52dp"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:background="transparent"
                     android:gravity="center"
                     android:text="@string/filtro_livros_reservados"
                     android:textColor="@color/white"
                     android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    app:cornerRadius="0dp" />
             </LinearLayout>
 
             <!-- Título da seção -->
@@ -77,7 +80,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="64dp"
                 android:layout_marginEnd="242dp"
                 android:text="Disponíveis:"
                 android:textColor="@color/white"
@@ -87,7 +90,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/filtroDeLivrosLayout" />
 
-            <!-- Card do Livro -->
+            <!-- Card do Livro 1 -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardLivros"
                 android:layout_width="0dp"
@@ -181,9 +184,204 @@
                             android:foregroundGravity="center_vertical"
                             app:checkedState="checked" />
                     </FrameLayout>
-
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
+
+
+            <!-- Card do Livro 2 -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardLivros2"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="168dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                app:cardCornerRadius="16dp"
+                app:cardPreventCornerOverlap="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textDisponiveis">
+
+                <!-- Layout do livro -->
+                <LinearLayout
+                    android:id="@+id/layoutLivro"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#EFEBEB"
+                    android:orientation="horizontal"
+                    android:padding="5dp">
+
+                    <!-- Capa do livro-->
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/capaDoLivro"
+                        android:layout_width="80dp"
+                        android:layout_height="120dp"
+                        android:layout_gravity="center|start"
+                        app:cardBackgroundColor="#F5F5F5"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="0dp">
+
+                        <ImageView
+                            android:id="@+id/imgLivro1"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            app:srcCompat="@drawable/livro13" />
+                    </androidx.cardview.widget.CardView>
+
+                    <!-- Informações -->
+                    <LinearLayout
+                        android:id="@+id/layoutInformacoes"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+
+                        <TextView
+                            android:id="@+id/tituloLivro"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Livro 2"
+                            android:textColor="#111111"
+                            android:textSize="22sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/autoresLivro"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="Autor 2"
+                            android:textColor="#333333"
+                            android:textSize="16sp"
+                            android:textStyle="italic" />
+                    </LinearLayout>
+
+                    <!-- Frame para customizar e deixar área de clique maior -->
+                    <FrameLayout
+                        android:layout_width="44dp"
+                        android:layout_height="48dp"
+                        android:layout_gravity="bottom|center"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackgroundBorderless">
+
+                        <!-- Checkbox -->
+                        <CheckBox
+                            android:id="@+id/checkLivro1"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center|right"
+                            android:buttonTint="#111111"
+                            android:background="@android:color/transparent"
+                            android:checked="true"
+                            android:foregroundGravity="center_vertical"
+                            app:checkedState="checked" />
+                    </FrameLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Card do Livro 3 -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardLivros3"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="324dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                app:cardCornerRadius="16dp"
+                app:cardPreventCornerOverlap="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textDisponiveis">
+
+                <!-- Layout do livro -->
+                <LinearLayout
+                    android:id="@+id/layoutLivro"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#EFEBEB"
+                    android:orientation="horizontal"
+                    android:padding="5dp">
+
+                    <!-- Capa do livro-->
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/capaDoLivro"
+                        android:layout_width="80dp"
+                        android:layout_height="120dp"
+                        android:layout_gravity="center|start"
+                        app:cardBackgroundColor="#F5F5F5"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="0dp">
+
+                        <ImageView
+                            android:id="@+id/imgLivro1"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            app:srcCompat="@drawable/livro15" />
+                    </androidx.cardview.widget.CardView>
+
+                    <!-- Informações -->
+                    <LinearLayout
+                        android:id="@+id/layoutInformacoes"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+
+                        <TextView
+                            android:id="@+id/tituloLivro"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Livro 3"
+                            android:textColor="#111111"
+                            android:textSize="22sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/autoresLivro"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="Autor 3"
+                            android:textColor="#333333"
+                            android:textSize="16sp"
+                            android:textStyle="italic" />
+                    </LinearLayout>
+
+                    <!-- Frame para customizar e deixar área de clique maior -->
+                    <FrameLayout
+                        android:layout_width="44dp"
+                        android:layout_height="48dp"
+                        android:layout_gravity="bottom|center"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackgroundBorderless">
+
+                        <!-- Checkbox -->
+                        <CheckBox
+                            android:id="@+id/checkLivro1"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center|right"
+                            android:buttonTint="#111111"
+                            android:background="@android:color/transparent"
+                            android:checked="true"
+                            android:foregroundGravity="center_vertical"
+                            app:checkedState="checked" />
+                    </FrameLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
