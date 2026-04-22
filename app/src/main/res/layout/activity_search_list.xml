@@ -13,15 +13,15 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/mainSearchListLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="#242424">
 
             <include
                 android:id="@+id/headerInclude"
                 layout="@layout/component_header"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <!-- Seção RecyclerView onde os livros serão exibidos -->
             <androidx.recyclerview.widget.RecyclerView
