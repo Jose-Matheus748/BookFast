@@ -58,7 +58,6 @@
             android:layout_weight="1"
             android:background="@color/material_dynamic_neutral60"
             android:hint="Digite uma mensagem..."
-            android:hintTextColor="#777777"
             android:inputType="textMultiLine|textCapSentences"
             android:maxLines="4"
             android:paddingStart="16dp"
@@ -183,8 +182,6 @@
             android:textColor="#888888"
             android:textSize="10sp" />
     </LinearLayout>
-
-    <?xml version="1.0" encoding="utf-8"?>
 
     <LinearLayout
         android:layout_width="wrap_content"
