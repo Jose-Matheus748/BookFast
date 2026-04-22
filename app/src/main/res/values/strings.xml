@@ -8,6 +8,11 @@
     <string name="next"><![CDATA[>]]></string>
     <string name="aquisicoes">Novas aquisições:</string>
     <string name="pesquisa_cientifica">Pesquisa Científica:</string>
+    <string name="abrir_pesquisa">Abrir pesquisa</string>
+    <string name="pesquisar">Pesquisar...</string>
+    <string name="filtro_livros_selecionados">Selecionados</string>
+    <string name="filtro_livros_reservados">Reservados</string>
+    <string name="btn_reservar">Reservar</string>
     <string name="capa_fortaleza">Capa Fortaleza</string>
     <string name="selecionar">Selecionar</string>
     <string name="macedo_miguel">Macedo, Miguel</string>

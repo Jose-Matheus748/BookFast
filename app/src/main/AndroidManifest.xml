@@ -13,6 +13,12 @@
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
         <activity
+            android:name=".BookSelectionActivity"
+            android:exported="true" />
+        <activity
+            android:name=".SearchListActivity"
+            android:exported="true" />      
+        <activity
             android:name=".AboutActivity"
             android:exported="true" />
         <activity
