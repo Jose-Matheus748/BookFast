@@ -49,4 +49,17 @@
     <string name="referencia">AUTOR, Nome. Título da obra : subtítulo ilustrativo. Tradução de Tradutor Um, Tradutor Dois, Tradutor Três. 1. ed. Cidade: Editora Exemplo, 2000. (Coleção Exemplo, 1). ISBN 000-00-00000-000-0.</string>
     <string name="pesquisar">pesquisar</string>
     <string name="abrir_pesquisa">abrir_pesquisa</string>
+    <string name="adicionar_capa">Adicionar Capa</string>
+    <string name="adicione_um_t_tulo">Adicione um título:</string>
+    <string name="detalhesMention">Detalhes:</string>
+    <string name="material">Material:</string>
+    <string name="idioma">Idioma:</string>
+    <string name="publica_o">Publicação:</string>
+    <string name="edi_o">Edição:</string>
+    <string name="s_rie">Série:</string>
+    <string name="assuntos">Assuntos:</string>
+    <string name="autoriaForms">Autoria:</string>
+    <string name="informe_a_refer_ncia">Informe a referência:</string>
+    <string name="enviar">Enviar</string>
+    <string name="refer_ncia">Referência</string>
 </resources>
