@@ -17,7 +17,7 @@
             android:exported="false" />
         <activity
             android:name=".CreateBookActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".BookSelectionActivity"
             android:exported="true" />

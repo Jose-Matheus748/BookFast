@@ -71,18 +71,6 @@
         app:tint="#FFFFFF"
         />
 
-    <ImageView
-        android:id="@+id/imageView15"
-        android:layout_width="50dp"
-        android:layout_height="56dp"
-        android:layout_marginTop="204dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.612"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/img_material_symbols_edit_outline"
-        app:tint="#FFFFFF"/>
-
     <include
         android:id="@+id/componentHeader"
         layout="@layout/component_header"
