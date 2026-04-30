@@ -13,6 +13,9 @@
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
         <activity
+            android:name=".EditBookActivity"
+            android:exported="true" />
+        <activity
             android:name=".HomePageAdmin"
             android:exported="false" />
         <activity
