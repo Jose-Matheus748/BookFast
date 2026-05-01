@@ -40,7 +40,7 @@
             android:name=".HomepageActivity"
             android:exported="true" />
         <activity
-            android:name=".MainActivity"
+            android:name=".NameRegisterActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

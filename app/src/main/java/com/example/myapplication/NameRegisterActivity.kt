@@ -8,14 +8,14 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputEditText
 
-class MainActivity : AppCompatActivity() {
+class NameRegisterActivity : AppCompatActivity() {
     private lateinit var nameInputText: TextInputEditText
     private lateinit var btnNext: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_name_register)
 
         nameInputText = findViewById(R.id.textName)
         btnNext = findViewById(R.id.btnSelecionar)
