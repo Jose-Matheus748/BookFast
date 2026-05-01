@@ -14,33 +14,42 @@
         tools:targetApi="31">
         <activity
             android:name=".WelcomeActivity"
-            android:exported="true" />
+            android:exported="true"
+            />
         <activity
             android:name=".EditBookActivity"
-            android:exported="true" />
+            android:exported="true"
+            />
         <activity
             android:name=".HomePageAdmin"
-            android:exported="false" />
+            android:exported="true"
+            />
         <activity
             android:name=".CreateBookActivity"
-            android:exported="true" />
+            android:exported="true"
+            />
         <activity
             android:name=".BookSelectionActivity"
-            android:exported="true" />
+            android:exported="true"
+            />
         <activity
             android:name=".SearchListActivity"
-            android:exported="true" />
+            android:exported="true"
+            />
         <activity
             android:name=".AboutActivity"
-            android:exported="true" />
+            android:exported="true"
+            />
         <activity
             android:name=".BookpageActivity"
-            android:exported="true" />
+            android:exported="true"
+            />
         <activity
             android:name=".HomepageActivity"
-            android:exported="true" />
+            android:exported="true"
+            />
         <activity
-            android:name=".NameRegisterActivity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
