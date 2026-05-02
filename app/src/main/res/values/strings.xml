@@ -61,4 +61,7 @@
     <string name="enviar">Enviar</string>
     <string name="refer_ncia">Referência</string>
     <string name="editar">Editar</string>
+    <string name="registrar_se">Registrar-se</string>
+    <string name="bem_vindo">Bem vindo!</string>
+    <string name="ja_possui_uma_conta">Já possui uma conta?</string>
 </resources>
