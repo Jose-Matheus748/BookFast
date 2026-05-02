@@ -3,41 +3,21 @@ package com.example.myapplication
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
-import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.textfield.TextInputEditText
 
-class MainActivity : AppCompatActivity() {
-    private lateinit var nameInputText: TextInputEditText
-    private lateinit var btnNext: Button
+class MainActivity: AppCompatActivity() {
+    lateinit var btnNavegar: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_tela_inicial)
 
-        nameInputText = findViewById(R.id.textName)
-        btnNext = findViewById(R.id.btnSelecionar)
+        val btnNavegar = findViewById<Button>(R.id.btnNavegar)
 
-        btnNext.setOnClickListener {
-            showUserName()
+        // activity_tela_inicial -> activity_wellcome
+        btnNavegar.setOnClickListener {
+            val intent = Intent(this, WelcomeActivity::class.java)
+            startActivity(intent)
         }
-    }
-
-    private fun showUserName() {
-        val name = nameInputText.text.toString().trim()
-        if (name.isEmpty()) {
-            Toast.makeText(this, "Você não digitou seu nome", Toast.LENGTH_SHORT).show()
-        } else {
-            Toast.makeText(this, "Olá, $name!", Toast.LENGTH_SHORT).show()
-        }
-        validateData()
-    }
-
-    private fun validateData() {
-        var intention = Intent(this,RegisterActivity::class.java)
-        intention.putExtra("name", nameInputText.text.toString())
-        startActivity(intention)
     }
 }

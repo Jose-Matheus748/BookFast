@@ -10,7 +10,7 @@ import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 
-class HomepageActivity : AppCompatActivity() {
+class HomePageActivity : AppCompatActivity() {
 
     lateinit var img1: ImageView
     lateinit var img2: ImageView
@@ -35,7 +35,7 @@ class HomepageActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_homepage)
+        setContentView(R.layout.activity_home_page)
 
         mainLayout = findViewById(R.id.mainLayoutHomepage)
 
