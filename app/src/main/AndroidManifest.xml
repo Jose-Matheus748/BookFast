@@ -53,7 +53,7 @@
             android:exported="false"
             />
         <activity
-            android:name=".HomepageActivity"
+            android:name=".HomePageActivity"
             android:exported="false"
             />
         <activity
