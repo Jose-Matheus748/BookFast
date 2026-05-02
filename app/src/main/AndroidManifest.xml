@@ -14,11 +14,19 @@
         tools:targetApi="31">
         <activity
             android:name=".LoginActivity"
+            android:exported="true"
+            />
+        <activity
+            android:name=".ForgotenPasswordActivity"
             android:exported="false"
             />
         <activity
             android:name=".NameRegisterActivity"
             android:exported="false"
+            />
+        <activity
+            android:name=".RegisterActivity"
+            android:exported="true"
             />
         <activity
             android:name=".WelcomeActivity"

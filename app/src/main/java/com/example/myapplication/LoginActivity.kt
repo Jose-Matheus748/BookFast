@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
@@ -11,7 +12,9 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var inputEmailAddress: EditText
     private lateinit var inputPassword: EditText
+    private lateinit var linkForgotPassword: TextView
     private lateinit var btnLogin: Button
+    private lateinit var textLinkRegister: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,12 +22,26 @@ class LoginActivity : AppCompatActivity() {
 
         inputEmailAddress = findViewById(R.id.inputEmailAddress)
         inputPassword = findViewById(R.id.inputPassword)
-
+        linkForgotPassword = findViewById(R.id.linkForgotPassword)
         btnLogin = findViewById(R.id.btnLogin)
+        textLinkRegister = findViewById(R.id.textLinkRegister)
+
+        linkForgotPassword.setOnClickListener {
+            navegarParaRecuperacaoDeSenha()
+        }
 
         btnLogin.setOnClickListener {
             validarLogin()
         }
+
+        textLinkRegister.setOnClickListener {
+            navegarParaRegistroDoUsuario()
+        }
+    }
+
+    private fun navegarParaRecuperacaoDeSenha() {
+        val intent = Intent(this, ForgotenPasswordActivity::class.java)
+        startActivity(intent)
     }
 
     /**   validarLogin():
@@ -46,5 +63,10 @@ class LoginActivity : AppCompatActivity() {
             val intent = Intent(this, HomePageActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    private fun navegarParaRegistroDoUsuario() {
+        val intent = Intent(this, RegisterActivity::class.java)
+        startActivity(intent)
     }
 }
