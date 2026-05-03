@@ -8,9 +8,12 @@ import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.Toast
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 
 class BookpageActivity : AppCompatActivity() {
+
+    lateinit var btnSelecionar : Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,11 +22,13 @@ class BookpageActivity : AppCompatActivity() {
         HeaderNavigation.setup(this)
         FooterNavigation.setup(this)
 
-        val btnDetalhes      = findViewById<Button>(R.id.btnDetalhes)
-        val btnReferencia    = findViewById<Button>(R.id.btnReferencia)
-        val painelDetalhes   = findViewById<LinearLayout>(R.id.painelDetalhes)
+        val btnDetalhes = findViewById<Button>(R.id.btnDetalhes)
+        val btnReferencia = findViewById<Button>(R.id.btnReferencia)
+        val painelDetalhes = findViewById<LinearLayout>(R.id.painelDetalhes)
         val painelReferencia = findViewById<LinearLayout>(R.id.painelReferencia)
-        val btnCopiar        = findViewById<Button>(R.id.btnCopiarReferencia)
+        val btnCopiar = findViewById<Button>(R.id.btnCopiarReferencia)
+        btnSelecionar = findViewById(R.id.btnSelecionar)
+
 
         // Cor ativa/inativa para os botões de aba
         val corAtiva   = 0xFF19A1E4.toInt()
@@ -41,6 +46,11 @@ class BookpageActivity : AppCompatActivity() {
             painelReferencia.visibility = View.VISIBLE
             btnDetalhes.backgroundTintList   = android.content.res.ColorStateList.valueOf(corInativa)
             btnReferencia.backgroundTintList = android.content.res.ColorStateList.valueOf(corAtiva)
+        }
+
+        btnSelecionar.setOnClickListener {
+            val intent = Intent(this, BookSelectionActivity::class.java)
+            startActivity(intent)
         }
 
         btnDetalhes.setOnClickListener   { mostrarDetalhes() }

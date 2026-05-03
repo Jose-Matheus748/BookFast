@@ -37,6 +37,7 @@
         android:layout_height="wrap_content"
         android:backgroundTint="#19A1E4"
         android:text="@string/proximo"
+        android:textColor="#F0F0F0"
         app:layout_constraintBottom_toTopOf="@+id/imageView3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
