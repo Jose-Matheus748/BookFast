@@ -15,6 +15,8 @@ class HomePageActivity : AppCompatActivity() {
     lateinit var img1: ImageView
     lateinit var img2: ImageView
     lateinit var img3: ImageView
+
+    lateinit var img7: ImageView
     lateinit var btnAnterior: Button
     lateinit var btnProximo: Button
     lateinit var btnSearch: ImageButton
@@ -45,6 +47,7 @@ class HomePageActivity : AppCompatActivity() {
         img1 = findViewById(R.id.img1)
         img2 = findViewById(R.id.img2)
         img3 = findViewById(R.id.img3)
+        img7 = findViewById(R.id.img7)
 
         btnAnterior = findViewById(R.id.btnAnterior)
         btnProximo = findViewById(R.id.btnProximo)
@@ -84,6 +87,11 @@ class HomePageActivity : AppCompatActivity() {
         }
 
         img1.setOnClickListener {
+            val intent = Intent(this, BookpageActivity::class.java)
+            startActivity(intent)
+        }
+
+        img7.setOnClickListener {
             val intent = Intent(this, BookpageActivity::class.java)
             startActivity(intent)
         }

@@ -89,11 +89,12 @@
 
                 <!-- Botão de configurações -->
                 <ImageView
-                    android:id="@+id/imageView7"
+                    android:id="@+id/btnConfig"
                     android:layout_width="28dp"
                     android:layout_height="28dp"
-                    android:src="@drawable/settings_icon"
+                    android:clickable="true"
                     android:contentDescription="Configurações"
+                    android:src="@drawable/settings_icon"
                     app:tint="#888888" />
 
             </LinearLayout>
