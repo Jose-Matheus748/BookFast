@@ -71,6 +71,8 @@ class SearchListActivity : AppCompatActivity() {
 
             adapter.atualizarLista(livrosFiltrados)
         }
+
+        FooterNavigation.setup(this)
     }
 
     override fun onBackPressed() {

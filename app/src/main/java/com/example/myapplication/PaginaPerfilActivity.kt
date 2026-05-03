@@ -1,12 +1,13 @@
 package com.example.myapplication
 
 import android.os.Bundle
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 
-class BookSelectionActivity : AppCompatActivity() {
+class PaginaPerfilActivity : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_book_selection)
+        setContentView(R.layout.activity_paginaperfil)
 
         HeaderNavigation.setup(this)
         FooterNavigation.setup(this)

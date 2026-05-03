@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -9,182 +10,429 @@
     android:background="#242424"
     tools:context=".BookpageActivity">
 
-    <!-- HEADER FIXO -->
     <include
         android:id="@+id/headerInclude"
         layout="@layout/component_header"
+        android:layout_width="match_parent"
+        android:layout_height="82dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- FOOTER FIXO -->
     <include
         android:id="@+id/componentFooter"
         layout="@layout/component_footer"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- SCROLL -->
+    <!--
+        SCROLL constrangido ENTRE header e footer.
+        layout_width="0dp" e layout_height="0dp" com constraints em todos os lados
+        faz o ScrollView preencher exatamente o espaço entre eles.
+    -->
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
-
         android:fillViewport="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:scrollbars="none"
+        app:layout_constraintTop_toBottomOf="@id/headerInclude"
+        app:layout_constraintBottom_toTopOf="@id/componentFooter"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/headerInclude">
+        app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- CONTEÚDO -->
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="16dp">
 
-            <ImageView
-                android:id="@+id/capaFortaleza"
-                android:layout_width="188dp"
-                android:layout_height="178dp"
-                android:layout_marginTop="32dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/fortaleza_300"
-
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/tituloLivroId"
-                android:layout_width="212dp"
-                android:layout_height="83dp"
-                android:layout_marginTop="32dp"
-                android:text="@string/fortaleza_em_300_palavras"
-                android:textAlignment="center"
-                android:textColor="#F2F0F0"
-                android:textSize="24sp"
-                android:textStyle="bold"
-
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.75"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/autorCat"
-                android:layout_width="wrap_content"
+            <!-- Capa + Título/Autor -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/autor"
-                android:textColor="#F4F1F1"
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp"
+                android:paddingTop="16dp">
 
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.528"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tituloLivroId" />
+                <ImageView
+                    android:id="@+id/capaFortaleza"
+                    android:layout_width="140dp"
+                    android:layout_height="180dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/fortaleza_300"
+                    android:contentDescription="@string/fortaleza_em_300_palavras" />
 
-            <TextView
-                android:id="@+id/autorId"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/macedo_miguel"
-                android:textColor="#F4F1F1"
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingStart="12dp"
+                    android:gravity="center_vertical">
 
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.631"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/autorCat" />
+                    <TextView
+                        android:id="@+id/tituloLivroId"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/fortaleza_em_300_palavras"
+                        android:textColor="#F2F0F0"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
 
+                    <TextView
+                        android:id="@+id/autorCat"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/autor"
+                        android:textColor="#BBBBBB"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/autorId"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="@string/macedo_miguel"
+                        android:textColor="#F4F1F1"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Botões Selecionar / Favoritar -->
             <Button
                 android:id="@+id/btnSelecionar"
                 android:layout_width="208dp"
                 android:layout_height="48dp"
-                android:layout_marginTop="28dp"
+                android:layout_marginTop="16dp"
+                android:layout_gravity="center_horizontal"
                 android:backgroundTint="#19A1E4"
                 android:text="@string/selecionar"
-
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/capaFortaleza" />
+                android:textColor="#F0F0F0" />
 
             <Button
                 android:id="@+id/btnFavoritar"
                 android:layout_width="208dp"
                 android:layout_height="48dp"
                 android:layout_marginTop="8dp"
+                android:layout_gravity="center_horizontal"
                 android:backgroundTint="#19A1E4"
                 android:text="@string/favoritar"
+                android:textColor="#F0F0F0" />
 
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btnSelecionar" />
+            <!-- Abas Detalhes / Referência -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp"
+                android:paddingTop="16dp">
 
-            <Button
-                android:id="@+id/btnDetalhes"
-                android:layout_width="118dp"
-                android:layout_height="37dp"
-                android:layout_marginStart="76dp"
-                android:layout_marginTop="20dp"
-                android:backgroundTint="#0F0E0E"
-                app:cornerRadius="2dp"
-                android:text="@string/detalhes"
-                app:layout_constraintEnd_toStartOf="@+id/btnReferencia"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btnFavoritar" />
+                <Button
+                    android:id="@+id/btnDetalhes"
+                    android:layout_width="0dp"
+                    android:layout_height="37dp"
+                    android:layout_marginEnd="0dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="#0F0E0E"
+                    android:text="@string/detalhes"
+                    android:textColor="#F0F0F0"
+                    app:cornerRadius="2dp" />
 
-            <Button
-                android:id="@+id/btnReferencia"
-                android:layout_width="118dp"
-                android:layout_height="37dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="96dp"
-                android:backgroundTint="#434343"
-                app:cornerRadius="2dp"
-                android:text="@string/refer_ncia"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btnFavoritar" />
+                <Button
+                    android:id="@+id/btnReferencia"
+                    android:layout_width="0dp"
+                    android:layout_height="37dp"
+                    android:layout_marginStart="0dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="#434343"
+                    android:text="@string/refer_ncia"
+                    android:textColor="#F0F0F0"
+                    app:cornerRadius="2dp" />
 
+            </LinearLayout>
+
+            <!-- ===== DESCRIÇÃO (inline, sem include) ===== -->
+            <LinearLayout
+                android:id="@+id/ctnDescricao"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_container"
+                android:orientation="vertical"
+                android:paddingBottom="12dp">
+
+                <TextView
+                    android:id="@+id/lbmaterialId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:paddingHorizontal="10dp"
+                    android:paddingTop="8dp"
+                    android:text="@string/material_livro"
+                    android:textColor="#F6F3F3"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/ldIdiomaId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:paddingHorizontal="10dp"
+                    android:paddingTop="4dp"
+                    android:text="@string/idioma_portugu_s"
+                    android:textColor="#F6F3F3"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/lbPublicacaoId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:paddingHorizontal="10dp"
+                    android:paddingTop="4dp"
+                    android:text="@string/publica_o_s_o_paulo_edi_es_exemplo_2007"
+                    android:textColor="#F6F3F3"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/lbEdicaoId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:paddingHorizontal="10dp"
+                    android:paddingTop="4dp"
+                    android:text="@string/edi_o_3_ed"
+                    android:textColor="#F6F3F3"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/lbSerieId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:paddingHorizontal="10dp"
+                    android:paddingTop="4dp"
+                    android:text="@string/s_rie_exemplo_3"
+                    android:textColor="#F6F3F3"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/lbAssuntosId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:paddingHorizontal="10dp"
+                    android:paddingTop="4dp"
+                    android:text="@string/assuntos_exemplos"
+                    android:textColor="#F6F3F3"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/lbAutoriaId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:paddingHorizontal="10dp"
+                    android:paddingTop="4dp"
+                    android:text="@string/autoria"
+                    android:textColor="#F6F3F3"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/LbAutoresId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:paddingHorizontal="10dp"
+                    android:paddingTop="2dp"
+                    android:text="@string/macedo_miguel"
+                    android:textColor="#F6F3F3"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <!-- ===== EXEMPLARES (label + número + conteúdo do component inline) ===== -->
             <TextView
                 android:id="@+id/lbexemplaresId"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="312dp"
+                android:layout_marginTop="20dp"
+                android:paddingHorizontal="16dp"
                 android:text="@string/exemplares"
-
                 android:textColor="#F0F0F0"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.047"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btnDetalhes" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/lbNExemplaresId"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
+                android:layout_marginTop="4dp"
+                android:paddingHorizontal="16dp"
                 android:text="@string/n_mero_de_exemplares_2"
-
                 android:textColor="#F0F0F0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/lbexemplaresId" />
+                android:textSize="14sp" />
 
-            <include
-                android:id="@+id/componentDescricao"
-                layout="@layout/component_descricao"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/lbNExemplaresId" />
+            <!-- ===== EXEMPLAR 1 (Cativo) ===== -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_container_exemplares"
+                android:orientation="vertical"
+                android:paddingBottom="8dp">
 
-            <include
-                android:id="@+id/componentExemplares"
-                layout="@layout/component_exemplares"
-                android:layout_marginBottom="24dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/componentDescricao" />
+                <TextView
+                    android:id="@+id/lbRegistroCativoId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:paddingStart="8dp"
+                    android:paddingTop="8dp"
+                    android:text="@string/registro_123456"
+                    android:textColor="#f0f0f0"
+                    android:textSize="14sp" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/lbEdicaoCativoId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:paddingStart="8dp"
+                    android:text="@string/edi_o_3"
+                    android:textColor="#f0f0f0"
+                    android:textSize="14sp" />
 
+                <TextView
+                    android:id="@+id/lbAnoCativoId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:paddingStart="8dp"
+                    android:text="@string/ano_2007"
+                    android:textColor="#f0f0f0"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/lbSuporteCativoId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:paddingStart="8dp"
+                    android:text="@string/suporte_impresso"
+                    android:textColor="#f0f0f0"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/lbLocalizacaoCativoId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:paddingStart="8dp"
+                    android:text="@string/localiza_o_1234_biblioteca_coordena_o_livros"
+                    android:textColor="#f0f0f0"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/lbSituacaoCativoId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:paddingStart="8dp"
+                    android:text="@string/situa_o_cativo"
+                    android:textColor="#f0f0f0"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <!-- ===== EXEMPLAR 2 (Disponível) ===== -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_container_exemplares"
+                android:orientation="vertical"
+                android:paddingBottom="8dp">
+
+                <TextView
+                    android:id="@+id/lbRegistroId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:paddingStart="8dp"
+                    android:paddingTop="8dp"
+                    android:text="@string/registro_123456"
+                    android:textColor="#f0f0f0"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/lbEdicaoId2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:paddingStart="8dp"
+                    android:text="@string/edi_o_3"
+                    android:textColor="#f0f0f0"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/lbAnoId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:paddingStart="8dp"
+                    android:text="@string/ano_2007"
+                    android:textColor="#f0f0f0"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/lbSuporteId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:paddingStart="8dp"
+                    android:text="@string/suporte_impresso"
+                    android:textColor="#f0f0f0"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/lbLocalizacaoId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:paddingStart="8dp"
+                    android:text="@string/localiza_o_1234_biblioteca_coordena_o_livros"
+                    android:textColor="#f0f0f0"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/lbSituacaoId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:paddingStart="8dp"
+                    android:text="@string/situacao_Disponivel"
+                    android:textColor="#f0f0f0"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
     </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,57 +13,56 @@
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
         <activity
+            android:name=".BookpageReferenceActivity"
+            android:exported="false" />
+        <activity
             android:name=".LoginActivity"
-            android:exported="true"
-            />
+            android:exported="true" />
+        <activity
+            android:name=".ChatbotActivity"
+            android:exported="true" />
         <activity
             android:name=".ForgotenPasswordActivity"
-            android:exported="false"
-            />
+            android:exported="false" />
         <activity
             android:name=".NameRegisterActivity"
-            android:exported="false"
-            />
+            android:exported="false" />
+        <activity
+            android:name=".EmptyBookSelectionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PaginaPerfilActivity"
+            android:exported="false" />
         <activity
             android:name=".RegisterActivity"
-            android:exported="true"
-            />
+            android:exported="true" />
         <activity
             android:name=".WelcomeActivity"
-            android:exported="false"
-            />
+            android:exported="false" />
         <activity
             android:name=".EditBookActivity"
-            android:exported="false"
-            />
+            android:exported="false" />
         <activity
             android:name=".HomePageAdmin"
-            android:exported="false"
-            />
+            android:exported="false" />
         <activity
             android:name=".CreateBookActivity"
-            android:exported="false"
-            />
+            android:exported="false" />
         <activity
             android:name=".BookSelectionActivity"
-            android:exported="true"
-            />
+            android:exported="true" />
         <activity
             android:name=".SearchListActivity"
-            android:exported="true"
-            />
+            android:exported="true" />
         <activity
             android:name=".AboutActivity"
-            android:exported="false"
-            />
+            android:exported="false" />
         <activity
             android:name=".BookpageActivity"
-            android:exported="false"
-            />
+            android:exported="false" />
         <activity
             android:name=".HomePageActivity"
-            android:exported="false"
-            />
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true">

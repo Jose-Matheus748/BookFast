@@ -37,6 +37,9 @@ class HomePageActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home_page)
 
+        HeaderNavigation.setup(this)
+        FooterNavigation.setup(this)
+
         mainLayout = findViewById(R.id.mainLayoutHomepage)
 
         img1 = findViewById(R.id.img1)
@@ -50,7 +53,7 @@ class HomePageActivity : AppCompatActivity() {
         etSearch = findViewById(R.id.etSearch)
 
         btnSearch.setOnClickListener {
-          val intent = Intent(this, SearchListActivity::class.java)
+            val intent = Intent(this, SearchListActivity::class.java)
             startActivity(intent)
         }
 
@@ -69,19 +72,20 @@ class HomePageActivity : AppCompatActivity() {
         btnProximo.setOnClickListener {
             val totalGrupos = imagens.size / tamanhoGrupo
             grupoAtual++
-
             if (grupoAtual >= totalGrupos) grupoAtual = 0
-
             mostrarGrupo()
         }
 
         btnAnterior.setOnClickListener {
             val totalGrupos = imagens.size / tamanhoGrupo
             grupoAtual--
-
             if (grupoAtual < 0) grupoAtual = totalGrupos - 1
-
             mostrarGrupo()
+        }
+
+        img1.setOnClickListener {
+            val intent = Intent(this, BookpageActivity::class.java)
+            startActivity(intent)
         }
     }
 
@@ -101,7 +105,6 @@ class HomePageActivity : AppCompatActivity() {
 
     private fun mostrarGrupo() {
         val inicio = grupoAtual * tamanhoGrupo
-
         img1.setImageResource(imagens[inicio])
         img2.setImageResource(imagens[inicio + 1])
         img3.setImageResource(imagens[inicio + 2])

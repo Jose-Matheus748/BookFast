@@ -64,4 +64,6 @@
     <string name="registrar_se">Registrar-se</string>
     <string name="bem_vindo">Bem vindo!</string>
     <string name="ja_possui_uma_conta">Já possui uma conta?</string>
+    <string name="n_o_quero_criar_uma">Não, quero criar uma</string>
+    <string name="sim">Sim</string>
 </resources>
