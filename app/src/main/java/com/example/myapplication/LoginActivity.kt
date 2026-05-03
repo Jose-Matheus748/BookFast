@@ -66,7 +66,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun navegarParaRegistroDoUsuario() {
-        val intent = Intent(this, RegisterActivity::class.java)
+        val intent = Intent(this, NameRegisterActivity::class.java)
         startActivity(intent)
     }
 }
