@@ -74,4 +74,12 @@
     <string name="voltar">Voltar</string>
     <string name="copiar_refer_ncia">Copiar referência</string>
     <string name="buscar_livros">Buscar livros</string>
+    <string name="entrar_na_fila">Entrar na fila</string>
+    <string name="sousa_santos">Sousa, Santos</string>
+    <string name="um_discurso_sobre_as_ci_ncias">Um discurso sobre as ciências</string>
+    <string name="indispon_veis">Indisponíveis:</string>
+    <string name="reservar_todos">Reservar todos</string>
+    <string name="dispon_veis">Disponíveis:</string>
+    <string name="reservas">Reservas</string>
+    <string name="selecionado">Selecionado</string>
 </resources>
