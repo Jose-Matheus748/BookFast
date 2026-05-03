@@ -15,5 +15,8 @@ class EditBookActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        HeaderNavigation.setup(this)
+        FooterNavigation.setup(this)
     }
 }

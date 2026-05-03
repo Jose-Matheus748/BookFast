@@ -64,4 +64,14 @@
     <string name="registrar_se">Registrar-se</string>
     <string name="bem_vindo">Bem vindo!</string>
     <string name="ja_possui_uma_conta">Já possui uma conta?</string>
+    <string name="n_o_quero_criar_uma">Não, quero criar uma</string>
+    <string name="sim">Sim</string>
+    <string name="editar_perfil">Editar Perfil</string>
+    <string name="atualize_as_informa_es_da_sua_conta">Atualize as informações da sua conta</string>
+    <string name="nome_de_usu_rio">Nome de usuário</string>
+    <string name="o_nome_ser_exibido_para_outros_usu_rios">O nome será exibido para outros usuários.</string>
+    <string name="salvar_altera_es">Salvar alterações</string>
+    <string name="voltar">Voltar</string>
+    <string name="copiar_refer_ncia">Copiar referência</string>
+    <string name="buscar_livros">Buscar livros</string>
 </resources>
