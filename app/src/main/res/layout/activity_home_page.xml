@@ -29,6 +29,8 @@
 
             <!-- Seção do carrossel de livros -->
             <LinearLayout
+
+
                 android:id="@+id/layoutCarrossel"
                 android:layout_width="300dp"
                 android:layout_height="230dp"
