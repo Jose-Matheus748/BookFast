@@ -1,6 +1,8 @@
 package com.example.myapplication
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
@@ -9,11 +11,12 @@ import com.google.android.material.textfield.TextInputEditText
 
 class CreateBookActivity : AppCompatActivity() {
 
+    private lateinit var arrowBack: ImageView
     private lateinit var arrowExpand: ImageView
     private lateinit var layoutDetalhes: View
     private var detalhesAbertos = false
 
-    private lateinit var imgPlus: ImageView
+    private lateinit var btnAddAutor: ImageView
 
     private lateinit var autorBox2: View
     private lateinit var autorBox3: View
@@ -32,13 +35,14 @@ class CreateBookActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_book)
 
+        arrowBack = findViewById(R.id.arrowBackId)
         arrowExpand = findViewById(R.id.arrowExpandId)
         layoutDetalhes = findViewById(R.id.layoutDetalhes)
 
         HeaderNavigation.setup(this)
         FooterNavigation.setup(this)
 
-        imgPlus = findViewById(R.id.imgPlus)
+        btnAddAutor = findViewById(R.id.btnAddAutor)
 
         autorBox2 = findViewById(R.id.autorBox2)
         autorBox3 = findViewById(R.id.autorBox3)
@@ -53,12 +57,17 @@ class CreateBookActivity : AppCompatActivity() {
         btnRemoveAutor3 = findViewById(R.id.btnRemoveAutor3)
         btnRemoveAutor4 = findViewById(R.id.btnRemoveAutor4)
 
+        arrowBack.setOnClickListener {
+            voltarParaTelaAnterior()
+        }
+
         arrowExpand.setOnClickListener {
             alternarDetalhse()
         }
 
-        imgPlus.setOnClickListener {
+        btnAddAutor.setOnClickListener {
             adicionarAutor()
+            Log.d("TESTE_BOTAO", "Cliquei no botão adicionar autor")
         }
 
         btnRemoveAutor2.setOnClickListener {
@@ -72,6 +81,10 @@ class CreateBookActivity : AppCompatActivity() {
         btnRemoveAutor4.setOnClickListener {
             removerAutor(autorBox4, editAutor4)
         }
+    }
+
+    private fun voltarParaTelaAnterior() {
+        startActivity(Intent(this, HomePageAdmin::class.java))
     }
 
     private fun alternarDetalhse() {
