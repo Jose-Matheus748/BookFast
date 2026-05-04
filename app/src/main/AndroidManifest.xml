@@ -13,6 +13,9 @@
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
         <activity
+            android:name=".AdminBookpageReference"
+            android:exported="false" />
+        <activity
             android:name=".activity_bookpage_admin"
             android:exported="false" />
         <activity
@@ -66,6 +69,9 @@
         <activity
             android:name=".BookpageActivity"
             android:exported="false" />
+        <activity
+            android:name=".AdminBookpageActivity"
+            android:exported="true" />
         <activity
             android:name=".HomePageActivity"
             android:exported="false" />

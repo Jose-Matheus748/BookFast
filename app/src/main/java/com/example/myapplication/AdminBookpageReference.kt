@@ -6,9 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
-class AdminBookpageActivity : AppCompatActivity() {
+class AdminBookpageReference : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_bookpage_admin)
+        setContentView(R.layout.activity_admin_bookpage_reference)
     }
 }

@@ -51,6 +51,7 @@
                 android:paddingHorizontal="16dp"
                 android:paddingTop="16dp">
 
+
                 <ImageView
                     android:id="@+id/capaFortaleza"
                     android:layout_width="140dp"
@@ -94,9 +95,40 @@
                         android:textColor="#F4F1F1"
                         android:textSize="14sp" />
 
+                    <!-- Botão editar, e excluir embaixo -->
+                    <LinearLayout
+                        android:id="@+id/layoutEditarLivro"
+                        android:layout_width="match_parent"
+                        android:layout_height="80dp"
+                        android:gravity="start|center"
+                        android:orientation="horizontal"
+                        android:paddingTop="8dp">
+
+                        <ImageView
+                            android:id="@+id/imgPencil"
+                            android:layout_width="42dp"
+                            android:layout_height="42dp"
+                            android:layout_marginEnd="12dp"
+                            android:background="@drawable/bg_pencil_circle"
+                            android:contentDescription="Editar livro"
+                            android:padding="7dp"
+                            android:src="@drawable/material_symbols__edit_rounded"
+                            app:tint="#FFFFFF" />
+
+                        <ImageView
+                            android:id="@+id/imgTrash"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginStart="6dp"
+                            android:background="@drawable/bg_trash_circle"
+                            android:contentDescription="Editar livro"
+                            android:padding="7dp"
+                            android:src="@drawable/mdi__trash_can_outline"
+                            app:tint="#FFFFFF" />
+                    </LinearLayout>
+
                 </LinearLayout>
             </LinearLayout>
-
 
             <!-- Abas Detalhes / Referência -->
             <LinearLayout
