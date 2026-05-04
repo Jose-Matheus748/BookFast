@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#242424">
+
+        <!-- HEADER: fixo no topo, FORA do scroll -->
+        <include
+            android:id="@+id/headerInclude"
+            layout="@layout/component_header_admin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- SCROLL: entre o header e o footer -->
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:fillViewport="false"
+            app:layout_constraintTop_toBottomOf="@+id/headerInclude"
+            app:layout_constraintBottom_toTopOf="@+id/componentFooter"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <!--
+                Filho único do ScrollView → LinearLayout
+                OBRIGATÓRIO: layout_height="wrap_content"
+                SEM atributos app:layout_constraint aqui dentro
+            -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <!-- Capa + ícones de editar/excluir lado a lado -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="16dp">
+
+                    <ImageView
+                        android:id="@+id/capaFortaleza"
+                        android:layout_width="188dp"
+                        android:layout_height="178dp"
+                        android:contentDescription="@string/capa_fortaleza"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/fortaleza_300" />
+
+                    <!-- Coluna: título + autor + ícones -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_marginStart="12dp"
+                        android:gravity="center_horizontal">
+
+                        <TextView
+                            android:id="@+id/tituloLivroId"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:text="@string/fortaleza_em_300_palavras"
+                            android:textAlignment="center"
+                            android:textColor="#F2F0F0"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/autorCat"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:text="@string/autor"
+                            android:textColor="#F4F1F1"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/autorId"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:fontFamily="@font/poppins_semibold"
+                            android:text="@string/macedo_miguel"
+                            android:textColor="#F4F1F1"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <!-- Ícones editar e excluir -->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="12dp">
+
+                            <ImageView
+                                android:id="@+id/btnEditarLivro"
+                                android:layout_width="46dp"
+                                android:layout_height="46dp"
+                                android:contentDescription="Botão de editar conteúdo do Livro"
+                                app:srcCompat="@drawable/material_symbols__edit_lapis_branco" />
+
+                            <ImageView
+                                android:id="@+id/btnDeletarLivro"
+                                android:layout_width="43dp"
+                                android:layout_height="46dp"
+                                android:layout_marginStart="8dp"
+                                android:contentDescription="botão de deletar a seleção de livro"
+                                app:srcCompat="@drawable/material_symbols__delete_rounded" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Botões Selecionar e Favoritar -->
+                <Button
+                    android:id="@+id/btnSelecionar"
+                    android:layout_width="208dp"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_gravity="center_horizontal"
+                    android:backgroundTint="#19A1E4"
+                    android:text="@string/selecionar"
+                    android:textStyle="bold"
+                    app:cornerRadius="8dp" />
+
+                <Button
+                    android:id="@+id/btnFavoritar"
+                    android:layout_width="208dp"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_gravity="center_horizontal"
+                    android:backgroundTint="#19A1E4"
+                    android:text="@string/favoritar"
+                    android:textStyle="bold"
+                    app:cornerRadius="8dp" />
+
+                <!-- Botões Detalhes e Referência lado a lado -->
+                <LinearLayout
+                    style="?android:attr/buttonBarStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="16dp">
+
+                    <Button
+                        android:id="@+id/btnDetalhes"
+                        style="?android:attr/buttonBarButtonStyle"
+                        android:layout_width="118dp"
+                        android:layout_height="48dp"
+                        android:backgroundTint="#0F0E0E"
+                        android:text="@string/detalhes"
+                        android:textColor="#EBE9E9"
+                        app:cornerRadius="4dp" />
+
+                    <Button
+                        android:id="@+id/btnReferencia"
+                        style="?android:attr/buttonBarButtonStyle"
+                        android:layout_width="118dp"
+                        android:layout_height="48dp"
+                        android:layout_marginStart="8dp"
+                        android:backgroundTint="#434343"
+                        android:text="@string/referencia"
+                        android:textColor="#EBE9E9"
+                        app:cornerRadius="4dp" />
+
+                </LinearLayout>
+
+                <!-- Componente de descrição -->
+                <include
+                    android:id="@+id/componentDescricao"
+                    layout="@layout/component_descricao"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp" />
+
+                <!-- Seção Exemplares -->
+                <TextView
+                    android:id="@+id/lbexemplaresId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="@string/exemplares"
+                    android:textColor="#F0F0F0"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/lbNExemplaresId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="@string/n_mero_de_exemplares_2"
+                    android:textColor="#F0F0F0"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <include
+                    android:id="@+id/componentExemplares"
+                    layout="@layout/component_exemplares"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp" />
+
+            </LinearLayout>
+        </ScrollView>
+
+        <!-- FOOTER: fixo na base, FORA do scroll -->
+        <include
+            android:id="@+id/componentFooter"
+            layout="@layout/component_footer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>

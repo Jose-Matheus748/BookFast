@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    item_livro_multado.xml
+    Card de livro vencido com destaque em vermelho.
+    Usado dentro da seção "Multas e vencimentos".
+-->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_card_dark_red_border"
+    android:orientation="horizontal"
+    android:padding="12dp">
+
+    <!-- Capa do livro -->
+    <ImageView
+        android:id="@+id/ivCapaLivro"
+        android:layout_width="56dp"
+        android:layout_height="72dp"
+        android:background="@drawable/bg_book_cover_placeholder"
+        android:contentDescription="Capa do livro"
+        android:scaleType="centerCrop" />
+
+    <!-- Informações -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginStart="12dp"
+        android:orientation="vertical"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/tvTituloLivro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Livro 4"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:maxLines="2"
+            android:ellipsize="end" />
+
+        <!-- Badge Vencido -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/bg_badge_red"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
+            android:text="Vencido"
+            android:textColor="#FF4444"
+            android:textSize="11sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvLabelDesde"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Desde"
+            android:textColor="#888888"
+            android:textSize="11sp"
+            android:layout_marginTop="6dp" />
+
+        <TextView
+            android:id="@+id/tvDataDesde"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="11/05/27"
+            android:textColor="#FF6666"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+</LinearLayout>
