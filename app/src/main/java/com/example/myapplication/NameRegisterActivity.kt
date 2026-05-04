@@ -28,16 +28,25 @@ class NameRegisterActivity : AppCompatActivity() {
     private fun showUserName() {
         val name = nameInputText.text.toString().trim()
         if (name.isEmpty()) {
-            Toast.makeText(this, "Você não digitou seu nome", Toast.LENGTH_SHORT).show()
-        } else {
-            Toast.makeText(this, "Olá, $name!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                this,
+                "Você não digitou seu nome",
+                Toast.LENGTH_SHORT
+            ).show()
+            return
         }
+
+        Toast.makeText(this, "Olá, $name!", Toast.LENGTH_SHORT).show()
         validateData()
     }
 
     private fun validateData() {
-        var intention = Intent(this,RegisterActivity::class.java)
-        intention.putExtra("name", nameInputText.text.toString())
+        val name = nameInputText.text.toString().trim().ifBlank {
+            "Usuario 1"
+        }
+
+        val intention = Intent(this,RegisterActivity::class.java)
+        intention.putExtra("name", name)
         startActivity(intention)
     }
 }
