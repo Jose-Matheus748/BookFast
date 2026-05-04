@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#1C1C1C"
+    android:orientation="vertical"
+    android:paddingBottom="32dp">
+
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="16dp"
+        android:background="#444444" />
+
+    <LinearLayout
+        android:id="@+id/textViewEditarPerfil"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="20dp"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/material_symbols_pencil"
+            android:contentDescription="Editar perfil" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="@string/editar_perfil"
+            android:textColor="#F0F0F0"
+            android:textSize="15sp" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#2A2A2A"
+        android:layout_marginHorizontal="20dp" />
+
+    <LinearLayout
+        android:id="@+id/textViewSobreApp"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="20dp"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/about"
+            android:contentDescription="Sobre o aplicativo" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="@string/sobre_o_aplicativo"
+            android:textColor="#F0F0F0"
+            android:textSize="15sp" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#2A2A2A"
+        android:layout_marginHorizontal="20dp" />
+
+    <LinearLayout
+        android:id="@+id/textViewSair"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="20dp"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/leave"
+            android:contentDescription="Sair"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="@string/sair"
+            android:textColor="#FF6B6B"
+            android:textSize="15sp" />
+
+    </LinearLayout>
+
+</LinearLayout>

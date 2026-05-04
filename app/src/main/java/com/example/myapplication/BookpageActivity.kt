@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 class BookpageActivity : AppCompatActivity() {
 
     lateinit var btnSelecionar : Button
+    lateinit var btnFavoritar : Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,9 +29,9 @@ class BookpageActivity : AppCompatActivity() {
         val painelReferencia = findViewById<LinearLayout>(R.id.painelReferencia)
         val btnCopiar = findViewById<Button>(R.id.btnCopiarReferencia)
         btnSelecionar = findViewById(R.id.btnSelecionar)
+        btnFavoritar = findViewById(R.id.btnFavoritar)
 
 
-        // Cor ativa/inativa para os botões de aba
         val corAtiva   = 0xFF19A1E4.toInt()
         val corInativa = 0xFF434343.toInt()
 
@@ -50,6 +51,11 @@ class BookpageActivity : AppCompatActivity() {
 
         btnSelecionar.setOnClickListener {
             val intent = Intent(this, BookSelectionActivity::class.java)
+            startActivity(intent)
+        }
+
+        btnFavoritar.setOnClickListener {
+            val intent = Intent(this, PaginaPerfilActivity::class.java)
             startActivity(intent)
         }
 
