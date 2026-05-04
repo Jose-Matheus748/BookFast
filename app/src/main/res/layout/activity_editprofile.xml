@@ -104,13 +104,12 @@
                 android:fontFamily="@font/poppins_semibold"
                 android:layout_marginBottom="6dp" />
 
-
             <EditText
                 android:id="@+id/editTextTextEmailAddress4"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="@drawable/bg_input_chat"
-                android:hint="Digite seu nome de usuário"
+                android:hint="@string/digite_seu_nome_de_usu_rio"
                 android:inputType="textPersonName"
                 android:paddingHorizontal="16dp"
                 android:textColor="#F0F0F0"
@@ -129,6 +128,282 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="28dp"
+                android:layout_marginBottom="24dp"
+                android:background="#2E2E2E" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/editar_favoritos"
+                android:textColor="#F0F0F0"
+                android:textSize="18sp"
+                android:fontFamily="@font/poppins_semibold"
+                android:layout_marginBottom="4dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/toque_no_x_para_remover_um_livro_dos_favoritos"
+                android:textColor="#555555"
+                android:textSize="11sp"
+                android:layout_marginBottom="16dp" />
+
+            <LinearLayout
+                android:id="@+id/gridFavoritos1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:layout_marginBottom="12dp">
+
+                <FrameLayout
+                    android:id="@+id/itemFav1"
+                    android:layout_width="0dp"
+                    android:layout_height="280dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="6dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:background="#2E2E2E"
+                        android:padding="8dp">
+
+                        <ImageView
+                            android:id="@+id/imgFav1"
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/fortaleza_300"
+                            android:contentDescription="Livro favorito 1" />
+
+                        <TextView
+                            android:id="@+id/tituloFav1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:text="@string/fortaleza_em_300_palavras"
+                            android:textColor="#F0F0F0"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            android:maxLines="2"
+                            android:ellipsize="end" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="@string/macedo_miguel"
+                            android:textColor="#888888"
+                            android:textSize="11sp"
+                            android:maxLines="1"
+                            android:ellipsize="end" />
+
+                        <Button
+                            android:id="@+id/btnRemoverFav1"
+                            android:layout_width="match_parent"
+                            android:layout_height="34dp"
+                            android:layout_marginTop="8dp"
+                            android:backgroundTint="#3A1C1C"
+                            android:text="@string/remover"
+                            android:textColor="#FF6B6B"
+                            android:textSize="12sp"
+                            app:cornerRadius="6dp" />
+
+                    </LinearLayout>
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/itemFav2"
+                    android:layout_width="0dp"
+                    android:layout_height="280dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="6dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:background="#2E2E2E"
+                        android:padding="8dp">
+
+                        <ImageView
+                            android:id="@+id/imgFav2"
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/xeroque_homis"
+                            android:contentDescription="Livro favorito 2" />
+
+                        <TextView
+                            android:id="@+id/tituloFav2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:text="@string/sherlock_holmes"
+                            android:textColor="#F0F0F0"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            android:maxLines="2"
+                            android:ellipsize="end" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="@string/arthur_c_doyle"
+                            android:textColor="#888888"
+                            android:textSize="11sp"
+                            android:maxLines="1"
+                            android:ellipsize="end" />
+
+                        <Button
+                            android:id="@+id/btnRemoverFav2"
+                            android:layout_width="match_parent"
+                            android:layout_height="34dp"
+                            android:layout_marginTop="8dp"
+                            android:backgroundTint="#3A1C1C"
+                            android:text="@string/remover"
+                            android:textColor="#FF6B6B"
+                            android:textSize="12sp"
+                            app:cornerRadius="6dp" />
+
+                    </LinearLayout>
+                </FrameLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/gridFavoritos2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:layout_marginBottom="12dp">
+
+                <FrameLayout
+                    android:id="@+id/itemFav3"
+                    android:layout_width="0dp"
+                    android:layout_height="280dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="6dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:background="#2E2E2E"
+                        android:padding="8dp">
+
+                        <ImageView
+                            android:id="@+id/imgFav3"
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/got_asofai"
+                            android:contentDescription="Livro favorito 3" />
+
+                        <TextView
+                            android:id="@+id/tituloFav3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:text="@string/got_asofai"
+                            android:textColor="#F0F0F0"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            android:maxLines="2"
+                            android:ellipsize="end" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="@string/g_r_r_martin"
+                            android:textColor="#888888"
+                            android:textSize="11sp"
+                            android:maxLines="1"
+                            android:ellipsize="end" />
+
+                        <Button
+                            android:id="@+id/btnRemoverFav3"
+                            android:layout_width="match_parent"
+                            android:layout_height="34dp"
+                            android:layout_marginTop="8dp"
+                            android:backgroundTint="#3A1C1C"
+                            android:text="@string/remover"
+                            android:textColor="#FF6B6B"
+                            android:textSize="12sp"
+                            app:cornerRadius="6dp" />
+
+                    </LinearLayout>
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/itemFav4"
+                    android:layout_width="0dp"
+                    android:layout_height="280dp"
+                    android:layout_weight="1"
+                    android:layout_marginStart="6dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:background="#2E2E2E"
+                        android:padding="8dp">
+
+                        <ImageView
+                            android:id="@+id/imgFav4"
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/witcher_last_wish"
+                            android:contentDescription="Livro favorito 4" />
+
+                        <TextView
+                            android:id="@+id/tituloFav4"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:text="@string/the_witcher"
+                            android:textColor="#F0F0F0"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            android:maxLines="2"
+                            android:ellipsize="end" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="@string/andrzej_sapkowski"
+                            android:textColor="#888888"
+                            android:textSize="11sp"
+                            android:maxLines="1"
+                            android:ellipsize="end" />
+
+                        <Button
+                            android:id="@+id/btnRemoverFav4"
+                            android:layout_width="match_parent"
+                            android:layout_height="34dp"
+                            android:layout_marginTop="8dp"
+                            android:backgroundTint="#3A1C1C"
+                            android:text="@string/remover"
+                            android:textColor="#FF6B6B"
+                            android:textSize="12sp"
+                            app:cornerRadius="6dp" />
+
+                    </LinearLayout>
+                </FrameLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginBottom="24dp"
                 android:background="#2E2E2E" />
 

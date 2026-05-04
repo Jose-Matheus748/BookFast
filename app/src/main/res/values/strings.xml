@@ -100,4 +100,21 @@
     <string name="multas_e_vencimentos">Multas e vencimentos</string>
     <string name="sobre_o_aplicativo">Sobre o aplicativo</string>
     <string name="sair">Sair</string>
+    <string name="usuario_email_com">usuario@email.com</string>
+    <string name="usu_rio">(Usuário)</string>
+    <string name="configura_es">Configurações</string>
+    <string name="livros_favoritos">Livros Favoritos</string>
+    <string name="sherlock_holmes">Sherlock Holmes</string>
+    <string name="arthur_c_doyle">Arthur C. Doyle</string>
+    <string name="got_asofai">GoT: ASoFaI</string>
+    <string name="g_r_r_martin">G. R. R. Martin</string>
+    <string name="the_witcher">The Witcher</string>
+    <string name="andrzej_sapkowski">Andrzej Sapkowski</string>
+    <string name="remover">✕ Remover</string>
+    <string name="toque_no_x_para_remover_um_livro_dos_favoritos">Toque no X para remover um livro dos favoritos</string>
+    <string name="editar_favoritos">Editar favoritos</string>
+    <string name="digite_seu_nome_de_usu_rio">Digite seu nome de usuário</string>
+    <string name="o_aplicativo_bookfast_uma_ferramenta_para_controlar_e_consultar_a_biblioteca_da_unifor">O aplicativo BookFast é uma ferramenta para controlar e consultar a biblioteca da Unifor</string>
+    <string name="vers_o_1_0_0">Versão 1.0.0</string>
+    <string name="como_elaborar_projetos_de_pesquisa">Como elaborar projetos de pesquisa</string>
 </resources>

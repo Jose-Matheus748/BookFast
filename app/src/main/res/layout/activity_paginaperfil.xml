@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="#242424">
 
-    <!-- HEADER fixo no topo -->
     <include
         android:id="@+id/headerInclude"
         layout="@layout/component_header"
@@ -16,7 +15,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- FOOTER fixo na base -->
     <include
         android:id="@+id/componentFooter"
         layout="@layout/component_footer"
@@ -26,7 +24,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- SCROLL entre header e footer -->
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -42,7 +39,6 @@
             android:orientation="vertical"
             android:paddingBottom="16dp">
 
-            <!-- CARD DE PERFIL -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -52,15 +48,15 @@
                 android:paddingVertical="20dp"
                 android:gravity="center_vertical">
 
-                <!-- Avatar -->
                 <ImageView
-                    android:id="@+id/imageView6"
-                    android:layout_width="72dp"
-                    android:layout_height="72dp"
-                    android:src="@drawable/icone_utilisateur_bleu"
-                    android:contentDescription="Avatar" />
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:background="@drawable/bg_avatar_circle"
+                    android:padding="18dp"
+                    android:src="@drawable/userprofile_icon_black"
+                    android:contentDescription="Avatar"
+                    app:tint="#FFFFFF" />
 
-                <!-- Nome + email -->
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -72,7 +68,7 @@
                         android:id="@+id/userName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="(Usuário)"
+                        android:text="@string/usu_rio"
                         android:textColor="#F0F0F0"
                         android:textSize="20sp"
                         android:fontFamily="@font/poppins_semibold" />
@@ -82,36 +78,33 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
-                        android:text="usuario@email.com"
+                        android:text="@string/usuario_email_com"
                         android:textColor="#888888"
-                        android:textSize="13sp" />
+                        android:textSize="16sp" />
 
                 </LinearLayout>
 
-                <!-- Botão de configurações -->
                 <ImageView
                     android:id="@+id/btnConfig"
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:clickable="true"
-                    android:contentDescription="Configurações"
+                    android:contentDescription="@string/configura_es"
                     android:src="@drawable/settings_icon"
                     app:tint="#888888" />
 
             </LinearLayout>
 
-            <!-- DIVISOR -->
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#2E2E2E" />
 
-            <!-- TÍTULO FAVORITOS -->
             <TextView
                 android:id="@+id/textView6"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Livros Favoritos"
+                android:text="@string/livros_favoritos"
                 android:textColor="#F0F0F0"
                 android:textSize="18sp"
                 android:fontFamily="@font/poppins_semibold"
@@ -119,7 +112,6 @@
                 android:paddingTop="20dp"
                 android:paddingBottom="12dp" />
 
-            <!-- GRID DE FAVORITOS linha 1 -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -127,7 +119,6 @@
                 android:paddingHorizontal="16dp"
                 android:weightSum="2">
 
-                <!-- Livro 1 -->
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -136,7 +127,7 @@
                     android:paddingEnd="8dp">
 
                     <ImageView
-                        android:id="@+id/imageView8"
+                        android:id="@+id/capaFortaleza"
                         android:layout_width="match_parent"
                         android:layout_height="160dp"
                         android:scaleType="fitCenter"
@@ -163,7 +154,6 @@
 
                 </LinearLayout>
 
-                <!-- Livro 2 -->
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -183,7 +173,7 @@
                         android:id="@+id/textView8"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Sherlock Holmes"
+                        android:text="@string/sherlock_holmes"
                         android:textColor="#F0F0F0"
                         android:textSize="14sp"
                         android:fontFamily="@font/poppins_semibold"
@@ -193,7 +183,7 @@
                         android:id="@+id/textView12"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Arthur C. Doyle"
+                        android:text="@string/arthur_c_doyle"
                         android:textColor="#888888"
                         android:textSize="11sp" />
 
@@ -201,7 +191,6 @@
 
             </LinearLayout>
 
-            <!-- GRID DE FAVORITOS linha 2 -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -210,7 +199,6 @@
                 android:paddingTop="16dp"
                 android:weightSum="2">
 
-                <!-- Livro 3 -->
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -230,7 +218,7 @@
                         android:id="@+id/textView9"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="GoT: ASoFaI"
+                        android:text="@string/got_asofai"
                         android:textColor="#F0F0F0"
                         android:textSize="14sp"
                         android:fontFamily="@font/poppins_semibold"
@@ -240,13 +228,12 @@
                         android:id="@+id/textView13"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="G. R. R. Martin"
+                        android:text="@string/g_r_r_martin"
                         android:textColor="#888888"
                         android:textSize="11sp" />
 
                 </LinearLayout>
 
-                <!-- Livro 4 -->
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -266,7 +253,7 @@
                         android:id="@+id/textView10"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="The Witcher"
+                        android:text="@string/the_witcher"
                         android:textColor="#F0F0F0"
                         android:textSize="14sp"
                         android:fontFamily="@font/poppins_semibold"
@@ -276,7 +263,7 @@
                         android:id="@+id/textView14"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Andrzej Sapkowski"
+                        android:text="@string/andrzej_sapkowski"
                         android:textColor="#888888"
                         android:textSize="11sp" />
 

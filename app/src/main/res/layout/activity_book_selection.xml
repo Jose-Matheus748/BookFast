@@ -110,7 +110,7 @@
                                 app:cardElevation="0dp"
                                 app:cardBackgroundColor="#1C1C1C">
                                 <ImageView
-                                    android:id="@+id/imgLivro7"
+                                    android:id="@+id/capaFortaleza"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:scaleType="centerCrop"
@@ -383,7 +383,7 @@
                                 app:cardElevation="0dp"
                                 app:cardBackgroundColor="#1C1C1C">
                                 <ImageView
-                                    android:id="@+id/imgAlugado1"
+                                    android:id="@+id/capaFortalezaAlugado"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:scaleType="centerCrop"
