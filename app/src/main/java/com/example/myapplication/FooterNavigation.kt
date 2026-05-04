@@ -32,7 +32,10 @@ object FooterNavigation {
 
         imageAccount.setOnClickListener {
             if (activity !is PaginaPerfilActivity) {
-                activity.startActivity(Intent(activity, PaginaPerfilActivity::class.java))
+                val intent = Intent(activity, PaginaPerfilActivity::class.java)
+                intent.putExtra("userName", activity.intent.getStringExtra("userName"))
+                intent.putExtra("userEmail", activity.intent.getStringExtra("userEmail"))
+                activity.startActivity(intent)
             }
         }
     }
