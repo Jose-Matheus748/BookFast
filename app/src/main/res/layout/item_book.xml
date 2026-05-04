@@ -1,61 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_marginBottom="20dp"
-    android:gravity="center_horizontal"
-    android:orientation="vertical"
-    android:padding="10dp">
-
+    android:layout_margin="8dp"
+    android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="100dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="10dp"
-        app:cardUseCompatPadding="false"
-        app:cardElevation="2dp">
+        app:cardCornerRadius="18dp"
+        app:cardElevation="8dp"
+        app:cardBackgroundColor="#2A2A2A">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="10dp">
 
             <ImageView
                 android:id="@+id/imgBook"
                 android:layout_width="match_parent"
-                android:layout_height="130dp"
+                android:layout_height="180dp"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:background="#1F1F1F"
+                android:padding="6dp"
                 android:contentDescription="Livro"
-                android:scaleType="centerCrop"
                 android:src="@drawable/livro11" />
 
-            <LinearLayout
-                android:id="@+id/layoutInformacoesLivro"
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:orientation="vertical"
-                android:background="@drawable/bg_info_livro"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp">
+                android:layout_height="8dp"/>
 
-                <TextView
-                    android:id="@+id/tvTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Livro 1"
-                    android:textColor="#111111"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/como_elaborar_projetos_de_pesquisa"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:maxLines="2"
+                android:ellipsize="end" />
 
-                <TextView
-                    android:id="@+id/tvAuthor"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Autor"
-                    android:textColor="#666666"
-                    android:textSize="12sp" />
-
-            </LinearLayout>
+            <TextView
+                android:id="@+id/tvAuthor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/autor"
+                android:textColor="#A0A0A0"
+                android:textSize="13sp"
+                android:maxLines="1"
+                android:ellipsize="end" />
 
         </LinearLayout>
 

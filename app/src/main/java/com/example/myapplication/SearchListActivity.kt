@@ -14,78 +14,81 @@ import com.example.myapplication.model.Book
 
 class SearchListActivity : AppCompatActivity() {
 
-    lateinit var btnSearch: ImageButton
-    lateinit var etSearchList: EditText
-    lateinit var adapter: BookAdapter
-    lateinit var recyclerBooks: RecyclerView
-    lateinit var mainSearchListLayout: View
+    private lateinit var btnSearch: ImageButton
+    private lateinit var etSearchList: EditText
+    private lateinit var recyclerBooks: RecyclerView
+    private lateinit var adapter: BookAdapter
 
-    val todosOsLivros = mutableListOf(
-        Book("Livro 10", "Autor 10", R.drawable.livro11),
-        Book("Livro 11", "Autor 11", R.drawable.livro12),
-        Book("Livro 12", "Autor 12", R.drawable.livro13),
-        Book("Livro 13", "Autor 13", R.drawable.livro14),
-        Book("Livro 14", "Autor 14", R.drawable.livro15),
-        Book("Livro 15", "Autor 15", R.drawable.livro16),
+    private val todosOsLivros = listOf(
+        Book("Como elaborar projetos de pesquisa", "Antonio Carlos Gil", R.drawable.livro11),
+        Book("Metodologia Científica na era digital", "João Mattar", R.drawable.livro12),
+        Book("O mito da neutralidade científica", "Hilton Japiassu", R.drawable.livro13),
+        Book("Os usos sociais das ciências", "Pierre Bourdieu", R.drawable.livro14),
+        Book("Um discurso sobre as ciências", "Sousa de Santos", R.drawable.livro15),
+        Book("As árvores de conhecimento", "Pierre Lévy", R.drawable.livro16),
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_search_list)
 
+        initViews()
+        setupRecycler()
+        setupSearch()
+        FooterNavigation.setup(this)
+    }
+
+    private fun initViews() {
         btnSearch = findViewById(R.id.btnSearch)
         etSearchList = findViewById(R.id.etSearch)
         recyclerBooks = findViewById(R.id.recyclerBooks)
-        mainSearchListLayout = findViewById(R.id.mainSearchListLayout)
+    }
 
+    private fun setupRecycler() {
         adapter = BookAdapter(todosOsLivros)
 
-        recyclerBooks.layoutManager = GridLayoutManager(this, 2)
+        recyclerBooks.apply {
+            layoutManager = GridLayoutManager(this@SearchListActivity, 2)
+            setHasFixedSize(true)
+            adapter = this@SearchListActivity.adapter
+        }
+    }
 
-        recyclerBooks.adapter = adapter
+    private fun setupSearch() {
 
         btnSearch.setOnClickListener {
-            etSearchList.visibility = View.VISIBLE
-            btnSearch.visibility = View.GONE
-        }
-
-        etSearchList.setOnClickListener {
-            // impede fechar ao clicar dentro dele
-        }
-
-        mainSearchListLayout.setOnClickListener {
-            if (etSearchList.isVisible) {
-                fecharBusca()
-            }
+            etSearchList.isVisible = true
+            btnSearch.isVisible = false
+            etSearchList.requestFocus()
         }
 
         etSearchList.addTextChangedListener { text ->
-
             val query = text.toString().trim()
 
-            val livrosFiltrados = todosOsLivros.filter { livro ->
-                livro.title.contains(query, ignoreCase = true) ||
-                livro.author.contains(query, ignoreCase = true)
+            val filtrados = if (query.isEmpty()) {
+                todosOsLivros
+            } else {
+                todosOsLivros.filter {
+                    it.title.contains(query, true) ||
+                            it.author.contains(query, true)
+                }
             }
 
-            adapter.atualizarLista(livrosFiltrados)
+            adapter.atualizarLista(filtrados)
         }
-
-        FooterNavigation.setup(this)
     }
 
     override fun onBackPressed() {
         if (etSearchList.isVisible) {
             fecharBusca()
         } else {
-            return super.onBackPressed()
+            super.onBackPressed()
         }
     }
 
     private fun fecharBusca() {
         etSearchList.setText("")
-        etSearchList.visibility = View.GONE
-        btnSearch.visibility = View.VISIBLE
+        etSearchList.isVisible = false
+        btnSearch.isVisible = true
     }
 }
