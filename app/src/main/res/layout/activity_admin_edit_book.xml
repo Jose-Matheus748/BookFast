@@ -6,8 +6,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#242424"
-    tools:context=".CreateBookActivity">
+    android:background="#242424">
 
     <ScrollView
         android:layout_width="0dp"
@@ -29,6 +28,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <!-- Botão de voltar -->
             <ImageView
                 android:id="@+id/arrowBackId"
                 android:layout_width="40dp"
@@ -40,32 +40,40 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <!-- Capa do livro -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/ctnDescricao"
                 android:layout_width="139dp"
                 android:layout_height="174dp"
                 android:layout_marginTop="136dp"
-                android:background="@drawable/bg_container"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <TextView
-                    android:id="@+id/textViewCapa"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="80dp"
-                    android:fontFamily="@font/poppins_semibold"
-                    android:text="@string/adicionar_capa"
-                    android:textAlignment="center"
-                    android:textColor="#f1f1f1"
-                    android:textSize="16sp"
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/capaDoLivro"
+                    android:layout_width="139dp"
+                    android:layout_height="174dp"
+                    android:layout_gravity="center"
+                    app:cardBackgroundColor="#F5F5F5"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="0dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:id="@+id/imgLivro7"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/fortaleza_300" />
+                </androidx.cardview.widget.CardView>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <!-- Título -->
             <TextView
                 android:id="@+id/textViewLbTitle"
                 android:layout_width="wrap_content"
@@ -91,8 +99,11 @@
                 app:layout_constraintTop_toBottomOf="@id/textViewLbTitle">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTitulo"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:text="Livro editado"
+                    android:textColor="#f1f1f1" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <!-- Cabeçalho da seção expansível de detalhes -->
@@ -123,16 +134,15 @@
                 app:layout_constraintStart_toEndOf="@id/textViewDetalhes"
                 app:layout_constraintTop_toTopOf="@id/textViewDetalhes" />
 
-            <!-- Esta seção começa fechada no app. O tools:visibility só mostra no Preview. -->
+            <!-- Seção de detalhes. Está visible aqui para já aparecer preenchida. -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layoutDetalhes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textViewDetalhes"
-                tools:visibility="visible">
+                app:layout_constraintTop_toBottomOf="@id/textViewDetalhes">
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guidelineMiddle"
@@ -141,6 +151,7 @@
                     android:orientation="vertical"
                     app:layout_constraintGuide_percent="0.5" />
 
+                <!-- Material e idioma -->
                 <TextView
                     android:id="@+id/textViewLbMaterial"
                     android:layout_width="wrap_content"
@@ -180,8 +191,11 @@
                     app:layout_constraintTop_toBottomOf="@id/textViewLbMaterial">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editMaterial"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:text="Livro"
+                        android:textColor="#f1f1f1" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -197,10 +211,14 @@
                     app:layout_constraintTop_toBottomOf="@id/textViewLbIdioma">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editIdioma"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:text="Português"
+                        android:textColor="#f1f1f1" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <!-- Publicação -->
                 <TextView
                     android:id="@+id/textViewLbPublicacao"
                     android:layout_width="wrap_content"
@@ -226,10 +244,14 @@
                     app:layout_constraintTop_toBottomOf="@id/textViewLbPublicacao">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editPublicacao"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:text="São Paulo : Edições Exemplo"
+                        android:textColor="#f1f1f1" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <!-- Edição e série -->
                 <TextView
                     android:id="@+id/textViewLbEdicao"
                     android:layout_width="wrap_content"
@@ -269,8 +291,11 @@
                     app:layout_constraintTop_toBottomOf="@id/textViewLbEdicao">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editEdicao"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:text="3. ed."
+                        android:textColor="#f1f1f1" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -286,10 +311,14 @@
                     app:layout_constraintTop_toBottomOf="@id/textViewLbSerie">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editSerie"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:text="Exemplo; 3"
+                        android:textColor="#f1f1f1" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <!-- Assuntos -->
                 <TextView
                     android:id="@+id/textViewLbAssuntos"
                     android:layout_width="wrap_content"
@@ -315,10 +344,14 @@
                     app:layout_constraintTop_toBottomOf="@id/textViewLbAssuntos">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editAssuntos"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:text="Exemplos"
+                        android:textColor="#f1f1f1" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <!-- Autoria -->
                 <TextView
                     android:id="@+id/textViewLbAutoria"
                     android:layout_width="wrap_content"
@@ -332,11 +365,10 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/inputAssuntos" />
 
-                <!-- Botão +: no Kotlin, ele mostra o próximo autor escondido -->
                 <ImageView
-                    android:id="@+id/btnAddAutor"
-                    android:layout_width="20dp"
-                    android:layout_height="22dp"
+                    android:id="@+id/imgPlus"
+                    android:layout_width="18dp"
+                    android:layout_height="20dp"
                     android:layout_marginStart="8dp"
                     android:clickable="true"
                     android:focusable="true"
@@ -346,7 +378,7 @@
                     app:srcCompat="@drawable/plus_icon"
                     app:tint="#FFFFFF" />
 
-                <!-- Container dos autores. Cada autor tem um botão - acima do campo. -->
+                <!-- Autores. Primeiro autor obrigatório, segundo visível conforme o print. -->
                 <LinearLayout
                     android:id="@+id/layoutAutores"
                     android:layout_width="0dp"
@@ -358,7 +390,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/textViewLbAutoria">
 
-                    <!-- Linha 1: Autor 1 e Autor 2 -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -372,7 +403,6 @@
                             android:layout_weight="1"
                             android:orientation="vertical">
 
-                            <!-- Espaçador invisível para alinhar com os autores que têm botão - -->
                             <TextView
                                 android:id="@+id/spacerRemoveAutor1"
                                 android:layout_width="wrap_content"
@@ -391,7 +421,9 @@
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/editAutor1"
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content" />
+                                    android:layout_height="wrap_content"
+                                    android:text="Autor 1"
+                                    android:textColor="#f1f1f1" />
                             </com.google.android.material.textfield.TextInputLayout>
                         </LinearLayout>
 
@@ -402,8 +434,7 @@
                             android:layout_marginStart="8dp"
                             android:layout_weight="1"
                             android:orientation="vertical"
-                            android:visibility="gone"
-                            tools:visibility="visible">
+                            android:visibility="visible">
 
                             <TextView
                                 android:id="@+id/btnRemoveAutor2"
@@ -425,12 +456,13 @@
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/editAutor2"
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content" />
+                                    android:layout_height="wrap_content"
+                                    android:text="Tradutor..."
+                                    android:textColor="#f1f1f1" />
                             </com.google.android.material.textfield.TextInputLayout>
                         </LinearLayout>
                     </LinearLayout>
 
-                    <!-- Linha 2: Autor 3 e Autor 4 -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -467,7 +499,8 @@
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/editAutor3"
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content" />
+                                    android:layout_height="wrap_content"
+                                    android:textColor="#f1f1f1" />
                             </com.google.android.material.textfield.TextInputLayout>
                         </LinearLayout>
 
@@ -501,12 +534,14 @@
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/editAutor4"
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content" />
+                                    android:layout_height="wrap_content"
+                                    android:textColor="#f1f1f1" />
                             </com.google.android.material.textfield.TextInputLayout>
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
 
+                <!-- Referência -->
                 <TextView
                     android:id="@+id/textViewLbReferencia"
                     android:layout_width="wrap_content"
@@ -533,13 +568,17 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/textViewLbReferencia">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-                </com.google.android.material.textfield.TextInputLayout>
+                    <include
+                        android:id="@+id/componentReferencia"
+                        layout="@layout/component_edit_book_referencia"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/inputReferencia" />
 
+                </com.google.android.material.textfield.TextInputLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <!-- Botão final -->
             <Button
                 android:id="@+id/btnEnviar"
                 android:layout_width="0dp"
@@ -549,7 +588,7 @@
                 android:layout_marginEnd="24dp"
                 android:layout_marginBottom="32dp"
                 android:backgroundTint="#19A1E4"
-                android:text="@string/enviar"
+                android:text="Salvar"
                 android:textStyle="bold"
                 app:cornerRadius="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"

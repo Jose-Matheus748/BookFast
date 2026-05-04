@@ -43,7 +43,7 @@
         app:srcCompat="@drawable/white_search_icon" />
 
     <ImageView
-        android:id="@+id/imgPlus"
+        android:id="@+id/imgPlusHeader"
         android:layout_width="21dp"
         android:layout_height="27dp"
         android:layout_marginTop="22dp"

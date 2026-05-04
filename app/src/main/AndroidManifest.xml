@@ -64,6 +64,15 @@
             android:name=".BookpageActivity"
             android:exported="false" />
         <activity
+            android:name=".AdminBookpageActivity"
+            android:exported="true" />
+        <activity
+            android:name=".AdminBookpageReference"
+            android:exported="true" />
+        <activity
+            android:name=".AdminEditBookActivity"
+            android:exported="true" />
+        <activity
             android:name=".HomePageActivity"
             android:exported="false" />
         <activity
