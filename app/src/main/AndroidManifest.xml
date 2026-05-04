@@ -47,10 +47,10 @@
             android:exported="false" />
         <activity
             android:name=".HomePageAdmin"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".CreateBookActivity"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".BookSelectionActivity"
             android:exported="true" />
