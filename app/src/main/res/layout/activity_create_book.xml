@@ -28,7 +28,6 @@
                 android:layout_height="40dp"
                 android:layout_marginTop="108dp"
                 android:src="@drawable/arrow_back"
-
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.053"
                 app:layout_constraintStart_toStartOf="parent"
@@ -39,7 +38,6 @@
                 android:layout_width="139dp"
                 android:layout_height="174dp"
                 android:layout_marginTop="136dp"
-
                 android:background="@drawable/bg_container"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.498"
@@ -70,7 +68,6 @@
                 android:fontFamily="@font/poppins_semibold"
                 android:text="@string/adicione_um_t_tulo"
                 android:textColor="#F1F1F1"
-
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/ctnDescricao" />
@@ -82,7 +79,6 @@
                 android:layout_marginHorizontal="20dp"
                 android:layout_marginTop="8dp"
                 app:hintEnabled="false"
-
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textViewLbTitle">
@@ -92,316 +88,303 @@
                     android:layout_height="wrap_content" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <!-- Cabeçalho da seção expansível -->
             <TextView
                 android:id="@+id/textViewDetalhes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/poppins_semibold"
                 android:text="@string/detalhesMention"
                 android:textColor="#F1F1F1"
                 android:textSize="20sp"
-
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.05"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/inputTItle" />
 
+            <!-- Seta que vai abrir/fechar layoutDetalhes no Kotlin -->
             <ImageView
                 android:id="@+id/arrowExpandId"
                 android:layout_width="37dp"
                 android:layout_height="35dp"
-                android:layout_marginTop="12dp"
-
+                android:layout_marginStart="8dp"
+                android:clickable="true"
+                android:focusable="true"
                 android:rotation="90"
                 android:src="@drawable/arrow_back"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.302"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/inputTItle" />
+                app:layout_constraintBottom_toBottomOf="@id/textViewDetalhes"
+                app:layout_constraintStart_toEndOf="@id/textViewDetalhes"
+                app:layout_constraintTop_toTopOf="@id/textViewDetalhes" />
 
-            <TextView
-                android:id="@+id/textViewLbMaterial"
-                android:layout_width="wrap_content"
+            <!-- Esta seção começa fechada. No Preview aparece aberta por causa do tools:visibility. -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layoutDetalhes"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="19dp"
-                android:layout_marginTop="13dp"
-                android:layout_marginEnd="317dp"
-                android:fontFamily="@font/poppins_semibold"
-                android:text="@string/material"
-                android:textColor="#F1F1F1"
-                android:textSize="18sp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewDetalhes" />
+                app:layout_constraintTop_toBottomOf="@id/textViewDetalhes"
+                tools:visibility="visible">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/inputMaterial"
-                android:layout_width="167dp"
-                android:layout_height="41dp"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="210dp"
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guidelineMiddle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.5" />
 
-                app:hintEnabled="false"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textViewLbMaterial">
+                <TextView
+                    android:id="@+id/textViewLbMaterial"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="@string/material"
+                    android:textColor="#F1F1F1"
+                    android:textSize="18sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </com.google.android.material.textfield.TextInputLayout>
+                <TextView
+                    android:id="@+id/textViewLbIdioma"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="@string/idioma"
+                    android:textColor="#F1F1F1"
+                    android:textSize="18sp"
+                    app:layout_constraintStart_toEndOf="@id/guidelineMiddle"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/textViewLbIdioma"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="132dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="124dp"
-                android:fontFamily="@font/poppins_semibold"
-                android:text="@string/idioma"
-                android:textColor="#F1F1F1"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/textViewLbMaterial"
-                app:layout_constraintTop_toBottomOf="@+id/arrowExpandId" />
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/inputMaterial"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    app:hintEnabled="false"
+                    app:layout_constraintEnd_toStartOf="@id/guidelineMiddle"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textViewLbMaterial">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/inputIdioma"
-                android:layout_width="167dp"
-                android:layout_height="41dp"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginStart="210dp"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                android:layout_marginTop="8dp"
-                app:hintEnabled="false"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textViewLbIdioma">
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/inputIdioma"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="20dp"
+                    app:hintEnabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/guidelineMiddle"
+                    app:layout_constraintTop_toBottomOf="@id/textViewLbIdioma">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-            <TextView
-                android:id="@+id/textViewLbPublicacao"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="319dp"
-                android:fontFamily="@font/poppins_semibold"
-                android:text="@string/publica_o"
-                android:textColor="#F1F1F1"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.085"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/inputMaterial" />
+                <TextView
+                    android:id="@+id/textViewLbPublicacao"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="@string/publica_o"
+                    android:textColor="#F1F1F1"
+                    android:textSize="18sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/inputMaterial" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/inputPublicacao"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="8dp"
-                app:hintEnabled="false"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/inputPublicacao"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="8dp"
+                    app:hintEnabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textViewLbPublicacao">
 
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textViewLbPublicacao">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </com.google.android.material.textfield.TextInputLayout>
+                <TextView
+                    android:id="@+id/textViewLbEdicao"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="@string/edi_o"
+                    android:textColor="#F1F1F1"
+                    android:textSize="18sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/inputPublicacao" />
 
-            <TextView
-                android:id="@+id/textViewLbEdicao"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="19dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="353dp"
-                android:fontFamily="@font/poppins_semibold"
-                android:text="@string/edi_o"
-                android:textColor="#F1F1F1"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/inputPublicacao" />
+                <TextView
+                    android:id="@+id/textViewLbSerie"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="@string/s_rie"
+                    android:textColor="#F1F1F1"
+                    android:textSize="18sp"
+                    app:layout_constraintStart_toEndOf="@id/guidelineMiddle"
+                    app:layout_constraintTop_toBottomOf="@id/inputPublicacao" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/inputEdicao"
-                android:layout_width="167dp"
-                android:layout_height="41dp"
-                android:layout_marginHorizontal="20dp"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/inputEdicao"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    app:hintEnabled="false"
+                    app:layout_constraintEnd_toStartOf="@id/guidelineMiddle"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textViewLbEdicao">
 
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="210dp"
-                app:hintEnabled="false"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textViewLbEdicao">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/inputSerie"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="20dp"
+                    app:hintEnabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/guidelineMiddle"
+                    app:layout_constraintTop_toBottomOf="@id/textViewLbSerie">
 
-            <TextView
-                android:id="@+id/textViewLbSerie"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="151dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="125dp"
-                android:fontFamily="@font/poppins_semibold"
-                android:text="@string/s_rie"
-                android:textColor="#F1F1F1"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/textViewLbEdicao"
-                app:layout_constraintTop_toBottomOf="@+id/inputPublicacao" />
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/inputSerie"
-                android:layout_width="167dp"
-                android:layout_height="41dp"
-                android:layout_marginHorizontal="20dp"
+                <TextView
+                    android:id="@+id/textViewLbAssuntos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="@string/assuntos"
+                    android:textColor="#F1F1F1"
+                    android:textSize="18sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/inputEdicao" />
 
-                android:layout_marginStart="210dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="0dp"
-                app:hintEnabled="false"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textViewLbSerie">
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/inputAssuntos"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="8dp"
+                    app:hintEnabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textViewLbAssuntos">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-            <TextView
-                android:id="@+id/textViewLbAssuntos"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="22dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="334dp"
-                android:fontFamily="@font/poppins_semibold"
-                android:text="@string/assuntos"
-                android:textColor="#F1F1F1"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.148"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/inputEdicao" />
+                <TextView
+                    android:id="@+id/textViewLbAutoria"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="@string/autoriaForms"
+                    android:textColor="#F1F1F1"
+                    android:textSize="18sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/inputAssuntos" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/inputAssuntos"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="8dp"
-                app:hintEnabled="false"
+                <ImageView
+                    android:id="@+id/imgPlus"
+                    android:layout_width="18dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintBottom_toBottomOf="@id/textViewLbAutoria"
+                    app:layout_constraintStart_toEndOf="@id/textViewLbAutoria"
+                    app:layout_constraintTop_toTopOf="@id/textViewLbAutoria"
+                    app:srcCompat="@drawable/plus_icon"
+                    app:tint="#FFFFFF" />
 
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textViewLbAssuntos">
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/inputAutoria"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    app:hintEnabled="false"
+                    app:layout_constraintEnd_toStartOf="@id/guidelineMiddle"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textViewLbAutoria">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-            <TextView
-                android:id="@+id/textViewLbAutoria"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="18dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="342dp"
-                android:fontFamily="@font/poppins_semibold"
-                android:text="@string/autoriaForms"
-                android:textColor="#F1F1F1"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/inputAssuntos" />
+                <TextView
+                    android:id="@+id/textViewLbReferencia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="28dp"
+                    android:fontFamily="@font/poppins_semibold"
+                    android:text="@string/informe_a_refer_ncia"
+                    android:textColor="#F1F1F1"
+                    android:textSize="18sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/inputAutoria" />
 
-            <ImageView
-                android:id="@+id/imgPlus"
-                android:layout_width="18dp"
-                android:layout_height="20dp"
-                android:layout_marginBottom="160dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.072"
-                app:layout_constraintStart_toEndOf="@+id/textViewLbAutoria"
-                app:layout_constraintTop_toBottomOf="@+id/inputAssuntos"
-                app:layout_constraintVertical_bias="0.152"
-                app:srcCompat="@drawable/plus_icon"
-                app:tint="#FFFFFF" />
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/inputReferencia"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    app:hintEnabled="false"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/textViewLbReferencia">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/inputAutoria"
-                android:layout_width="167dp"
-                android:layout_height="41dp"
-                android:layout_marginHorizontal="20dp"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="210dp"
-                app:hintEnabled="false"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textViewLbAutoria">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <TextView
-                android:id="@+id/textViewLbReferencia"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="22dp"
-                android:layout_marginTop="28dp"
-                android:layout_marginEnd="342dp"
-                android:fontFamily="@font/poppins_semibold"
-                android:text="@string/informe_a_refer_ncia"
-                android:textColor="#F1F1F1"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/inputAutoria" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/inputReferencia"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="8dp"
-                app:hintEnabled="false"
-
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textViewLbReferencia">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </com.google.android.material.textfield.TextInputLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <Button
                 android:id="@+id/btnEnviar"
@@ -417,9 +400,8 @@
                 app:cornerRadius="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/inputReferencia" />
+                app:layout_constraintTop_toBottomOf="@id/layoutDetalhes" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -428,15 +410,15 @@
     <include
         android:id="@+id/headerInclude"
         layout="@layout/component_header"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <include
         android:id="@+id/componentFooter"
         layout="@layout/component_footer"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

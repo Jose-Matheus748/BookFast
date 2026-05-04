@@ -53,12 +53,30 @@ class LoginActivity : AppCompatActivity() {
         val email = inputEmailAddress.text.toString().trim()
         val password = inputPassword.text.toString().trim()
 
+        val userEmail = "usuario1@bookfast.com"
+        val userPassword = "123456"
+        val userName = "Usuario 1"
+
+        val adminEmail = "admin@bookfast.com"
+        val adminPassword = "admin123"
+        val adminName = "Admin"
+
         if (email.isEmpty() || password.isEmpty()) {
             Toast.makeText(
                 this,
                 "Por favor, preencha todos os campos",
                 Toast.LENGTH_SHORT
             ).show()
+        } else if (email == userEmail && password == userPassword) {
+            val intent = Intent(this, HomePageActivity::class.java)
+            intent.putExtra("userName", userName)
+            intent.putExtra("userEmail", userEmail)
+            startActivity(intent)
+        } else if (email == adminEmail && password == adminPassword) {
+            val intent = Intent(this, HomePageAdmin::class.java)
+            intent.putExtra("userName", adminName)
+            intent.putExtra("userEmail", adminEmail)
+            startActivity(intent)
         } else {
             val intent = Intent(this, HomePageActivity::class.java)
             startActivity(intent)
