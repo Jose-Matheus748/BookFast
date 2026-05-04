@@ -33,7 +33,6 @@
         android:contentDescription="Logo BookFast"
         android:scaleType="fitCenter"
         android:src="@drawable/logo_bookfast"
-        android:colorTint="#D8D8D8"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
