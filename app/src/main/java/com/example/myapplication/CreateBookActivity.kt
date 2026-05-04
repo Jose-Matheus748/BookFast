@@ -39,7 +39,7 @@ class CreateBookActivity : AppCompatActivity() {
         arrowExpand = findViewById(R.id.arrowExpandId)
         layoutDetalhes = findViewById(R.id.layoutDetalhes)
 
-        HeaderNavigation.setup(this)
+        HeaderAdminNavigation.setup(this)
         FooterNavigation.setup(this)
 
         btnAddAutor = findViewById(R.id.btnAddAutor)

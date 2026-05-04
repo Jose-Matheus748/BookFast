@@ -15,6 +15,8 @@ class AdminBookpageActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bookpage_admin)
 
+        HeaderAdminNavigation.setup(this)
+
         imgPencil = findViewById(R.id.imgPencil)
         imgTrash = findViewById(R.id.imgTrash)
 
