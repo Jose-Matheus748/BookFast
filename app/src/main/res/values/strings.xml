@@ -82,4 +82,20 @@
     <string name="dispon_veis">Disponíveis:</string>
     <string name="reservas">Reservas</string>
     <string name="selecionado">Selecionado</string>
+    <string name="dispon_vel_20_05_26">Disponível 20/05/26</string>
+    <string name="vencimento">Vencimento</string>
+    <string name="_20_05_26">20/05/26</string>
+    <string name="renovar">Renovar</string>
+    <string name="fila_de_espera">Fila de espera</string>
+    <string name="_1_3">1/3</string>
+    <string name="dispon_vel_20_01_27">Disponível: 20/01/27</string>
+    <string name="alugados">Alugados</string>
+    <string name="_1_10">1/10</string>
+    <string name="metodologia_cient_fica_na_era_digital">Metodologia científica na era digital</string>
+    <string name="vencido">VENCIDO</string>
+    <string name="desde_01_05_26">Desde: 01/05/26</string>
+    <string name="r_3_00">R$ 3,00</string>
+    <string name="valor_total_de_multas">Valor total de multas</string>
+    <string name="sair_da_fila">Sair da fila</string>
+    <string name="multas_e_vencimentos">Multas e vencimentos</string>
 </resources>
