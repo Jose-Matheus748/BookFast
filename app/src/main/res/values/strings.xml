@@ -98,4 +98,6 @@
     <string name="valor_total_de_multas">Valor total de multas</string>
     <string name="sair_da_fila">Sair da fila</string>
     <string name="multas_e_vencimentos">Multas e vencimentos</string>
+    <string name="sobre_o_aplicativo">Sobre o aplicativo</string>
+    <string name="sair">Sair</string>
 </resources>

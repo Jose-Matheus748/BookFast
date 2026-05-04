@@ -140,24 +140,24 @@
                         android:layout_width="match_parent"
                         android:layout_height="160dp"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/dracula_bram_stoker"
-                        android:contentDescription="Drácula" />
+                        android:src="@drawable/fortaleza_300"
+                        android:contentDescription="Fortaleza em 300 palavras" />
 
                     <TextView
                         android:id="@+id/textView7"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Drácula"
-                        android:textColor="#F0F0F0"
-                        android:textSize="14sp"
+                        android:layout_marginTop="4dp"
                         android:fontFamily="@font/poppins_semibold"
-                        android:layout_marginTop="4dp" />
+                        android:text="@string/fortaleza_em_300_palavras"
+                        android:textColor="#F0F0F0"
+                        android:textSize="14sp" />
 
                     <TextView
                         android:id="@+id/textView11"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Bram Stoker"
+                        android:text="@string/macedo_miguel"
                         android:textColor="#888888"
                         android:textSize="11sp" />
 
