@@ -20,7 +20,7 @@
 
     <include
         android:id="@+id/componentFooter"
-        layout="@layout/component_footer"
+        layout="@layout/component_footer_admin"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -132,6 +132,7 @@
 
             <!-- Abas Detalhes / Referência -->
             <LinearLayout
+                style="?android:attr/buttonBarStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -140,6 +141,7 @@
 
                 <Button
                     android:id="@+id/btnDetalhes"
+                    style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="0dp"
                     android:layout_height="37dp"
                     android:layout_weight="1"
@@ -150,6 +152,7 @@
 
                 <Button
                     android:id="@+id/btnReferencia"
+                    style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="0dp"
                     android:layout_height="37dp"
                     android:layout_weight="1"
