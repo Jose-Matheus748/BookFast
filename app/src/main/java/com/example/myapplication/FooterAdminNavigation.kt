@@ -14,25 +14,25 @@ object FooterAdminNavigation {
 
         imageHome.setOnClickListener {
             if (activity !is HomePageAdmin) {
-                activity.startActivity(Intent(activity, HomePageActivity::class.java))
+                activity.startActivity(Intent(activity, HomePageAdmin::class.java))
             }
         }
 
         imageBooks.setOnClickListener {
             if (activity !is AdminGestaoPedidos) {
-                activity.startActivity(Intent(activity, EmptyBookSelectionActivity::class.java))
+                activity.startActivity(Intent(activity, AdminGestaoPedidos::class.java))
             }
         }
 
         imageMessages.setOnClickListener {
-            if (activity !is ChatbotActivity) {
-                activity.startActivity(Intent(activity, ChatbotActivity::class.java))
+            if (activity !is ChatbotAdmin) {
+                activity.startActivity(Intent(activity, ChatbotAdmin::class.java))
             }
         }
 
         imageAccount.setOnClickListener {
-            if (activity !is AdminBookpageActivity) {
-                val intent = Intent(activity, PaginaPerfilActivity::class.java)
+            if (activity !is PaginaPerfilAdmin) {
+                val intent = Intent(activity, PaginaPerfilAdmin::class.java)
                 intent.putExtra("userName", activity.intent.getStringExtra("userName"))
                 intent.putExtra("userEmail", activity.intent.getStringExtra("userEmail"))
                 activity.startActivity(intent)

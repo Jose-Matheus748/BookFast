@@ -11,6 +11,9 @@ class AdminGestaoDevolucoes : AppCompatActivity() {
         setContentView(R.layout.activity_admin_gestao_devolucoes)
         val tabLayout = findViewById<TabLayout>(R.id.tabLayout)
 
+        HeaderAdminNavigation.setup(this)
+        FooterAdminNavigation.setup(this)
+
         // Tela de devoluções: segunda aba selecionada
         tabLayout.getTabAt(1)?.select()
 

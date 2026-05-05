@@ -40,7 +40,7 @@ class HomePageAdmin : AppCompatActivity() {
         setContentView(R.layout.activity_home_page_admin)
 
         HeaderAdminNavigation.setup(this)
-        FooterNavigation.setup(this)
+        FooterAdminNavigation.setup(this)
 
         mainLayout = findViewById(R.id.mainLayoutHomepage)
 

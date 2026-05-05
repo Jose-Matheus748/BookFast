@@ -291,7 +291,7 @@
     <!-- Aproveitando componente de rodapé -->
     <include
         android:id="@+id/componentFooter"
-        layout="@layout/component_footer"
+        layout="@layout/component_footer_admin"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
