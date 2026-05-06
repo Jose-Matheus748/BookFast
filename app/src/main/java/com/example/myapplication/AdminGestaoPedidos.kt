@@ -11,6 +11,9 @@ class AdminGestaoPedidos : AppCompatActivity() {
         setContentView(R.layout.activity_admin_gestao_pedidos)
         val tabLayout = findViewById<TabLayout>(R.id.tabLayout)
 
+        HeaderAdminNavigation.setup(this)
+        FooterAdminNavigation.setup(this)
+
         // Tela de reservas: primeira aba selecionada
         tabLayout.getTabAt(0)?.select()
 

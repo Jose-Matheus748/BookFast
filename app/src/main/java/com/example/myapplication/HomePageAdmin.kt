@@ -3,11 +3,11 @@ package com.example.myapplication
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import androidx.core.view.isVisible
 
 class HomePageAdmin : AppCompatActivity() {
@@ -17,19 +17,21 @@ class HomePageAdmin : AppCompatActivity() {
     lateinit var img3: ImageView
 
     lateinit var img7: ImageView
-    lateinit var btnAnterior: Button
-    lateinit var btnProximo: Button
-    lateinit var btnSearch: ImageButton
+    lateinit var btnAnterior: FloatingActionButton
+    lateinit var btnProximo: FloatingActionButton
+
+    lateinit var btnSearchAdmin: ImageButton
+
     lateinit var etSearch: EditText
     lateinit var mainLayout: View
 
     val imagens = mutableListOf(
-        R.drawable.livro1,
-        R.drawable.livro2,
-        R.drawable.livro3,
-        R.drawable.livro4,
-        R.drawable.livro5,
-        R.drawable.livro6
+        R.drawable.fortaleza_300,
+        R.drawable.livro11,
+        R.drawable.livro16,
+        R.drawable.xeroque_homis,
+        R.drawable.witcher_last_wish,
+        R.drawable.img_metamorfose
     )
 
     var grupoAtual = 0
@@ -40,28 +42,28 @@ class HomePageAdmin : AppCompatActivity() {
         setContentView(R.layout.activity_home_page_admin)
 
         HeaderAdminNavigation.setup(this)
-        FooterNavigation.setup(this)
+        FooterAdminNavigation.setup(this)
 
-        mainLayout = findViewById(R.id.mainLayoutHomepage)
+        mainLayout = findViewById(R.id.home_Page_admin)
 
-        img1 = findViewById(R.id.img1)
-        img2 = findViewById(R.id.img2)
-        img3 = findViewById(R.id.img3)
-        img7 = findViewById(R.id.img7)
+        img1 = findViewById(R.id.capaFortaleza)
+        img2 = findViewById(R.id.como_elaborar)
+        img3 = findViewById(R.id.arvores)
+        img7 = findViewById(R.id.memorias_postumas)
 
         btnAnterior = findViewById(R.id.btnAnterior)
         btnProximo = findViewById(R.id.btnProximo)
 
-        btnSearch = findViewById(R.id.btnSearch)
+        btnSearchAdmin = findViewById(R.id.btnSearchAdmin)
         etSearch = findViewById(R.id.etSearch)
-
-        btnSearch.setOnClickListener {
-            val intent = Intent(this, SearchListActivity::class.java)
-            startActivity(intent)
-        }
 
         etSearch.setOnClickListener {
             // impede fechar ao clicar dentro dele
+        }
+
+        btnSearchAdmin.setOnClickListener {
+            val intent = Intent(this, SearchListAdminActivity::class.java)
+            startActivity(intent)
         }
 
         mainLayout.setOnClickListener {
@@ -108,7 +110,7 @@ class HomePageAdmin : AppCompatActivity() {
     private fun fecharBusca() {
         etSearch.setText("")
         etSearch.visibility = View.GONE
-        btnSearch.visibility = View.VISIBLE
+        btnSearchAdmin.visibility = View.VISIBLE
     }
 
     private fun mostrarGrupo() {

@@ -8,14 +8,14 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
-class PaginaPerfilActivity : AppCompatActivity() {
+class PaginaPerfilAdmin : AppCompatActivity() {
 
     lateinit var config: ImageView
     lateinit var imgFortaleza300 : ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_pagina_perfil)
+        setContentView(R.layout.activity_pagina_perfil_admin)
 
         val textUserName = findViewById<TextView>(R.id.userName)
         val userName = intent.getStringExtra("userName")
@@ -37,8 +37,8 @@ class PaginaPerfilActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        HeaderNavigation.setup(this)
-        FooterNavigation.setup(this)
+        HeaderAdminNavigation.setup(this)
+        FooterAdminNavigation.setup(this)
     }
 
     private fun abrirMenuConfig() {

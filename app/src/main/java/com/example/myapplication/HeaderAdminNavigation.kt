@@ -9,13 +9,15 @@ import android.widget.ImageView
 
 object HeaderAdminNavigation {
     fun setup(activity: Activity, rootView: View? = null) {
-        val btnSearch = activity.findViewById<ImageButton>(R.id.btnSearch)
         val etSearch = activity.findViewById<EditText>(R.id.etSearch)
         val imgPlusHeader = activity.findViewById<ImageView>(R.id.imgPlusHeader)
 
-        btnSearch.setOnClickListener {
-            val intent = Intent(activity, SearchListActivity::class.java)
-            activity.startActivity(intent)
+        if (activity !is SearchListAdminActivity) {
+            val btnSearchAdmin = activity.findViewById<ImageButton>(R.id.btnSearchAdmin)
+            btnSearchAdmin.setOnClickListener {
+                val intent = Intent(activity, SearchListAdminActivity::class.java)
+                activity.startActivity(intent)
+            }
         }
 
         imgPlusHeader.setOnClickListener {
@@ -27,11 +29,6 @@ object HeaderAdminNavigation {
             // Por enquanto não precisa fazer nada aqui
         }
 
-        rootView?.setOnClickListener {
-            if (etSearch.visibility == View.VISIBLE) {
-                fecharBusca(btnSearch, etSearch)
-            }
-        }
     }
 
     private fun fecharBusca(btnSearch: ImageButton, etSearch: EditText) {

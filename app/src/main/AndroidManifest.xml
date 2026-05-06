@@ -13,6 +13,18 @@
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31" >
         <activity
+            android:name=".ChatbotMessageAdminActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ChatbotMessageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SearchListAdminActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ChatbotAdminActivity"
+            android:exported="true" />
+        <activity
             android:name=".AdminGestaoDevolucoes"
             android:exported="true" />
         <activity
@@ -39,6 +51,9 @@
         <activity
             android:name=".PaginaPerfilActivity"
             android:exported="false" />
+        <activity
+            android:name=".PaginaPerfilAdmin"
+            android:exported="true" />
         <activity
             android:name=".RegisterActivity"
             android:exported="true" />

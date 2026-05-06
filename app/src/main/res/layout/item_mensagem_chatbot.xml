@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- res/layout/item_message_bot.xml -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="start"
+    android:orientation="horizontal"
+    android:paddingStart="8dp"
+    android:paddingEnd="48dp"
+    android:paddingTop="4dp"
+    android:paddingBottom="4dp">
+
+    <!-- Avatar do bot -->
+    <ImageView
+        android:id="@+id/ivBotAvatar"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_gravity="bottom"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/bg_bot_avatar"
+        android:contentDescription="Chatbot"
+        android:padding="5dp"
+        android:src="@drawable/ic_chatbot" />
+
+    <!-- Bolha da mensagem -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_bubble_bot"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/tvBotMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:lineSpacingExtra="2dp"
+            android:maxWidth="220dp"
+            android:text="Mensagem do bot"
+            android:textColor="#E0E0E0"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tvBotTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="4dp"
+            android:text="00:00"
+            android:textColor="#888888"
+            android:textSize="10sp" />
+    </LinearLayout>
+
+</LinearLayout>

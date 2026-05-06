@@ -20,7 +20,7 @@
 
     <include
         android:id="@+id/componentFooter"
-        layout="@layout/component_footer"
+        layout="@layout/component_footer_admin"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -135,8 +135,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingHorizontal="16dp"
-                android:paddingTop="22dp">
+                android:paddingTop="16dp">
 
                 <Button
                     android:id="@+id/btnDetalhes"

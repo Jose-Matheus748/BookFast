@@ -3,11 +3,11 @@ package com.example.myapplication
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import androidx.core.view.isVisible
 
 class HomePageActivity : AppCompatActivity() {
@@ -17,19 +17,19 @@ class HomePageActivity : AppCompatActivity() {
     lateinit var img3: ImageView
 
     lateinit var img7: ImageView
-    lateinit var btnAnterior: Button
-    lateinit var btnProximo: Button
+    lateinit var btnAnterior: FloatingActionButton
+    lateinit var btnProximo: FloatingActionButton
     lateinit var btnSearch: ImageButton
     lateinit var etSearch: EditText
     lateinit var mainLayout: View
 
     val imagens = mutableListOf(
-        R.drawable.livro1,
-        R.drawable.livro2,
-        R.drawable.livro3,
-        R.drawable.livro4,
-        R.drawable.livro5,
-        R.drawable.livro6
+        R.drawable.fortaleza_300,
+        R.drawable.livro11,
+        R.drawable.livro16,
+        R.drawable.xeroque_homis,
+        R.drawable.witcher_last_wish,
+        R.drawable.img_metamorfose
     )
 
     var grupoAtual = 0
@@ -42,12 +42,12 @@ class HomePageActivity : AppCompatActivity() {
         HeaderNavigation.setup(this)
         FooterNavigation.setup(this)
 
-        mainLayout = findViewById(R.id.mainLayoutHomepage)
+        mainLayout = findViewById(R.id.home_page)
 
-        img1 = findViewById(R.id.img1)
-        img2 = findViewById(R.id.img2)
-        img3 = findViewById(R.id.img3)
-        img7 = findViewById(R.id.img7)
+        img1 = findViewById(R.id.capaFortaleza)
+        img2 = findViewById(R.id.como_elaborar)
+        img3 = findViewById(R.id.arvores)
+        img7 = findViewById(R.id.memorias_postumas)
 
         btnAnterior = findViewById(R.id.btnAnterior)
         btnProximo = findViewById(R.id.btnProximo)

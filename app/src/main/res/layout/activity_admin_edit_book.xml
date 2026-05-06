@@ -589,6 +589,7 @@
                 android:layout_marginBottom="32dp"
                 android:backgroundTint="#19A1E4"
                 android:text="Salvar"
+                android:textColor="#F0F0F0"
                 android:textStyle="bold"
                 app:cornerRadius="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -601,7 +602,7 @@
 
     <include
         android:id="@+id/componentFooter"
-        layout="@layout/component_footer"
+        layout="@layout/component_footer_admin"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
