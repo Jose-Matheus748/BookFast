@@ -19,6 +19,9 @@ class HomePageAdmin : AppCompatActivity() {
     lateinit var img7: ImageView
     lateinit var btnAnterior: FloatingActionButton
     lateinit var btnProximo: FloatingActionButton
+
+    lateinit var btnSearchAdmin: ImageButton
+
     lateinit var etSearch: EditText
     lateinit var mainLayout: View
 
@@ -51,10 +54,16 @@ class HomePageAdmin : AppCompatActivity() {
         btnAnterior = findViewById(R.id.btnAnterior)
         btnProximo = findViewById(R.id.btnProximo)
 
+        btnSearchAdmin = findViewById(R.id.btnSearchAdmin)
         etSearch = findViewById(R.id.etSearch)
 
         etSearch.setOnClickListener {
             // impede fechar ao clicar dentro dele
+        }
+
+        btnSearchAdmin.setOnClickListener {
+            val intent = Intent(this, SearchListAdminActivity::class.java)
+            startActivity(intent)
         }
 
         mainLayout.setOnClickListener {
@@ -101,6 +110,7 @@ class HomePageAdmin : AppCompatActivity() {
     private fun fecharBusca() {
         etSearch.setText("")
         etSearch.visibility = View.GONE
+        btnSearchAdmin.visibility = View.VISIBLE
     }
 
     private fun mostrarGrupo() {

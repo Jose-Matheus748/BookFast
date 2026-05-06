@@ -34,6 +34,7 @@ class SearchListAdminActivity : AppCompatActivity() {
         initViews()
         setupRecycler()
         setupSearch()
+        HeaderAdminNavigation.setup(this)
         FooterAdminNavigation.setup(this)
     }
 
