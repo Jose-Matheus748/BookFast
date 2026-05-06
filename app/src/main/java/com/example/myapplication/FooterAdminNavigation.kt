@@ -25,8 +25,8 @@ object FooterAdminNavigation {
         }
 
         imageMessages.setOnClickListener {
-            if (activity !is ChatbotAdmin) {
-                activity.startActivity(Intent(activity, ChatbotAdmin::class.java))
+            if (activity !is ChatbotAdminActivity) {
+                activity.startActivity(Intent(activity, ChatbotAdminActivity::class.java))
             }
         }
 

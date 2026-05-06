@@ -16,7 +16,7 @@ class EditBookActivity : AppCompatActivity() {
             insets
         }
 
-        HeaderNavigation.setup(this)
-        FooterNavigation.setup(this)
+        HeaderAdminNavigation.setup(this)
+        FooterAdminNavigation.setup(this)
     }
 }

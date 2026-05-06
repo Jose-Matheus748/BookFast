@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.adapter.BookAdapter
 import com.example.myapplication.model.Book
 
-class SearchListActivity : AppCompatActivity() {
+class SearchListAdminActivity : AppCompatActivity() {
 
     private lateinit var btnSearch: ImageButton
     private lateinit var etSearchList: EditText
@@ -29,16 +29,16 @@ class SearchListActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search_list)
+        setContentView(R.layout.activity_search_list_admin)
 
         initViews()
         setupRecycler()
         setupSearch()
-        FooterNavigation.setup(this)
+        FooterAdminNavigation.setup(this)
     }
 
     private fun initViews() {
-        btnSearch = findViewById(R.id.btnSearch)
+        btnSearch = findViewById(R.id.btnSearchAdmin)
         etSearchList = findViewById(R.id.etSearch)
         recyclerBooks = findViewById(R.id.recyclerBooks)
     }
@@ -47,9 +47,9 @@ class SearchListActivity : AppCompatActivity() {
         adapter = BookAdapter(todosOsLivros)
 
         recyclerBooks.apply {
-            layoutManager = GridLayoutManager(this@SearchListActivity, 2)
+            layoutManager = GridLayoutManager(this@SearchListAdminActivity, 2)
             setHasFixedSize(true)
-            adapter = this@SearchListActivity.adapter
+            adapter = this@SearchListAdminActivity.adapter
         }
     }
 

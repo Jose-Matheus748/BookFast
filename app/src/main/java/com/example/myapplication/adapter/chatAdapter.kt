@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.bookfast.R
+import com.example.myapplication.R
 import com.example.bookfast.model.Message
 
 /**
@@ -28,9 +28,9 @@ class ChatAdapter(private val messages: MutableList<Message>) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return if (viewType == TYPE_BOT) {
-            BotViewHolder(inflater.inflate(R.layout.item_message_bot, parent, false))
+            BotViewHolder(inflater.inflate(R.layout.item_mensagem_chatbot, parent, false))
         } else {
-            UserViewHolder(inflater.inflate(R.layout.item_message_user, parent, false))
+            UserViewHolder(inflater.inflate(R.layout.item_mensagem_usuario, parent, false))
         }
     }
 

@@ -9,7 +9,7 @@
     <!-- HEADER fixo no topo -->
     <include
         android:id="@+id/headerInclude"
-        layout="@layout/component_header"
+        layout="@layout/component_header_admin"
         android:layout_width="match_parent"
         android:layout_height="82dp"
         app:layout_constraintTop_toTopOf="parent"
@@ -18,8 +18,8 @@
 
     <!-- FOOTER fixo na base -->
     <include
-        android:id="@+id/componentFooter"
-        layout="@layout/component_footer"
+        android:id="@+id/componentfooter"
+        layout="@layout/component_footer_admin"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -118,6 +118,55 @@
 
             </LinearLayout>
 
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="end"
+                android:paddingVertical="4dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_bubble_user"
+                    android:maxWidth="260dp"
+                    android:paddingHorizontal="14dp"
+                    android:paddingVertical="10dp"
+                    android:text="Quais horários a biblioteca está aberta na terça?"
+                    android:textColor="#F0F0F0"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="start"
+                android:paddingVertical="4dp">
+
+                <ImageView
+                    android:id="@+id/fotoBot2"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/ic_chatbot"
+                    android:contentDescription="Chatbot"
+                    android:layout_marginEnd="10dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxWidth="260dp"
+                    android:text="A biblioteca estará aberta das 7h ás 21h 55 min"
+                    android:textColor="#F0F0F0"
+                    android:textSize="14sp"
+                    android:paddingHorizontal="14dp"
+                    android:paddingVertical="10dp"
+                    android:background="@drawable/bg_bubble_bot" />
+
+            </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 
@@ -131,7 +180,7 @@
         android:orientation="horizontal"
         android:paddingHorizontal="12dp"
         android:paddingVertical="8dp"
-        app:layout_constraintBottom_toTopOf="@id/componentFooter"
+        app:layout_constraintBottom_toTopOf="@id/componentfooter"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
@@ -161,5 +210,4 @@
             app:tint="#FFFFFF" />
 
     </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

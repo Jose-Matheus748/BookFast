@@ -44,11 +44,6 @@ class LoginActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    /**   validarLogin():
-     *      pega o email e a senha digitados pelo usuário, converte em texto, e corta espaços
-     *      se qualquer um dos campos estiver vazio, e eu clicar em login, o app mostra um Toaster de erro
-     *      caso os dois campos estejam preenchidos e eu clicar em login, navega para a HomePageActivity
-     */
     private fun validarLogin() {
         val email = inputEmailAddress.text.toString().trim()
         val password = inputPassword.text.toString().trim()
@@ -71,14 +66,17 @@ class LoginActivity : AppCompatActivity() {
             val intent = Intent(this, HomePageActivity::class.java)
             intent.putExtra("userName", userName)
             intent.putExtra("userEmail", userEmail)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK // <-- adicione isso
             startActivity(intent)
         } else if (email == adminEmail && password == adminPassword) {
             val intent = Intent(this, HomePageAdmin::class.java)
             intent.putExtra("userName", adminName)
             intent.putExtra("userEmail", adminEmail)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK // <-- e aqui
             startActivity(intent)
         } else {
             val intent = Intent(this, HomePageActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK // <-- e aqui
             startActivity(intent)
         }
     }

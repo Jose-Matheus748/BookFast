@@ -27,7 +27,7 @@
         app:tint="#FFFFFF" />
 
     <ImageButton
-        android:id="@+id/btnSearch"
+        android:id="@+id/btnSearchAdmin"
         android:layout_width="52dp"
         android:layout_height="52dp"
         android:layout_marginTop="18dp"

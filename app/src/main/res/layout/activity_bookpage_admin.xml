@@ -132,16 +132,13 @@
 
             <!-- Abas Detalhes / Referência -->
             <LinearLayout
-                style="?android:attr/buttonBarStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingHorizontal="16dp"
-                android:paddingTop="22dp">
+                android:paddingTop="16dp">
 
                 <Button
                     android:id="@+id/btnDetalhes"
-                    style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="0dp"
                     android:layout_height="37dp"
                     android:layout_weight="1"
@@ -152,7 +149,6 @@
 
                 <Button
                     android:id="@+id/btnReferencia"
-                    style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="0dp"
                     android:layout_height="37dp"
                     android:layout_weight="1"
