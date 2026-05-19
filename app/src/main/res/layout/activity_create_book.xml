@@ -53,7 +53,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <!-- Preview da imagem selecionada -->
                 <ImageView
                     android:id="@+id/imgCapaPreview"
                     android:layout_width="match_parent"
@@ -108,7 +107,9 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTitulo"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:textColor="#F1F1F1"
+                    android:textColorHint="#BDBDBD" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
@@ -195,7 +196,9 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editMaterialInput"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:textColor="#F1F1F1"
+                        android:textColorHint="#BDBDBD" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -213,7 +216,9 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editIdiomaInput"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:textColor="#F1F1F1"
+                        android:textColorHint="#BDBDBD" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
@@ -243,7 +248,9 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editPublicacaoInput"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:textColor="#F1F1F1"
+                        android:textColorHint="#BDBDBD" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
@@ -287,7 +294,9 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editEdicaoInput"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:textColor="#F1F1F1"
+                        android:textColorHint="#BDBDBD" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -305,7 +314,9 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editSerieInput"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:textColor="#F1F1F1"
+                        android:textColorHint="#BDBDBD" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
@@ -335,7 +346,9 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editAssuntosInput"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:textColor="#F1F1F1"
+                        android:textColorHint="#BDBDBD" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
@@ -406,7 +419,9 @@
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/editAutor1"
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content" />
+                                    android:layout_height="wrap_content"
+                                    android:textColor="#F1F1F1"
+                                    android:textColorHint="#BDBDBD" />
                             </com.google.android.material.textfield.TextInputLayout>
                         </LinearLayout>
 
@@ -440,7 +455,9 @@
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/editAutor2"
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content" />
+                                    android:layout_height="wrap_content"
+                                    android:textColor="#F1F1F1"
+                                    android:textColorHint="#BDBDBD" />
                             </com.google.android.material.textfield.TextInputLayout>
                         </LinearLayout>
                     </LinearLayout>
@@ -481,7 +498,9 @@
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/editAutor3"
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content" />
+                                    android:layout_height="wrap_content"
+                                    android:textColor="#F1F1F1"
+                                    android:textColorHint="#BDBDBD" />
                             </com.google.android.material.textfield.TextInputLayout>
                         </LinearLayout>
 
@@ -515,7 +534,9 @@
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/editAutor4"
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content" />
+                                    android:layout_height="wrap_content"
+                                    android:textColor="#F1F1F1"
+                                    android:textColorHint="#BDBDBD" />
                             </com.google.android.material.textfield.TextInputLayout>
                         </LinearLayout>
                     </LinearLayout>
@@ -550,7 +571,9 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editReferenciaInput"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:textColor="#F1F1F1"
+                        android:textColorHint="#BDBDBD" />
                 </com.google.android.material.textfield.TextInputLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
