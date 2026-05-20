@@ -3,6 +3,7 @@ package com.example.myapplication
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
@@ -10,6 +11,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.adapter.BookAdapter
 import com.example.myapplication.model.Book
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.firestore
 
 class SearchListAdminActivity : AppCompatActivity() {
 
@@ -18,59 +21,55 @@ class SearchListAdminActivity : AppCompatActivity() {
     private lateinit var recyclerBooks: RecyclerView
     private lateinit var adapter: BookAdapter
 
-    private val todosOsLivros = listOf(
-        Book("Como elaborar projetos de pesquisa", "Antonio Carlos Gil", R.drawable.livro11),
-        Book("Metodologia Científica na era digital", "João Mattar", R.drawable.livro12),
-        Book("O mito da neutralidade científica", "Hilton Japiassu", R.drawable.livro13),
-        Book("Os usos sociais das ciências", "Pierre Bourdieu", R.drawable.livro14),
-        Book("Um discurso sobre as ciências", "Sousa de Santos", R.drawable.livro15),
-        Book("As árvores de conhecimento", "Pierre Lévy", R.drawable.livro16),
-    )
+    private val db = Firebase.firestore
+
+    private val todosOsLivros = mutableListOf<Book>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search_list_admin)
 
-        initViews()
-        setupRecycler()
-        setupSearch()
+        iniciarViews()
+        prepararRecycler()
+        fazerPesquisa()
+        carregarLivrosDoFirestore()
+
         HeaderAdminNavigation.setup(this)
         FooterAdminNavigation.setup(this)
     }
 
-    private fun initViews() {
-        btnSearch = findViewById(R.id.btnSearchAdmin)
-        etSearchList = findViewById(R.id.etSearch)
-        recyclerBooks = findViewById(R.id.recyclerBooks)
+    private fun iniciarViews() {
+        btnSearch = findViewById(R.id.btnSearchAdmin) // Encontra o botão de busca admin.
+        etSearchList = findViewById(R.id.etSearch) // Encontra o campo de busca.
+        recyclerBooks = findViewById(R.id.recyclerBooks) // Encontra o RecyclerView.
     }
 
-    private fun setupRecycler() {
+    private fun prepararRecycler() {
         adapter = BookAdapter(todosOsLivros)
 
         recyclerBooks.apply {
-            layoutManager = GridLayoutManager(this@SearchListAdminActivity, 2)
-            setHasFixedSize(true)
-            adapter = this@SearchListAdminActivity.adapter
+            layoutManager = GridLayoutManager(this@SearchListAdminActivity, 2) // Mostra 2 livros por linha
+            setHasFixedSize(true) // Otimiza a lista quando os itens têm tamanho previsível.
+            adapter = this@SearchListAdminActivity.adapter // Liga o adapter ao RecyclerView.
         }
     }
 
-    private fun setupSearch() {
-
+    private fun fazerPesquisa() {
         btnSearch.setOnClickListener {
             etSearchList.isVisible = true
             btnSearch.isVisible = false
             etSearchList.requestFocus()
         }
 
-        etSearchList.addTextChangedListener { text ->
-            val query = text.toString().trim()
+        etSearchList.addTextChangedListener { textoDigitado ->
+            val query = textoDigitado.toString().trim()
 
             val filtrados = if (query.isEmpty()) {
                 todosOsLivros
             } else {
-                todosOsLivros.filter {
-                    it.title.contains(query, true) ||
-                            it.author.contains(query, true)
+                todosOsLivros.filter { livro -> // Percorre a lista procurando correspondências.
+                    livro.title.contains(query, true) ||        // Verifica se o título contém a busca.
+                            livro.author.contains(query, true)  // Verifica se o autor contém a busca.
                 }
             }
 
@@ -91,4 +90,37 @@ class SearchListAdminActivity : AppCompatActivity() {
         etSearchList.isVisible = false
         btnSearch.isVisible = true
     }
+
+    private fun carregarLivrosDoFirestore() {
+        db.collection("Livros") // Entra na coleção chamada 'Livros'
+            .get() // Faz uma leitura única dos documentos.
+            .addOnSuccessListener { resultado -> // Executa se a consulta der certo.
+                todosOsLivros.clear() // Limpa a lista para não duplicar dados.
+
+                for (documento in resultado) {
+                    val titulo = documento.getString("titulo") ?: "Sem título"
+                    val listaAutores = documento.get("autores") as? List<*> // Lê o campo autores como lista.
+
+                    val autores = listaAutores
+                        ?.filterIsInstance<String>() // Mantém apenas valores que forem texto.
+                        ?.joinToString(", ") // Junta os autores separados por vírgula.
+                        ?: "Autor não informado"
+
+                    val capaBase64 = documento.getString("capaUrl")
+
+                    val livro = Book(
+                        title = titulo,
+                        author = autores,
+                        imageUrl = R.drawable.bg_book_cover_placeholder, // Define capa padrão caso a real falhe.
+                        capaBase64 = capaBase64
+                    )
+                    todosOsLivros.add(livro) // adiciona o livro na lista principal
+                }
+                adapter.atualizarLista(todosOsLivros) // Atualiza a tela com os livros carregados.
+            }
+            .addOnFailureListener { erro -> // Executa se a consulta der errado.
+                Toast.makeText(this, "Erro ao carregar livros: ${erro.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
 }
+

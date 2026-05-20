@@ -1,5 +1,7 @@
 package com.example.myapplication.adapter
 
+import android.graphics.BitmapFactory
+import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,9 +11,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 import com.example.myapplication.model.Book
 
-class BookAdapter( // Adapter: ele pega a lista de livros e mostra na tela
-    private var books: List<Book>
-): RecyclerView.Adapter<BookAdapter.BookViewHolder>() {
+class BookAdapter( // Cria o adapter responsável por mostrar livros na tela.
+    private var books: List<Book> // Recebe a lista de livros que será exibida.
+): RecyclerView.Adapter<BookAdapter.BookViewHolder>() { // Conecta o adapter ao RecyclerView.
 
     // ViewHolder: guarda as referências dos elementos visuais de UM item
     class BookViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
@@ -22,21 +24,34 @@ class BookAdapter( // Adapter: ele pega a lista de livros e mostra na tela
 
     // Cria o layout visual de cada item da lista
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookViewHolder {
-
-        // "Infla" o XML item_book.xml, ou seja, transforma ele em View
         val visualizacao = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_book, parent, false)
 
-        // Retorna o ViewHolder com esse layout
         return BookViewHolder(visualizacao)
     }
 
-    // Coloca os dados do livro dentro do item visual
+    // Preenche um item da lista com dados.
     override fun onBindViewHolder(holder: BookViewHolder, position: Int) {
         val livro = books[position]
-        holder.imgLivro.setImageResource(livro.imageUrl)
+
         holder.tituloLivro.text = livro.title
         holder.autorLivro.text = livro.author
+
+        carregarCapaDoLivro(holder, livro)
+    }
+
+    private fun carregarCapaDoLivro(holder: BookViewHolder, livro: Book) {
+        if(!livro.capaBase64.isNullOrBlank()) {
+            try {
+                val bytes = Base64.decode(livro.capaBase64, Base64.DEFAULT)
+                val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+                holder.imgLivro.setImageBitmap(bitmap)
+            } catch (error: Exception) {
+                holder.imgLivro.setImageResource(livro.imageUrl)
+            }
+        } else {
+            holder.imgLivro.setImageResource(livro.imageUrl)
+        }
     }
 
     // Informa quantos itens existem na lista
@@ -44,8 +59,6 @@ class BookAdapter( // Adapter: ele pega a lista de livros e mostra na tela
 
     fun atualizarLista(novaLista: List<Book>) {
         books = novaLista
-
-        // Avisa ao RecyclerView que os dados mudaram
-        notifyDataSetChanged()
+        notifyDataSetChanged() // Avisa ao RecyclerView que os dados mudaram
     }
 }
