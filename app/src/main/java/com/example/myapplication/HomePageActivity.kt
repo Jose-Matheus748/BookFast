@@ -16,6 +16,8 @@ import com.example.myapplication.model.Book
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
+import com.google.firebase.auth.FirebaseAuth
+
 
 class HomePageActivity : AppCompatActivity() {
 
@@ -210,6 +212,7 @@ class HomePageActivity : AppCompatActivity() {
         }
     }
 
+
     private fun calcularTotalGrupos(): Int {
         // Usa todos os livros para o carrossel; mínimo 1 grupo se houver livros
         return if (todosOsLivros.isEmpty()) 0
@@ -236,6 +239,22 @@ class HomePageActivity : AppCompatActivity() {
                 txtView.visibility = View.INVISIBLE
                 imagemParaLivro.remove(imgView)
             }
+
+    override fun onStart() {
+        super.onStart()
+
+        if (FirebaseAuth.getInstance().currentUser == null) {
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+        }
+    }
+
+    override fun onBackPressed() {
+        if (etSearch.isVisible) {
+            fecharBusca()
+        } else {
+            super.onBackPressed()
+
         }
 
         val totalGrupos = calcularTotalGrupos()

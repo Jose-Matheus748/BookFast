@@ -105,9 +105,14 @@ class PaginaPerfilActivity : AppCompatActivity() {
 
         view.findViewById<LinearLayout>(R.id.textViewSair).setOnClickListener {
             bottomSheet.dismiss()
+            FirebaseAuth.getInstance().signOut()
             val intent = Intent(this, LoginActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            intent.flags =
+                Intent.FLAG_ACTIVITY_NEW_TASK or
+                        Intent.FLAG_ACTIVITY_CLEAR_TASK
+
             startActivity(intent)
+            finish()
         }
 
         bottomSheet.show()
