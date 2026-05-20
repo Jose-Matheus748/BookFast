@@ -10,16 +10,14 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import com.bumptech.glide.Glide
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
-import com.google.firebase.storage.FirebaseStorage
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 
 class CreateBookActivity : AppCompatActivity() {
 
+    // Variáveis que só serão iniciadas no onCreate
     private lateinit var arrowBack: ImageView
     private lateinit var arrowExpand: ImageView
     private lateinit var layoutDetalhes: View
@@ -33,11 +31,12 @@ class CreateBookActivity : AppCompatActivity() {
     private lateinit var editAutor2: TextInputEditText
     private lateinit var editAutor3: TextInputEditText
     private lateinit var editAutor4: TextInputEditText
-    private lateinit var btnRemoveAutor2: View
-    private lateinit var btnRemoveAutor3: View
-    private lateinit var btnRemoveAutor4: View
+    private lateinit var btnRemoverAutor2: View
+    private lateinit var btnRemoverAutor3: View
+    private lateinit var btnRemoverAutor4: View
     lateinit var btnEnviar: Button
 
+    // Campos de input do formulário
     private lateinit var editTitulo: TextInputEditText
     private lateinit var editMaterial: TextInputEditText
     private lateinit var editIdioma: TextInputEditText
@@ -47,15 +46,16 @@ class CreateBookActivity : AppCompatActivity() {
     private lateinit var editAssuntos: TextInputEditText
     private lateinit var editReferencia: TextInputEditText
 
-    // Capa
+    // Capa do livro
     private lateinit var ctnDescricao: View
     private lateinit var imgCapaPreview: ImageView
     private lateinit var textViewCapa: android.widget.TextView
     private var imagemSelecionadaUri: Uri? = null
 
+    // Conexão com o Firestore
     private val db = Firebase.firestore
-    private val storage = FirebaseStorage.getInstance()
-    // Launcher para abrir a galeria
+
+    // Launcher para abrir a galeria do celular
     private val selecionarImagem = registerForActivityResult(
         ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
@@ -63,7 +63,11 @@ class CreateBookActivity : AppCompatActivity() {
             imagemSelecionadaUri = uri
             imgCapaPreview.visibility = View.VISIBLE
             textViewCapa.visibility = View.GONE
-            Glide.with(this).load(uri).into(imgCapaPreview)
+            // Converte para Base64 e exibe como Bitmap
+            val base64 = converterImagemParaBase64(uri)
+            val bytes = android.util.Base64.decode(base64, android.util.Base64.DEFAULT)
+            val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+            imgCapaPreview.setImageBitmap(bitmap)
         }
     }
 
@@ -86,9 +90,9 @@ class CreateBookActivity : AppCompatActivity() {
         editAutor2 = findViewById(R.id.editAutor2)
         editAutor3 = findViewById(R.id.editAutor3)
         editAutor4 = findViewById(R.id.editAutor4)
-        btnRemoveAutor2 = findViewById(R.id.btnRemoveAutor2)
-        btnRemoveAutor3 = findViewById(R.id.btnRemoveAutor3)
-        btnRemoveAutor4 = findViewById(R.id.btnRemoveAutor4)
+        btnRemoverAutor2 = findViewById(R.id.btnRemoveAutor2)
+        btnRemoverAutor3 = findViewById(R.id.btnRemoveAutor3)
+        btnRemoverAutor4 = findViewById(R.id.btnRemoveAutor4)
         btnEnviar = findViewById(R.id.btnEnviar)
 
         editTitulo     = findViewById(R.id.editTitulo)
@@ -105,18 +109,16 @@ class CreateBookActivity : AppCompatActivity() {
         textViewCapa   = findViewById(R.id.textViewCapa)
 
         arrowBack.setOnClickListener { voltarParaTelaAnterior() }
-        arrowExpand.setOnClickListener { alternarDetalhse() }
+        arrowExpand.setOnClickListener { alternarDetalhes() }
 
-        // Abre a galeria ao tocar no container da capa
         ctnDescricao.setOnClickListener {
             selecionarImagem.launch("image/*")
         }
 
         btnAddAutor.setOnClickListener { adicionarAutor() }
-        btnRemoveAutor2.setOnClickListener { removerAutor(autorBox2, editAutor2) }
-        btnRemoveAutor3.setOnClickListener { removerAutor(autorBox3, editAutor3) }
-        btnRemoveAutor4.setOnClickListener { removerAutor(autorBox4, editAutor4) }
-
+        btnRemoverAutor2.setOnClickListener { removerAutor(autorBox2, editAutor2) }
+        btnRemoverAutor3.setOnClickListener { removerAutor(autorBox3, editAutor3) }
+        btnRemoverAutor4.setOnClickListener { removerAutor(autorBox4, editAutor4) }
         btnEnviar.setOnClickListener { salvarLivro() }
     }
 
@@ -136,17 +138,45 @@ class CreateBookActivity : AppCompatActivity() {
             ""
         }
 
-        salvarNoFirestore(titulo, capaUrl = capaBase64)
+        salvarNoFireStore(titulo, capaUrl = capaBase64)
     }
 
     private fun converterImagemParaBase64(uri: Uri): String {
         val inputStream = contentResolver.openInputStream(uri)
-        val bytes = inputStream?.readBytes()
+        val imagemOriginal = BitmapFactory.decodeStream(inputStream)
         inputStream?.close()
+
+        // Redimensiona a imagem para no máximo 500x500 pixels
+        val imagemRedimensionada = redimensionarBitmap(imagemOriginal, 500)
+
+        // Comprime para JPEG com qualidade 70% (0-100)
+        val outputStream = java.io.ByteArrayOutputStream()
+        imagemRedimensionada.compress(android.graphics.Bitmap.CompressFormat.JPEG, 70, outputStream)
+        val bytes = outputStream.toByteArray()
+
         return android.util.Base64.encodeToString(bytes, android.util.Base64.DEFAULT)
     }
 
-    private fun salvarNoFirestore(titulo: String, capaUrl: String) {
+    private fun redimensionarBitmap(bitmap: android.graphics.Bitmap, tamanhoMaximo: Int): android.graphics.Bitmap {
+        val largura = bitmap.width
+        val altura = bitmap.height
+
+        if (largura <= tamanhoMaximo && altura <= tamanhoMaximo) return bitmap
+
+        // Calcula a proporção para não distorcer a imagem
+        val proporcao = if (largura > altura) {
+            tamanhoMaximo.toFloat() / largura
+        } else {
+            tamanhoMaximo.toFloat() / altura
+        }
+
+        val novaLargura = (largura * proporcao).toInt()
+        val novaAltura = (altura * proporcao).toInt()
+
+        return android.graphics.Bitmap.createScaledBitmap(bitmap, novaLargura, novaAltura, true)
+    }
+
+    private fun salvarNoFireStore(titulo: String, capaUrl: String) {
         val livro = hashMapOf(
             "titulo"     to titulo,
             "material"   to editMaterial.text.toString().trim(),
@@ -178,7 +208,7 @@ class CreateBookActivity : AppCompatActivity() {
         startActivity(Intent(this, HomePageAdmin::class.java))
     }
 
-    private fun alternarDetalhse() {
+    private fun alternarDetalhes() {
         detalhesAbertos = !detalhesAbertos
         if (detalhesAbertos) {
             layoutDetalhes.visibility = View.VISIBLE
