@@ -4,5 +4,5 @@ data class User(
     val uid: String = "",
     val nome: String = "",
     val email: String = "",
-    val perfil: String = "cliente" // ou "profissional"
+    val perfil: String = "",
 )
