@@ -12,7 +12,7 @@ import androidx.lifecycle.Observer
 
 class LoginActivity : AppCompatActivity() {
 
-    private val viewModel: AuthViewModel by viewModels() // ← liga aqui
+    private val viewModel: AuthViewModel by viewModels()
     private lateinit var inputEmailAddress: EditText
     private lateinit var inputPassword: EditText
     private lateinit var linkForgotPassword: TextView
