@@ -54,6 +54,43 @@ class SearchListAdminActivity : AppCompatActivity() {
         }
     }
 
+    private fun fazerPesquisa() {
+        btnSearch.setOnClickListener {
+            etSearchList.isVisible = true
+            btnSearch.isVisible = false
+            etSearchList.requestFocus()
+        }
+
+        etSearchList.addTextChangedListener { textoDigitado ->
+            val query = textoDigitado.toString().trim()
+
+            val filtrados = if (query.isEmpty()) {
+                todosOsLivros
+            } else {
+                todosOsLivros.filter { livro -> // Percorre a lista procurando correspondências.
+                    livro.title.contains(query, true) ||        // Verifica se o título contém a busca.
+                            livro.author.contains(query, true)  // Verifica se o autor contém a busca.
+                }
+            }
+
+            adapter.atualizarLista(filtrados)
+        }
+    }
+
+    override fun onBackPressed() {
+        if (etSearchList.isVisible) {
+            fecharBusca()
+        } else {
+            super.onBackPressed()
+        }
+    }
+
+    private fun fecharBusca() {
+        etSearchList.setText("")
+        etSearchList.isVisible = false
+        btnSearch.isVisible = true
+    }
+
     private fun carregarLivrosDoFirestore() {
         db.collection("Livros") // Entra na coleção chamada 'Livros'
             .get() // Faz uma leitura única dos documentos.
@@ -84,43 +121,6 @@ class SearchListAdminActivity : AppCompatActivity() {
             .addOnFailureListener { erro -> // Executa se a consulta der errado.
                 Toast.makeText(this, "Erro ao carregar livros: ${erro.message}", Toast.LENGTH_SHORT).show()
             }
-    }
-
-    private fun fazerPesquisa() {
-        btnSearch.setOnClickListener {
-            etSearchList.isVisible = true
-            btnSearch.isVisible = false
-            etSearchList.requestFocus()
-        }
-
-        etSearchList.addTextChangedListener { textoDigitado ->
-           val query = textoDigitado.toString().trim()
-
-           val filtrados = if (query.isEmpty()) {
-                todosOsLivros
-           } else {
-                todosOsLivros.filter { livro -> // Percorre a lista procurando correspondências.
-                    livro.title.contains(query, true) ||        // Verifica se o título contém a busca.
-                            livro.author.contains(query, true)  // Verifica se o autor contém a busca.
-                }
-           }
-
-            adapter.atualizarLista(filtrados)
-        }
-    }
-
-    override fun onBackPressed() {
-        if (etSearchList.isVisible) {
-            fecharBusca()
-        } else {
-            super.onBackPressed()
-        }
-    }
-
-    private fun fecharBusca() {
-        etSearchList.setText("")
-        etSearchList.isVisible = false
-        btnSearch.isVisible = true
     }
 }
 
