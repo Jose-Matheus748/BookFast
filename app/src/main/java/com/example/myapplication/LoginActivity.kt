@@ -9,8 +9,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.activity.viewModels
 
-
-
 class LoginActivity : AppCompatActivity() {
 
     private val viewModel: AuthViewModel by viewModels()
@@ -21,6 +19,31 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var textLinkRegister: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        val auth = FirebaseAuth.getInstance()
+
+        if (auth.currentUser != null) {
+
+            val uid = auth.currentUser!!.uid
+            val db = FirebaseFirestore.getInstance()
+
+            db.collection("usuarios")
+                .document(uid)
+                .get()
+                .addOnSuccessListener { document ->
+
+                    val tipo = document.getString("tipo")
+
+                    if (tipo == "admin") {
+                        startActivity(Intent(this, HomePageAdmin::class.java))
+                    } else {
+                        startActivity(Intent(this, HomePageActivity::class.java))
+                    }
+
+                    finish()
+                }
+        }
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
@@ -29,7 +52,6 @@ class LoginActivity : AppCompatActivity() {
         linkForgotPassword = findViewById(R.id.linkForgotPassword)
         btnLogin = findViewById(R.id.btnLogin)
         textLinkRegister = findViewById(R.id.textLinkRegister)
-
 
         viewModel.loginResult.observe(this) { resultado ->
             resultado.onSuccess { user ->
@@ -57,9 +79,8 @@ class LoginActivity : AppCompatActivity() {
         textLinkRegister.setOnClickListener {
             navegarParaRegistroDoUsuario()
         }
-
-
     }
+
     private fun navegarParaRecuperacaoDeSenha() {
         val intent = Intent(this, ForgottenPasswordActivity::class.java)
         startActivity(intent)
