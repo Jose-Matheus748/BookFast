@@ -10,11 +10,22 @@ import kotlinx.coroutines.launch
 class AuthViewModel : ViewModel() {
 
     private val repository = AuthRepository()
-    val loginResult = MutableLiveData<Result<FirebaseUser>>()
+    val loginResult = MutableLiveData<Result<User>>()
+    val cadastroResult = MutableLiveData<Result<Unit>>()
 
     fun login(email: String, senha: String) {
         viewModelScope.launch {
             loginResult.postValue(repository.login(email, senha))
         }
     }
+
+    fun cadastrar(nome: String, email: String, senha: String, perfil: String = "usuario") {
+        viewModelScope.launch {
+            cadastroResult.postValue(repository.cadastrar(nome, email, senha, perfil))
+        }
+    }
+
+    fun logout() = repository.logout()
+
+    fun usuarioJaLogado() = repository.usuarioAtual() != null
 }

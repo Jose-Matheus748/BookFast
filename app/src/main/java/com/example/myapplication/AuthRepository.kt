@@ -10,27 +10,29 @@ class AuthRepository {
     private val db = FirebaseFirestore.getInstance()
 
     // LOGIN
-    suspend fun login(email: String, senha: String): Result<FirebaseUser> {
+    suspend fun login(email: String, senha: String): Result<User> {
         return try {
             val resultado = auth.signInWithEmailAndPassword(email, senha).await()
-            Result.success(resultado.user!!)
+            val uid = resultado.user!!.uid
+
+            // Busca o perfil do usuário no Firestore
+            val documento = db.collection("usuarios").document(uid).get().await()
+            val user = documento.toObject(User::class.java) ?: User()
+
+            Result.success(user)
         } catch (e: Exception) {
             Result.failure(e)
         }
     }
 
-    // CADASTRO + salva dados no Firestore
-    suspend fun cadastrar(nome: String, email: String, senha: String): Result<Unit> {
+    // CADASTRO
+    suspend fun cadastrar(nome: String, email: String, senha: String, perfil: String = "usuario"): Result<Unit> {
         return try {
             val resultado = auth.createUserWithEmailAndPassword(email, senha).await()
             val uid = resultado.user!!.uid
 
-            val novoUsuario = User(uid = uid, nome = nome, email = email)
-
-            db.collection("usuarios")
-                .document(uid)
-                .set(novoUsuario)
-                .await()
+            val novoUsuario = User(uid = uid, nome = nome, email = email, perfil = perfil)
+            db.collection("usuarios").document(uid).set(novoUsuario).await()
 
             Result.success(Unit)
         } catch (e: Exception) {
@@ -41,6 +43,5 @@ class AuthRepository {
     // LOGOUT
     fun logout() = auth.signOut()
 
-    // Verifica se já está logado
-    fun usuarioAtual(): FirebaseUser? = auth.currentUser
+    fun usuarioAtual() = auth.currentUser
 }

@@ -32,10 +32,14 @@ class LoginActivity : AppCompatActivity() {
 
         viewModel.loginResult.observe(this) { resultado ->
             resultado.onSuccess { user ->
-                val intent = Intent(this, HomePageActivity::class.java)
-                intent.putExtra("userEmail", user.email)
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                startActivity(intent)
+                val destino = when (user.perfil) {
+                    "admin" -> Intent(this, HomePageAdmin::class.java)
+                    else -> Intent(this, HomePageActivity::class.java)
+                }
+                destino.putExtra("userName", user.nome)
+                destino.putExtra("userEmail", user.email)
+                destino.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(destino)
             }.onFailure {
                 Toast.makeText(this, "Credenciais inválidas", Toast.LENGTH_SHORT).show()
             }
@@ -54,9 +58,6 @@ class LoginActivity : AppCompatActivity() {
         }
 
     }
-
-
-
     private fun navegarParaRecuperacaoDeSenha() {
         val intent = Intent(this, ForgotenPasswordActivity::class.java)
         startActivity(intent)
