@@ -11,9 +11,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 import com.example.myapplication.model.Book
 
-class BookAdapter( // Cria o adapter responsável por mostrar livros na tela.
-    private var books: List<Book> // Recebe a lista de livros que será exibida.
-): RecyclerView.Adapter<BookAdapter.BookViewHolder>() { // Conecta o adapter ao RecyclerView.
+class BookAdapter(
+    private var books: List<Book>,
+    private val onClick: (Book) -> Unit  // 👈 adicionar este parâmetro
+): RecyclerView.Adapter<BookAdapter.BookViewHolder>() {
 
     // ViewHolder: guarda as referências dos elementos visuais de UM item
     class BookViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
@@ -38,6 +39,7 @@ class BookAdapter( // Cria o adapter responsável por mostrar livros na tela.
         holder.autorLivro.text = livro.author
 
         carregarCapaDoLivro(holder, livro)
+        holder.itemView.setOnClickListener { onClick(livro) }
     }
 
     private fun carregarCapaDoLivro(holder: BookViewHolder, livro: Book) {

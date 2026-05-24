@@ -1,5 +1,6 @@
 package com.example.myapplication
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.ImageButton
@@ -18,40 +19,39 @@ class SearchListActivity : AppCompatActivity() {
 
     private lateinit var btnSearch: ImageButton
     private lateinit var etSearchList: EditText
-    private lateinit var recyclerBooks: RecyclerView // RecyclerView para mostrar os livros
-    private lateinit var adapter: BookAdapter // Adapter para a RecyclerView
+    private lateinit var recyclerBooks: RecyclerView
+    private lateinit var adapter: BookAdapter
 
-    private val db = Firebase.firestore // Conexão com o Firestore
-
-    private val todosOsLivros = mutableListOf<Book>() // Lista para armazenar todos os livros
+    private val db = Firebase.firestore
+    private val todosOsLivros = mutableListOf<Book>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search_list)
 
-        iniciarViews()
-        prepararRecycler()
-        fazerPesquisa()
-        carregarLivrosDoFirestore()
-
         HeaderNavigation.setup(this)
         FooterNavigation.setup(this)
-    }
 
-    // função para iniciar as views
-    private fun iniciarViews() {
-        btnSearch = findViewById(R.id.btnSearch)
+        btnSearch    = findViewById(R.id.btnSearch)
         etSearchList = findViewById(R.id.etSearch)
         recyclerBooks = findViewById(R.id.recyclerBooks)
+
+        prepararRecycler()
+        fazerPesquisa()
+        carregarLivros()
     }
 
     private fun prepararRecycler() {
-        adapter = BookAdapter(todosOsLivros)
+        adapter = BookAdapter(todosOsLivros) { livro ->
+            val intent = Intent(this, BookpageActivity::class.java)
+            intent.putExtra("LIVRO_ID", livro.id)
+            startActivity(intent)
+        }
 
         recyclerBooks.apply {
-            layoutManager = GridLayoutManager(this@SearchListActivity, 2) // divide a coluna do layout em 2
-            setHasFixedSize(true) // otimiza a lista quando os itens têm tamanho previsível
-            adapter = this@SearchListActivity.adapter // Liga o adapter ao RecyclerView
+            layoutManager = GridLayoutManager(this@SearchListActivity, 2)
+            setHasFixedSize(true)
+            adapter = this@SearchListActivity.adapter
         }
     }
 
@@ -79,11 +79,7 @@ class SearchListActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if (etSearchList.isVisible) {
-            fecharBusca()
-        } else {
-            super.onBackPressed()
-        }
+        if (etSearchList.isVisible) fecharBusca() else super.onBackPressed()
     }
 
     private fun fecharBusca() {
@@ -92,30 +88,27 @@ class SearchListActivity : AppCompatActivity() {
         btnSearch.isVisible = true
     }
 
-    private fun carregarLivrosDoFirestore() {
+    private fun carregarLivros() {
         db.collection("Livros")
             .get()
             .addOnSuccessListener { resultado ->
                 todosOsLivros.clear()
 
                 for (documento in resultado) {
-                    val titulo = documento.getString("titulo") ?: "Sem título"
-                    val listaAutores = documento.get("autores") as? List<*>
-
-                    val autores = listaAutores
+                    val autores = (documento.get("autores") as? List<*>)
                         ?.filterIsInstance<String>()
                         ?.joinToString(", ")
                         ?: "Autor não informado"
 
-                    val capaBase64 = documento.getString("capaUrl")
-
-                    val livro = Book(
-                        title = titulo,
-                        author = autores,
-                        imageUrl = R.drawable.bg_book_cover_placeholder,
-                        capaBase64 = capaBase64
+                    todosOsLivros.add(
+                        Book(
+                            id         = documento.id,
+                            title      = documento.getString("titulo") ?: "Sem título",
+                            author     = autores,
+                            capaBase64 = documento.getString("capaUrl"),
+                            imageUrl   = R.drawable.bg_book_cover_placeholder
+                        )
                     )
-                    todosOsLivros.add(livro)
                 }
                 adapter.atualizarLista(todosOsLivros)
             }

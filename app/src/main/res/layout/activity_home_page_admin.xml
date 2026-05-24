@@ -93,13 +93,14 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:scaleType="centerCrop"
-                                android:src="@drawable/fortaleza_300"
+                                android:src="@drawable/bg_book_cover_placeholder"
                                 android:contentDescription="@string/fortaleza_em_300_palavras" />
                         </androidx.cardview.widget.CardView>
                         <TextView
+                            android:id="@+id/tituloDestaque1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Fortaleza em 300 anos"
+                            android:text=""
                             android:textColor="#FFFFFF"
                             android:textSize="12sp"
                             android:gravity="center"
@@ -125,15 +126,16 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:scaleType="centerCrop"
-                                app:srcCompat="@drawable/livro11" />
+                                android:src="@drawable/bg_book_cover_placeholder" />
                         </androidx.cardview.widget.CardView>
 
                         <TextView
+                            android:id="@+id/tituloDestaque2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:gravity="center"
-                            android:text="Como elaborar..."
+                            android:text=""
                             android:textColor="#FFFFFF"
                             android:textSize="12sp" />
                     </LinearLayout>
@@ -155,12 +157,13 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:scaleType="centerCrop"
-                                app:srcCompat="@drawable/livro16"/>
+                                android:src="@drawable/bg_book_cover_placeholder"/>
                         </androidx.cardview.widget.CardView>
                         <TextView
+                            android:id="@+id/tituloDestaque3"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="As árvores do conhecimento"
+                            android:text=""
                             android:textColor="#FFFFFF"
                             android:textSize="12sp"
                             android:gravity="center"
@@ -234,13 +237,14 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:scaleType="centerCrop"
-                                app:srcCompat="@drawable/xeroque_homis"/>
+                                android:src="@drawable/bg_book_cover_placeholder"/>
                         </androidx.cardview.widget.CardView>
 
                         <TextView
+                            android:id="@+id/tituloNovas1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Sherlock Holmes..."
+                            android:text=""
                             android:textColor="#FFFFFF"
                             android:textSize="12sp"
                             android:gravity="center"
@@ -265,13 +269,14 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:scaleType="centerCrop"
-                                app:srcCompat="@drawable/witcher_last_wish"/>
+                                android:src="@drawable/bg_book_cover_placeholder"/>
                         </androidx.cardview.widget.CardView>
 
                         <TextView
+                            android:id="@+id/tituloNovas2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="The witcher"
+                            android:text=""
                             android:textColor="#FFFFFF"
                             android:textSize="12sp"
                             android:gravity="center"
@@ -296,13 +301,14 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:scaleType="centerCrop"
-                                app:srcCompat="@drawable/img_metamorfose"/>
+                                android:src="@drawable/bg_book_cover_placeholder"/>
                         </androidx.cardview.widget.CardView>
 
                         <TextView
+                            android:id="@+id/tituloNovas3"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="A metamorfose"
+                            android:text=""
                             android:textColor="#FFFFFF"
                             android:textSize="12sp"
                             android:gravity="center"
@@ -327,10 +333,11 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:scaleType="centerCrop"
-                                app:srcCompat="@drawable/img_memorias_postumas"/>
+                                android:src="@drawable/bg_book_cover_placeholder"/>
                         </androidx.cardview.widget.CardView>
 
                         <TextView
+                            android:id="@+id/tituloNovas4"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text=""
@@ -398,13 +405,14 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:scaleType="centerCrop"
-                                app:srcCompat="@drawable/livro15"/>
+                                android:src="@drawable/bg_book_cover_placeholder"/>
                         </androidx.cardview.widget.CardView>
 
                         <TextView
+                            android:id="@+id/tituloCiencias1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Um discurso sobre as ciências"
+                            android:text=""
                             android:textColor="#FFFFFF"
                             android:textSize="12sp"
                             android:gravity="center"
@@ -429,13 +437,14 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:scaleType="centerCrop"
-                                app:srcCompat="@drawable/livro12"/>
+                                android:src="@drawable/bg_book_cover_placeholder"/>
                         </androidx.cardview.widget.CardView>
 
                         <TextView
+                            android:id="@+id/tituloCiencias2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Métodologia cientifica na..."
+                            android:text=""
                             android:textColor="#FFFFFF"
                             android:textSize="12sp"
                             android:gravity="center"
@@ -460,13 +469,14 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:scaleType="centerCrop"
-                                app:srcCompat="@drawable/livro13"/>
+                                android:src="@drawable/bg_book_cover_placeholder"/>
                         </androidx.cardview.widget.CardView>
 
                         <TextView
+                            android:id="@+id/tituloCiencias3"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="O mito da neutralidade..."
+                            android:text=""
                             android:textColor="#FFFFFF"
                             android:textSize="12sp"
                             android:gravity="center"
@@ -491,10 +501,11 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:scaleType="centerCrop"
-                                app:srcCompat="@drawable/livro14"/>
+                                android:src="@drawable/bg_book_cover_placeholder"/>
                         </androidx.cardview.widget.CardView>
 
                         <TextView
+                            android:id="@+id/tituloCiencias4"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text=""
