@@ -25,16 +25,46 @@ class EditProfileActivity : AppCompatActivity() {
         configurarRemocaoFavoritos()
 
         btnSalvar.setOnClickListener {
+
             Toast.makeText(this, "Alterações salvas!", Toast.LENGTH_SHORT).show()
-            startActivity(Intent(this, PaginaPerfilActivity::class.java))
+
+            voltarParaPerfil()
         }
 
         btnVoltar.setOnClickListener {
-            startActivity(Intent(this, PaginaPerfilActivity::class.java))
+
+            voltarParaPerfil()
         }
 
         HeaderNavigation.setup(this)
         FooterNavigation.setup(this)
+    }
+    private fun voltarParaPerfil() {
+
+        val userType = intent.getStringExtra("userType")
+
+        if (userType == "admin") {
+
+            val adminIntent = Intent(this, PaginaPerfilAdmin::class.java)
+
+            adminIntent.putExtra("userName", intent.getStringExtra("userName"))
+            adminIntent.putExtra("userEmail", intent.getStringExtra("userEmail"))
+            adminIntent.putExtra("userType", userType)
+
+            startActivity(adminIntent)
+
+        } else {
+
+            val userIntent = Intent(this, PaginaPerfilActivity::class.java)
+
+            userIntent.putExtra("userName", intent.getStringExtra("userName"))
+            userIntent.putExtra("userEmail", intent.getStringExtra("userEmail"))
+            userIntent.putExtra("userType", userType)
+
+            startActivity(userIntent)
+        }
+
+        finish()
     }
 
     private fun configurarRemocaoFavoritos() {
