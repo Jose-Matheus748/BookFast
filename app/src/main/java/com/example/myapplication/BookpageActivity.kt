@@ -21,9 +21,16 @@ class BookpageActivity : AppCompatActivity() {
 
     private val db = Firebase.firestore
 
+    private lateinit var containerExemplares: LinearLayout
+    private lateinit var lbNExemplares: TextView
+    private var livroId: String = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bookpage)
+
+        containerExemplares = findViewById(R.id.containerExemplares)
+        lbNExemplares = findViewById(R.id.lbNExemplaresId)
 
         HeaderNavigation.setup(this)
         FooterNavigation.setup(this)
@@ -74,8 +81,8 @@ class BookpageActivity : AppCompatActivity() {
         mostrarDetalhes()
 
         // ── Carrega dados do Firestore ──────────────────────────────────────
-        val livroId = intent.getStringExtra("LIVRO_ID")
-        if (livroId.isNullOrEmpty()) {
+        livroId = intent.getStringExtra("LIVRO_ID") ?: ""
+        if (livroId.isEmpty()) {
             Toast.makeText(this, "Livro não encontrado", Toast.LENGTH_SHORT).show()
             finish()
             return
@@ -133,10 +140,133 @@ class BookpageActivity : AppCompatActivity() {
                     if (assuntos.isNotEmpty())   "Assuntos: $assuntos"   else ""
                 findViewById<TextView>(R.id.LbAutoresId).text   = autoresStr
                 findViewById<TextView>(R.id.lbReferenciaId).text = referencia
+
+                carregarExemplares()
             }
             .addOnFailureListener {
                 Toast.makeText(this, "Erro ao carregar livro", Toast.LENGTH_SHORT).show()
                 finish()
             }
+
+    }
+
+
+    private fun carregarExemplares() {
+        db.collection("Livros")
+            .document(livroId)
+            .collection("Exemplares")
+            .get()
+            .addOnSuccessListener { result ->
+
+                containerExemplares.removeAllViews()
+
+                val total = result.size()
+
+                lbNExemplares.text = "Número de exemplares: $total"
+
+                if (total == 0) {
+
+                    val tv = TextView(this).apply {
+                        text = "Nenhum exemplar disponível."
+                        textSize = 14f
+                        setTextColor(0xFFAAAAAA.toInt())
+                        setPadding(16, 16, 16, 8)
+                    }
+
+                    containerExemplares.addView(tv)
+                    return@addOnSuccessListener
+                }
+
+                for (doc in result) {
+
+                    val registro    = doc.getString("registro") ?: ""
+                    val edicao      = doc.getString("edicao") ?: ""
+                    val ano         = doc.getString("ano") ?: ""
+                    val suporte     = doc.getString("suporte") ?: ""
+                    val localizacao = doc.getString("localizacao") ?: ""
+                    val situacao    = doc.getString("situacao") ?: ""
+
+                    val card = criarCardExemplar(
+                        registro,
+                        edicao,
+                        ano,
+                        suporte,
+                        localizacao,
+                        situacao
+                    )
+
+                    containerExemplares.addView(card)
+                }
+            }
+            .addOnFailureListener {
+                Toast.makeText(this, "Erro ao carregar exemplares", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private fun criarCardExemplar(
+        registro: String,
+        edicao: String,
+        ano: String,
+        suporte: String,
+        localizacao: String,
+        situacao: String
+    ): LinearLayout {
+
+        val ctx = this
+
+        val card = LinearLayout(ctx).apply {
+
+            orientation = LinearLayout.VERTICAL
+
+            val params = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            ).apply {
+                setMargins(dpToPx(16), dpToPx(8), dpToPx(16), 0)
+            }
+
+            layoutParams = params
+
+            setPadding(0, 0, 0, dpToPx(8))
+
+            setBackgroundResource(R.drawable.bg_container_exemplares)
+        }
+
+        fun linhaTexto(texto: String, topPadding: Int = 4): TextView {
+
+            return TextView(ctx).apply {
+
+                this.text = texto
+
+                textSize = 14f
+
+                setTextColor(0xFFF0F0F0.toInt())
+
+                setPadding(dpToPx(8), dpToPx(topPadding), dpToPx(8), 0)
+            }
+        }
+
+        card.addView(linhaTexto("Registro: $registro", 8))
+
+        if (edicao.isNotEmpty())
+            card.addView(linhaTexto("Edição: $edicao"))
+
+        if (ano.isNotEmpty())
+            card.addView(linhaTexto("Ano: $ano"))
+
+        if (suporte.isNotEmpty())
+            card.addView(linhaTexto("Suporte: $suporte"))
+
+        if (localizacao.isNotEmpty())
+            card.addView(linhaTexto("Localização: $localizacao"))
+
+        if (situacao.isNotEmpty())
+            card.addView(linhaTexto("Situação: $situacao"))
+
+        return card
+    }
+
+    private fun dpToPx(dp: Int): Int {
+        return (dp * resources.displayMetrics.density).toInt()
     }
 }

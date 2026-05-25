@@ -23,6 +23,10 @@ class AdminBookpageActivity : AppCompatActivity() {
 
     private lateinit var imgPencil: ImageView
     private lateinit var imgTrash: ImageView
+    private lateinit var containerExemplares: LinearLayout
+    private lateinit var lbNExemplares: TextView
+    private lateinit var btnAdicionarExemplar: Button
+
     private val db = Firebase.firestore
     private var livroId: String = ""
 
@@ -33,8 +37,11 @@ class AdminBookpageActivity : AppCompatActivity() {
         HeaderAdminNavigation.setup(this)
         FooterAdminNavigation.setup(this)
 
-        imgPencil = findViewById(R.id.imgPencil)
-        imgTrash  = findViewById(R.id.imgTrash)
+        imgPencil           = findViewById(R.id.imgPencil)
+        imgTrash            = findViewById(R.id.imgTrash)
+        containerExemplares = findViewById(R.id.containerExemplares)
+        lbNExemplares       = findViewById(R.id.lbNExemplaresId)
+        btnAdicionarExemplar = findViewById(R.id.btnAdicionarExemplar)
 
         val btnDetalhes      = findViewById<Button>(R.id.btnDetalhes)
         val btnReferencia    = findViewById<Button>(R.id.btnReferencia)
@@ -74,7 +81,13 @@ class AdminBookpageActivity : AppCompatActivity() {
         imgPencil.setOnClickListener { navegarParaEdicao() }
         imgTrash.setOnClickListener  { mostrarModalExcluir() }
 
-        // ── Carrega dados do Firestore ──────────────────────────────────────
+        btnAdicionarExemplar.setOnClickListener {
+            val intent = Intent(this, CreateExemplarActivity::class.java)
+            intent.putExtra("LIVRO_ID", livroId)
+            startActivity(intent)
+        }
+
+        // Carrega dados
         livroId = intent.getStringExtra("LIVRO_ID") ?: ""
         if (livroId.isEmpty()) {
             Toast.makeText(this, "Livro não encontrado", Toast.LENGTH_SHORT).show()
@@ -82,6 +95,11 @@ class AdminBookpageActivity : AppCompatActivity() {
             return
         }
 
+        carregarDadosLivro()
+        carregarExemplares()
+    }
+
+    private fun carregarDadosLivro() {
         db.collection("Livros").document(livroId)
             .get()
             .addOnSuccessListener { doc ->
@@ -96,14 +114,14 @@ class AdminBookpageActivity : AppCompatActivity() {
                 val imgCapa = findViewById<ImageView>(R.id.capaFortaleza)
                 if (capaBase64.isNotEmpty()) {
                     try {
-                        val bytes = Base64.decode(capaBase64, Base64.DEFAULT)
+                        val bytes  = Base64.decode(capaBase64, Base64.DEFAULT)
                         val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
                         imgCapa.setImageBitmap(bitmap)
                     } catch (e: Exception) { /* mantém padrão */ }
                 }
 
                 // Título e autores
-                val titulo = doc.getString("titulo") ?: ""
+                val titulo  = doc.getString("titulo") ?: ""
                 val autores = (doc.get("autores") as? List<*>)
                     ?.filterIsInstance<String>()
                     ?.joinToString(", ") ?: ""
@@ -141,9 +159,112 @@ class AdminBookpageActivity : AppCompatActivity() {
             }
     }
 
+    private fun carregarExemplares() {
+        db.collection("Livros")
+            .document(livroId)
+            .collection("Exemplares")
+            .get()
+            .addOnSuccessListener { result ->
+                containerExemplares.removeAllViews()
+
+                val total = result.size()
+                lbNExemplares.text = "Número de exemplares: $total"
+
+                if (total == 0) {
+                    // Mostra mensagem amigável quando não há exemplares
+                    val tv = TextView(this).apply {
+                        text      = "Nenhum exemplar cadastrado."
+                        textSize  = 14f
+                        setTextColor(0xFFAAAAAA.toInt())
+                        setPadding(16, 16, 16, 8)
+                    }
+                    containerExemplares.addView(tv)
+                    return@addOnSuccessListener
+                }
+
+                for (doc in result) {
+                    val registro    = doc.getString("registro")    ?: ""
+                    val edicao      = doc.getString("edicao")      ?: ""
+                    val ano         = doc.getString("ano")         ?: ""
+                    val suporte     = doc.getString("suporte")     ?: ""
+                    val localizacao = doc.getString("localizacao") ?: ""
+                    val situacao    = doc.getString("situacao")    ?: ""
+
+                    // Infla um card de exemplar programaticamente
+                    val card = criarCardExemplar(
+                        registro, edicao, ano, suporte, localizacao, situacao
+                    )
+                    containerExemplares.addView(card)
+                }
+            }
+            .addOnFailureListener {
+                Toast.makeText(this, "Erro ao carregar exemplares", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    /**
+     * Cria um LinearLayout com o visual idêntico aos cards estáticos do XML original,
+     * mas preenchido com dados reais do Firestore.
+     */
+    private fun criarCardExemplar(
+        registro: String,
+        edicao: String,
+        ano: String,
+        suporte: String,
+        localizacao: String,
+        situacao: String
+    ): LinearLayout {
+        val ctx = this
+
+        // Container do card
+        val card = LinearLayout(ctx).apply {
+            orientation = LinearLayout.VERTICAL
+            val params = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            ).apply {
+                setMargins(dpToPx(16), dpToPx(8), dpToPx(16), 0)
+            }
+            layoutParams = params
+            setPadding(0, 0, 0, dpToPx(8))
+            setBackgroundResource(R.drawable.bg_container_exemplares)
+        }
+
+        // Função auxiliar para criar cada linha de texto
+        fun linhaTexto(texto: String, topPadding: Int = 4): TextView {
+            return TextView(ctx).apply {
+                this.text = texto
+                textSize  = 14f
+                setTextColor(0xFFF0F0F0.toInt())
+                setPadding(dpToPx(8), dpToPx(topPadding), dpToPx(8), 0)
+            }
+        }
+
+        card.addView(linhaTexto("Registro: $registro", topPadding = 8))
+
+        if (edicao.isNotEmpty())
+            card.addView(linhaTexto("Edição: $edicao"))
+
+        if (ano.isNotEmpty())
+            card.addView(linhaTexto("Ano: $ano"))
+
+        if (suporte.isNotEmpty())
+            card.addView(linhaTexto("Suporte: $suporte"))
+
+        if (localizacao.isNotEmpty())
+            card.addView(linhaTexto("Localização: $localizacao"))
+
+        if (situacao.isNotEmpty())
+            card.addView(linhaTexto("Situação: $situacao"))
+
+        return card
+    }
+
+    private fun dpToPx(dp: Int): Int =
+        (dp * resources.displayMetrics.density).toInt()
+
     private fun navegarParaEdicao() {
-        // Passa o ID para a tela de edição também
-        val intent = Intent(this, AdminEditBookActivity::class.java)
+        val intent = Intent(this, EditBookActivity::class.java)
         intent.putExtra("LIVRO_ID", livroId)
         startActivity(intent)
     }
