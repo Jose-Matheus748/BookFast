@@ -49,12 +49,23 @@ class PaginaPerfilAdmin : AppCompatActivity() {
 
         view.findViewById<LinearLayout>(R.id.textViewEditarPerfil).setOnClickListener {
             bottomSheet.dismiss()
-            startActivity(Intent(this, EditProfileActivity::class.java))
+            val editIntent = Intent(this, EditProfileActivity::class.java)
+
+            editIntent.putExtra("userName", intent.getStringExtra("userName"))
+            editIntent.putExtra("userEmail", intent.getStringExtra("userEmail"))
+            editIntent.putExtra("userType", intent.getStringExtra("userType"))
+
+            startActivity(editIntent)
         }
 
         view.findViewById<LinearLayout>(R.id.textViewSobreApp).setOnClickListener {
             bottomSheet.dismiss()
-            startActivity(Intent(this, AboutActivity::class.java))
+            val intent = Intent(this, AboutActivity::class.java)
+            intent.putExtra("userName", intent.getStringExtra("userName"))
+            intent.putExtra("userEmail", intent.getStringExtra("userEmail"))
+            intent.putExtra("userType", intent.getStringExtra("userType"))
+
+            startActivity(intent)
         }
 
         view.findViewById<LinearLayout>(R.id.textViewSair).setOnClickListener {
