@@ -11,7 +11,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
-class PaginaPerfilAdmin : AppCompatActivity() {
+class PaginaPerfilActivity : AppCompatActivity() {
 
     private val auth = FirebaseAuth.getInstance()
     private val db = FirebaseFirestore.getInstance()
@@ -20,7 +20,7 @@ class PaginaPerfilAdmin : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_pagina_perfil_admin)
+        setContentView(R.layout.activity_pagina_perfil)
 
         if (auth.currentUser == null) {
             startActivity(Intent(this, LoginActivity::class.java).apply {
@@ -61,8 +61,8 @@ class PaginaPerfilAdmin : AppCompatActivity() {
             startActivity(intent)
         }
 
-        HeaderAdminNavigation.setup(this)
-        FooterAdminNavigation.setup(this)
+        HeaderNavigation.setup(this)
+        FooterNavigation.setup(this)
     }
     private fun carregarDadosDoUsuario(
         textUserName: TextView,
@@ -114,21 +114,16 @@ class PaginaPerfilAdmin : AppCompatActivity() {
             startActivity(intent)
         }
 
-        view.findViewById<LinearLayout>(R.id.textViewSair).setOnClickListener {
-
+        view.findViewById<LinearLayout>(R.id.textViewSobreApp).setOnClickListener {
             bottomSheet.dismiss()
 
-            FirebaseAuth.getInstance().signOut()
+            val aboutIntent = Intent(this, AboutActivity::class.java)
 
-            val intent = Intent(this, LoginActivity::class.java)
+            aboutIntent.putExtra("userName", intent.getStringExtra("userName"))
+            aboutIntent.putExtra("userEmail", intent.getStringExtra("userEmail"))
+            aboutIntent.putExtra("userType", intent.getStringExtra("userType"))
 
-            intent.flags =
-                Intent.FLAG_ACTIVITY_NEW_TASK or
-                        Intent.FLAG_ACTIVITY_CLEAR_TASK
-
-            startActivity(intent)
-
-            finish()
+            startActivity(aboutIntent)
         }
 
         bottomSheet.show()
