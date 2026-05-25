@@ -11,7 +11,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
-class PaginaPerfilActivity : AppCompatActivity() {
+class PaginaPerfilAdmin : AppCompatActivity() {
 
     private val auth = FirebaseAuth.getInstance()
     private val db = FirebaseFirestore.getInstance()
@@ -20,7 +20,7 @@ class PaginaPerfilActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_pagina_perfil)
+        setContentView(R.layout.activity_pagina_perfil_admin)
 
         if (auth.currentUser == null) {
             startActivity(Intent(this, LoginActivity::class.java).apply {
@@ -61,8 +61,8 @@ class PaginaPerfilActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        HeaderNavigation.setup(this)
-        FooterNavigation.setup(this)
+        HeaderAdminNavigation.setup(this)
+        FooterAdminNavigation.setup(this)
     }
     private fun carregarDadosDoUsuario(
         textUserName: TextView,
@@ -95,23 +95,39 @@ class PaginaPerfilActivity : AppCompatActivity() {
 
         view.findViewById<LinearLayout>(R.id.textViewEditarPerfil).setOnClickListener {
             bottomSheet.dismiss()
-            startActivity(Intent(this, EditProfileActivity::class.java))
+            val editIntent = Intent(this, EditProfileActivity::class.java)
+
+            editIntent.putExtra("userName", intent.getStringExtra("userName"))
+            editIntent.putExtra("userEmail", intent.getStringExtra("userEmail"))
+            editIntent.putExtra("userType", intent.getStringExtra("userType"))
+
+            startActivity(editIntent)
         }
 
         view.findViewById<LinearLayout>(R.id.textViewSobreApp).setOnClickListener {
             bottomSheet.dismiss()
-            startActivity(Intent(this, AboutActivity::class.java))
+            val intent = Intent(this, AboutActivity::class.java)
+            intent.putExtra("userName", intent.getStringExtra("userName"))
+            intent.putExtra("userEmail", intent.getStringExtra("userEmail"))
+            intent.putExtra("userType", intent.getStringExtra("userType"))
+
+            startActivity(intent)
         }
 
         view.findViewById<LinearLayout>(R.id.textViewSair).setOnClickListener {
+
             bottomSheet.dismiss()
+
             FirebaseAuth.getInstance().signOut()
+
             val intent = Intent(this, LoginActivity::class.java)
+
             intent.flags =
                 Intent.FLAG_ACTIVITY_NEW_TASK or
                         Intent.FLAG_ACTIVITY_CLEAR_TASK
 
             startActivity(intent)
+
             finish()
         }
 
