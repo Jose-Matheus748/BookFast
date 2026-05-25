@@ -1,5 +1,6 @@
 package com.example.myapplication
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.ImageButton
@@ -13,6 +14,7 @@ import com.example.myapplication.adapter.BookAdapter
 import com.example.myapplication.model.Book
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
+
 
 class SearchListAdminActivity : AppCompatActivity() {
 
@@ -45,7 +47,11 @@ class SearchListAdminActivity : AppCompatActivity() {
     }
 
     private fun prepararRecycler() {
-        adapter = BookAdapter(todosOsLivros)
+        adapter = BookAdapter(todosOsLivros) { livro ->
+            val intent = Intent(this, AdminBookpageActivity::class.java)
+            intent.putExtra("LIVRO_ID", livro.id)
+            startActivity(intent)
+        }
 
         recyclerBooks.apply {
             layoutManager = GridLayoutManager(this@SearchListAdminActivity, 2) // Mostra 2 livros por linha
@@ -109,6 +115,7 @@ class SearchListAdminActivity : AppCompatActivity() {
                     val capaBase64 = documento.getString("capaUrl")
 
                     val livro = Book(
+                        id = documento.id,
                         title = titulo,
                         author = autores,
                         imageUrl = R.drawable.bg_book_cover_placeholder, // Define capa padrão caso a real falhe.

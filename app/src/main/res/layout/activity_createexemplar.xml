@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#242424">
+
+    <!-- Header fixo no topo -->
+    <include
+        android:id="@+id/headerInclude"
+        layout="@layout/component_header_admin"
+        android:layout_width="match_parent"
+        android:layout_height="82dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Footer fixo na base -->
+    <include
+        android:id="@+id/componentFooter"
+        layout="@layout/component_footer_admin"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Conteúdo rolável entre header e footer -->
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toTopOf="@id/componentFooter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/headerInclude">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- Botão voltar -->
+            <ImageView
+                android:id="@+id/arrowBackId"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/arrow_back"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- Título da tela -->
+            <TextView
+                android:id="@+id/textViewScreenTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="16dp"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="Novo Exemplar"
+                android:textColor="#F1F1F1"
+                android:textSize="22sp"
+                app:layout_constraintBottom_toBottomOf="@id/arrowBackId"
+                app:layout_constraintStart_toEndOf="@id/arrowBackId"
+                app:layout_constraintTop_toTopOf="@id/arrowBackId" />
+
+            <!-- ═══════════════════════════════════════
+                 Seção do formulário
+            ════════════════════════════════════════ -->
+
+            <!-- Registro -->
+            <TextView
+                android:id="@+id/labelRegistro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="28dp"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="Registro *"
+                android:textColor="#F1F1F1"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/arrowBackId" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/inputRegistro"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="8dp"
+                app:hintEnabled="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/labelRegistro">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editRegistro"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:textColor="#f1f1f1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Guideline central para dividir campos lado a lado -->
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guidelineMiddle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.5" />
+
+            <!-- Edição (esquerda) -->
+            <TextView
+                android:id="@+id/labelEdicao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="Edição"
+                android:textColor="#F1F1F1"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/inputRegistro" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/inputEdicao"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                app:hintEnabled="false"
+                app:layout_constraintEnd_toStartOf="@id/guidelineMiddle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/labelEdicao">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editEdicao"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Ex: 3. ed."
+                    android:textColor="#f1f1f1"
+                    android:textColorHint="#888888" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Ano (direita) -->
+            <TextView
+                android:id="@+id/labelAno"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="Ano"
+                android:textColor="#F1F1F1"
+                android:textSize="18sp"
+                app:layout_constraintStart_toEndOf="@id/guidelineMiddle"
+                app:layout_constraintTop_toBottomOf="@id/inputRegistro" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/inputAno"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="20dp"
+                app:hintEnabled="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/guidelineMiddle"
+                app:layout_constraintTop_toBottomOf="@id/labelAno">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editAno"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Ex: 2007"
+                    android:inputType="number"
+                    android:textColor="#f1f1f1"
+                    android:textColorHint="#888888" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Suporte -->
+            <TextView
+                android:id="@+id/labelSuporte"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="Suporte *"
+                android:textColor="#F1F1F1"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/inputEdicao" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/inputSuporte"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="8dp"
+                app:hintEnabled="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/labelSuporte">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editSuporte"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Ex: Impresso, Digital"
+                    android:textColor="#f1f1f1"
+                    android:textColorHint="#888888" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Localização -->
+            <TextView
+                android:id="@+id/labelLocalizacao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="Localização"
+                android:textColor="#F1F1F1"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/inputSuporte" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/inputLocalizacao"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="8dp"
+                app:hintEnabled="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/labelLocalizacao">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editLocalizacao"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Ex: 1234 – Biblioteca Coordenação"
+                    android:textColor="#f1f1f1"
+                    android:textColorHint="#888888" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Situação -->
+            <TextView
+                android:id="@+id/labelSituacao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/poppins_semibold"
+                android:text="Situação *"
+                android:textColor="#F1F1F1"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/inputLocalizacao" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/inputSituacao"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="8dp"
+                app:hintEnabled="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/labelSituacao">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editSituacao"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Ex: Disponível, Cativo, Emprestado"
+                    android:textColor="#f1f1f1"
+                    android:textColorHint="#888888" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Nota campos obrigatórios -->
+            <TextView
+                android:id="@+id/textObrigatorio"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="12dp"
+                android:text="* Campos obrigatórios"
+                android:textColor="#AAAAAA"
+                android:textSize="13sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/inputSituacao" />
+
+            <!-- Botão salvar -->
+            <Button
+                android:id="@+id/btnSalvar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="32dp"
+                android:backgroundTint="#19A1E4"
+                android:text="Criar Exemplar"
+                android:textColor="#F0F0F0"
+                android:textStyle="bold"
+                app:cornerRadius="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textObrigatorio" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
