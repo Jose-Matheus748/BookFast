@@ -37,14 +37,23 @@ class SearchListActivity : AppCompatActivity() {
         recyclerBooks = findViewById(R.id.recyclerBooks)
 
         prepararRecycler()
+        setupRecycler()
         fazerPesquisa()
         carregarLivros()
     }
+
 
     private fun prepararRecycler() {
         adapter = BookAdapter(todosOsLivros) { livro ->
             val intent = Intent(this, BookpageActivity::class.java)
             intent.putExtra("LIVRO_ID", livro.id)
+
+    private fun setupRecycler() {
+        adapter = BookAdapter(todosOsLivros) { livro ->
+            val intent = Intent(this, BookpageActivity::class.java)
+            intent.putExtra("LIVRO_ID", livro.id)
+            intent.putExtra("TITULO", livro.title)
+            intent.putExtra("AUTOR", livro.author)
             startActivity(intent)
         }
 
@@ -117,3 +126,5 @@ class SearchListActivity : AppCompatActivity() {
             }
     }
 }
+}
+
