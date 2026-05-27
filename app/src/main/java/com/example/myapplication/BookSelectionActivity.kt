@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.util.Base64
 import android.util.Log
 import android.view.View
+import android.widget.Button
+import com.google.firebase.Timestamp
 import android.widget.ImageView
 import android.widget.ScrollView
 import android.widget.TextView
@@ -32,6 +34,9 @@ class BookSelectionActivity : AppCompatActivity() {
     private lateinit var autoresLivroSelecionado: TextView
     private lateinit var capaLivroSelecionado: ImageView
 
+    private lateinit var btnReservarLivros: Button
+    private var livroSelecionadoId: String = ""
+
     private val db = Firebase.firestore
 
     private val livrosDoFirestore = mutableListOf<Book>()
@@ -48,6 +53,10 @@ class BookSelectionActivity : AppCompatActivity() {
         configurarAbas()
         carregarLivroSelecionado()
 
+        btnReservarLivros.setOnClickListener {
+            reservarLivro()
+        }
+
         HeaderNavigation.setup(this)
         FooterNavigation.setup(this)
     }
@@ -61,6 +70,7 @@ class BookSelectionActivity : AppCompatActivity() {
         tituloLivroSelecionado = findViewById(R.id.tituloLivro)
         autoresLivroSelecionado = findViewById(R.id.autoresLivro)
         capaLivroSelecionado = findViewById(R.id.capaFortaleza)
+        btnReservarLivros = findViewById(R.id.btnReservarLivros)
 
         imgFortaleza300 = findViewById(R.id.capaFortaleza)
         imgFortaleza300Alugado = findViewById(R.id.capaFortalezaAlugado)
@@ -100,7 +110,7 @@ class BookSelectionActivity : AppCompatActivity() {
         })
     }
 
-    private fun carregarIdDoLivroSelecionado(): String {
+    private fun carregarIdDoLivroSelecionado(): String? {
         val livroId = intent.getStringExtra("LIVRO_ID") ?: ""
 
         if (livroId.isEmpty()) {
@@ -110,7 +120,7 @@ class BookSelectionActivity : AppCompatActivity() {
                 Toast.LENGTH_SHORT)
                 .show()
             finish()
-            return "Id do livro não carregado; livroId: $livroId"
+            return null
         }
 
         Log.d("BookFast", "ID do livro recebido: $livroId")
@@ -119,7 +129,7 @@ class BookSelectionActivity : AppCompatActivity() {
     }
 
     private fun carregarLivroSelecionado() {
-        val livroSelecionadoId = carregarIdDoLivroSelecionado()
+        val livroSelecionadoId = carregarIdDoLivroSelecionado() ?: return
 
         db.collection("Livros")
             .document(livroSelecionadoId) // pega APENAS o livro clicado
@@ -159,5 +169,37 @@ class BookSelectionActivity : AppCompatActivity() {
             Log.d("Bookfast", "capa do livro pode estar vazia, ou não existir")
             capaLivroSelecionado.setImageResource(R.drawable.bg_book_cover_placeholder)
         }
+    }
+
+    private fun reservarLivro() {
+        livroSelecionadoId = carregarIdDoLivroSelecionado() ?: return
+
+        if (livroSelecionadoId.isEmpty()) {
+            Toast.makeText(this, "Livro não selecionado", Toast.LENGTH_SHORT).show()
+            return
+        }
+        Log.d("BookFast", "Reservando livro com ID: $livroSelecionadoId")
+
+        val usuarioId = "PD5OhKp1uVrtfkOnsEI2" // ID de usuario para teste, ainda tem que mudar para ser o usuario logado
+
+        val reserva = hashMapOf(
+            "dataReserva"   to  Timestamp.now(),
+            "usuarioId"     to  usuarioId,
+            "tituloLivro"   to  tituloLivroSelecionado.text.toString(),
+            "livroId"       to  livroSelecionadoId,
+            "autoresLivro"  to  autoresLivroSelecionado.text.toString(),
+            "status"        to  "pendente" // usuario solicita reserva do livro, e inicialmente fica pendente para o admin aprovar
+        )
+
+        db.collection("Reservas")
+            .add(reserva)
+            .addOnSuccessListener {
+                Toast.makeText(this, "Reserva enviada com sucesso!", Toast.LENGTH_SHORT).show()
+                finish()
+            }
+            .addOnFailureListener { erro ->
+                btnReservarLivros.isEnabled = true
+                Toast.makeText(this, "Erro ao enviar solicitação de reserva: ${erro.message}", Toast.LENGTH_SHORT).show()
+            }
     }
 }
