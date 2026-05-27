@@ -8,7 +8,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.activity.viewModels
-import androidx.lifecycle.Observer
 
 class LoginActivity : AppCompatActivity() {
 
@@ -59,7 +58,7 @@ class LoginActivity : AppCompatActivity() {
 
     }
     private fun navegarParaRecuperacaoDeSenha() {
-        val intent = Intent(this, ForgotenPasswordActivity::class.java)
+        val intent = Intent(this, ForgottenPasswordActivity::class.java)
         startActivity(intent)
     }
 

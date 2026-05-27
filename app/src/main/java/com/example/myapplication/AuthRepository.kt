@@ -25,7 +25,18 @@ class AuthRepository {
         }
     }
 
-    // CADASTRO
+
+
+    suspend fun recuperarSenha(email: String): Result<Unit> {
+        return try {
+            auth.sendPasswordResetEmail(email).await()
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+
     suspend fun cadastrar(nome: String, email: String, senha: String, perfil: String = "usuario"): Result<Unit> {
         return try {
             val resultado = auth.createUserWithEmailAndPassword(email, senha).await()

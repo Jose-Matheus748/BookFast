@@ -19,6 +19,14 @@ class AuthViewModel : ViewModel() {
         }
     }
 
+    val recuperacaoResult = MutableLiveData<Result<Unit>>()
+
+    fun recuperarSenha(email: String) {
+        viewModelScope.launch {
+            recuperacaoResult.postValue(repository.recuperarSenha(email))
+        }
+    }
+
     fun cadastrar(nome: String, email: String, senha: String, perfil: String = "usuario") {
         viewModelScope.launch {
             cadastroResult.postValue(repository.cadastrar(nome, email, senha, perfil))
