@@ -116,12 +116,6 @@
 
                 <!--
                     RECYCLERVIEW ADICIONADO.
-
-                    Este RecyclerView serve para exibir os livros reais vindos do Firestore.
-                    No Kotlin, você poderá usar:
-
-                    recyclerLivrosSelecionados = findViewById(R.id.recyclerLivrosSelecionados)
-
                     Depois, poderá ligar ele ao BookAdapter.
                 -->
                 <androidx.recyclerview.widget.RecyclerView
