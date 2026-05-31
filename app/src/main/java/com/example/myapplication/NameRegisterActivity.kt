@@ -4,18 +4,27 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputEditText
+import com.google.firebase.auth.FirebaseAuth
 
 class NameRegisterActivity : AppCompatActivity() {
+
     private lateinit var nameInputText: TextInputEditText
     private lateinit var btnNext: Button
 
+    private val auth = FirebaseAuth.getInstance()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_name_register)
+
+        // Se o usuário já está autenticado, redireciona sem passar pelo cadastro
+        if (auth.currentUser != null) {
+            startActivity(Intent(this, HomePageActivity::class.java))
+            finish()
+            return
+        }
 
         nameInputText = findViewById(R.id.textName)
         btnNext = findViewById(R.id.btnSelecionar)
@@ -36,7 +45,6 @@ class NameRegisterActivity : AppCompatActivity() {
             return
         }
 
-        Toast.makeText(this, "Olá, $name!", Toast.LENGTH_SHORT).show()
         validateData()
     }
 
@@ -45,7 +53,7 @@ class NameRegisterActivity : AppCompatActivity() {
             "Usuario 1"
         }
 
-        val intention = Intent(this,RegisterActivity::class.java)
+        val intention = Intent(this, RegisterActivity::class.java)
         intention.putExtra("name", name)
         startActivity(intention)
     }
