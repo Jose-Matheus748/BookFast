@@ -1,6 +1,5 @@
 package com.example.myapplication
 
-import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Base64
@@ -33,49 +32,54 @@ class AdminGestaoPedidos : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_admin_gestao_pedidos)
 
-        tabLayout            = findViewById(R.id.tabLayout)
-        painelReservas       = findViewById(R.id.painelReservas)
-        painelDevolucoes     = findViewById(R.id.painelDevolucoes)
-        containerPedidos     = findViewById(R.id.containerPedidos)
-        containerDevolucoes  = findViewById(R.id.containerDevolucoes)
-        txtSemPedidos        = findViewById(R.id.txtSemPedidos)
-        txtSemDevolucoes     = findViewById(R.id.txtSemDevolucoes)
+        iniciarViews()
 
         HeaderAdminNavigation.setup(this)
         FooterAdminNavigation.setup(this)
 
         tabLayout.getTabAt(0)?.select()
         carregarPedidos()
+        configurarAbas()
+    }
 
+    private fun iniciarViews() {
+        tabLayout = findViewById(R.id.tabLayout)
+        painelReservas = findViewById(R.id.painelReservas)
+        painelDevolucoes = findViewById(R.id.painelDevolucoes)
+        containerPedidos = findViewById(R.id.containerPedidos)
+        containerDevolucoes = findViewById(R.id.containerDevolucoes)
+        txtSemPedidos = findViewById(R.id.txtSemPedidos)
+        txtSemDevolucoes = findViewById(R.id.txtSemDevolucoes)
+    }
+
+    private fun configurarAbas() {
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 when (tab?.position) {
                     0 -> {
-                        painelReservas.visibility   = View.VISIBLE
+                        painelReservas.visibility = View.VISIBLE
                         painelDevolucoes.visibility = View.GONE
                         carregarPedidos()
                     }
+
                     1 -> {
-                        painelReservas.visibility   = View.GONE
+                        painelReservas.visibility = View.GONE
                         painelDevolucoes.visibility = View.VISIBLE
                         carregarDevolucoes()
                     }
                 }
             }
+
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
     }
 
-    // ─────────────────────────────────────────────────────────────
-    //  ABA RESERVAS — status "pendente"
-    // ─────────────────────────────────────────────────────────────
-
     private fun carregarPedidos() {
         containerPedidos.removeAllViews()
         txtSemPedidos.visibility = View.GONE
 
-        db.collection("Reservas")
+        db.collection("Pedidos")
             .whereEqualTo("status", "pendente")
             .get()
             .addOnSuccessListener { resultado ->
@@ -84,180 +88,203 @@ class AdminGestaoPedidos : AppCompatActivity() {
                     return@addOnSuccessListener
                 }
 
-                // Agrupa as reservas pelo usuarioId
-                val porUsuario = LinkedHashMap<String, MutableList<Map<String, Any?>>>()
+                val pedidosPorUsuario = LinkedHashMap<String, MutableList<Map<String, Any?>>>()
+
                 for (doc in resultado) {
-                    val uid = doc.getString("usuarioId") ?: continue
-                    porUsuario.getOrPut(uid) { mutableListOf() }.add(
-                        mapOf(
-                            "reservaId"    to doc.id,
-                            "livroId"      to doc.getString("livroId"),
-                            "tituloLivro"  to doc.getString("tituloLivro"),
-                            "autoresLivro" to doc.getString("autoresLivro"),
-                            "capaUrl"      to doc.getString("capaUrl"),
-                            "nomeUsuario"  to doc.getString("nomeUsuario"),
-                            "usuarioId"    to uid
-                        )
+                    val usuarioId = doc.getString("usuarioId") ?: continue
+
+                    val pedido = mapOf(
+                        "pedidoId" to doc.id,
+                        "usuarioId" to usuarioId,
+                        "nomeUsuario" to doc.getString("nomeUsuario"),
+                        "livroId" to doc.getString("livroId"),
+                        "tituloLivro" to doc.getString("tituloLivro"),
+                        "autoresLivro" to doc.getString("autoresLivro"),
+                        "capaUrl" to doc.getString("capaUrl")
                     )
+
+                    pedidosPorUsuario
+                        .getOrPut(usuarioId) { mutableListOf() }
+                        .add(pedido)
                 }
 
-                for ((_, reservas) in porUsuario) {
-                    val nomeUsuario = reservas.first()["nomeUsuario"] as? String ?: "Usuário"
-                    val usuarioId   = reservas.first()["usuarioId"]   as? String ?: ""
-                    adicionarGrupoPedido(nomeUsuario, usuarioId, reservas)
+                for ((_, pedidos) in pedidosPorUsuario) {
+                    val nomeUsuario = pedidos.first()["nomeUsuario"] as? String ?: "Usuário"
+                    adicionarGrupoPedido(nomeUsuario, pedidos)
                 }
             }
-            .addOnFailureListener {
-                Toast.makeText(this, "Erro ao carregar pedidos", Toast.LENGTH_SHORT).show()
+            .addOnFailureListener { erro ->
+                Toast.makeText(
+                    this,
+                    "Erro ao carregar pedidos: ${erro.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
     }
 
     private fun adicionarGrupoPedido(
         nomeUsuario: String,
-        usuarioId: String,
-        reservas: List<Map<String, Any?>>
+        pedidos: List<Map<String, Any?>>
     ) {
         val ctx = this
 
-        // Nome do usuário
         val tvNome = TextView(ctx).apply {
-            text      = nomeUsuario
-            textSize  = 18f
+            text = nomeUsuario
+            textSize = 18f
             setTextColor(0xFFF1F1F1.toInt())
             setTypeface(null, android.graphics.Typeface.BOLD)
-            val lp = LinearLayout.LayoutParams(
+
+            layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
-            ).apply { setMargins(0, dpToPx(14), 0, dpToPx(6)) }
-            layoutParams = lp
+            ).apply {
+                setMargins(0, dpToPx(14), 0, dpToPx(6))
+            }
         }
+
         containerPedidos.addView(tvNome)
 
-        // Card com todos os livros deste usuário
         val card = CardView(ctx).apply {
             setCardBackgroundColor(0xFF2E2E2E.toInt())
-            radius          = dpToPx(8).toFloat()
-            cardElevation   = dpToPx(2).toFloat()
-            layoutParams    = LinearLayout.LayoutParams(
+            radius = dpToPx(8).toFloat()
+            cardElevation = dpToPx(2).toFloat()
+
+            layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
-            ).apply { setMargins(0, 0, 0, dpToPx(8)) }
+            ).apply {
+                setMargins(0, 0, 0, dpToPx(8))
+            }
         }
 
         val cardContent = LinearLayout(ctx).apply {
             orientation = LinearLayout.VERTICAL
-            val p = dpToPx(12)
-            setPadding(p, p, p, p)
+            val padding = dpToPx(12)
+            setPadding(padding, padding, padding, padding)
         }
 
-        reservas.forEachIndexed { index, reserva ->
+        for ((index, pedido) in pedidos.withIndex()) {
             if (index > 0) {
-                // Linha divisória
-                val divider = View(ctx).apply {
+                val divisor = View(ctx).apply {
                     setBackgroundColor(0xFF3A3A3A.toInt())
                     layoutParams = LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT, dpToPx(1)
-                    ).apply { setMargins(0, dpToPx(14), 0, dpToPx(14)) }
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        dpToPx(1)
+                    ).apply {
+                        setMargins(0, dpToPx(14), 0, dpToPx(14))
+                    }
                 }
-                cardContent.addView(divider)
+
+                cardContent.addView(divisor)
             }
-            cardContent.addView(criarLinhaLivro(reserva))
+
+            cardContent.addView(criarLinhaLivro(pedido))
         }
 
-        // Pergunta + botões
         val tvPergunta = TextView(ctx).apply {
-            text      = "Retirada realizada?"
-            textSize  = 15f
+            text = "Retirada realizada?"
+            textSize = 15f
             setTextColor(0xFFF1F1F1.toInt())
             setTypeface(null, android.graphics.Typeface.BOLD)
+
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
-            ).apply { setMargins(0, dpToPx(14), 0, dpToPx(8)) }
+            ).apply {
+                setMargins(0, dpToPx(14), 0, dpToPx(8))
+            }
         }
+
         cardContent.addView(tvPergunta)
 
         val rowBotoes = LinearLayout(ctx).apply {
             orientation = LinearLayout.HORIZONTAL
             layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, dpToPx(42)
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                dpToPx(42)
             )
         }
 
         val btnConfirmar = Button(ctx).apply {
             text = "Confirmar"
             setTextColor(0xFFFFFFFF.toInt())
-            textSize      = 13f
-            isAllCaps     = false
-            backgroundTintList = android.content.res.ColorStateList.valueOf(0xFF19A1E4.toInt())
-            layoutParams  = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1f)
-                .apply { setMargins(0, 0, dpToPx(8), 0) }
-            setOnClickListener { confirmarRetirada(usuarioId, reservas) }
+            textSize = 13f
+            isAllCaps = false
+            backgroundTintList =
+                android.content.res.ColorStateList.valueOf(0xFF19A1E4.toInt())
+
+            layoutParams = LinearLayout.LayoutParams(
+                0,
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                1f
+            ).apply {
+                setMargins(0, 0, dpToPx(8), 0)
+            }
+
+            setOnClickListener {
+                confirmarRetirada(pedidos)
+            }
         }
 
         val btnNegar = Button(ctx).apply {
             text = "Negar"
             setTextColor(0xFFFFFFFF.toInt())
-            textSize      = 13f
-            isAllCaps     = false
-            backgroundTintList = android.content.res.ColorStateList.valueOf(0xFF434343.toInt())
-            layoutParams  = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1f)
-            setOnClickListener { negarRetirada(usuarioId, reservas) }
+            textSize = 13f
+            isAllCaps = false
+            backgroundTintList =
+                android.content.res.ColorStateList.valueOf(0xFF434343.toInt())
+
+            layoutParams = LinearLayout.LayoutParams(
+                0,
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                1f
+            )
+
+            setOnClickListener {
+                negarRetirada(pedidos)
+            }
         }
 
         rowBotoes.addView(btnConfirmar)
         rowBotoes.addView(btnNegar)
-        cardContent.addView(rowBotoes)
 
+        cardContent.addView(rowBotoes)
         card.addView(cardContent)
+
         containerPedidos.addView(card)
     }
 
-    // Confirmar → status "retirado"
-    private fun confirmarRetirada(usuarioId: String, reservas: List<Map<String, Any?>>) {
-        val batch = db.batch()
-        for (reserva in reservas) {
-            val id  = reserva["reservaId"] as? String ?: continue
-            val ref = db.collection("Reservas").document(id)
-            batch.update(ref, "status", "retirado")
+    private fun confirmarRetirada(pedidos: List<Map<String, Any?>>) {
+        for (pedido in pedidos) {
+            val pedidoId = pedido["pedidoId"] as? String ?: continue
+
+            db.collection("Pedidos")
+                .document(pedidoId)
+                .update("status", "retirado")
         }
-        batch.commit()
-            .addOnSuccessListener {
-                Toast.makeText(this, "Retirada confirmada!", Toast.LENGTH_SHORT).show()
-                carregarPedidos()
-            }
-            .addOnFailureListener {
-                Toast.makeText(this, "Erro ao confirmar retirada", Toast.LENGTH_SHORT).show()
-            }
+
+        Toast.makeText(this, "Retirada confirmada!", Toast.LENGTH_SHORT).show()
+        carregarPedidos()
     }
 
-    // Negar → status "nao_retirado" (volta para o usuário ver)
-    private fun negarRetirada(usuarioId: String, reservas: List<Map<String, Any?>>) {
-        val batch = db.batch()
-        for (reserva in reservas) {
-            val id  = reserva["reservaId"] as? String ?: continue
-            val ref = db.collection("Reservas").document(id)
-            batch.update(ref, "status", "nao_retirado")
-        }
-        batch.commit()
-            .addOnSuccessListener {
-                Toast.makeText(this, "Pedido marcado como não retirado.", Toast.LENGTH_SHORT).show()
-                carregarPedidos()
-            }
-            .addOnFailureListener {
-                Toast.makeText(this, "Erro ao negar retirada", Toast.LENGTH_SHORT).show()
-            }
-    }
+    private fun negarRetirada(pedidos: List<Map<String, Any?>>) {
+        for (pedido in pedidos) {
+            val pedidoId = pedido["pedidoId"] as? String ?: continue
 
-    // ─────────────────────────────────────────────────────────────
-    //  ABA DEVOLUÇÕES — status "retirado"
-    // ─────────────────────────────────────────────────────────────
+            db.collection("Pedidos")
+                .document(pedidoId)
+                .update("status", "nao_retirado")
+        }
+
+        Toast.makeText(this, "Pedido negado.", Toast.LENGTH_SHORT).show()
+        carregarPedidos()
+    }
 
     private fun carregarDevolucoes() {
         containerDevolucoes.removeAllViews()
         txtSemDevolucoes.visibility = View.GONE
 
-        db.collection("Reservas")
+        db.collection("Pedidos")
             .whereEqualTo("status", "retirado")
             .get()
             .addOnSuccessListener { resultado ->
@@ -266,199 +293,248 @@ class AdminGestaoPedidos : AppCompatActivity() {
                     return@addOnSuccessListener
                 }
 
-                val porUsuario = LinkedHashMap<String, MutableList<Map<String, Any?>>>()
+                val pedidosPorUsuario = LinkedHashMap<String, MutableList<Map<String, Any?>>>()
+
                 for (doc in resultado) {
-                    val uid = doc.getString("usuarioId") ?: continue
-                    porUsuario.getOrPut(uid) { mutableListOf() }.add(
-                        mapOf(
-                            "reservaId"    to doc.id,
-                            "livroId"      to doc.getString("livroId"),
-                            "tituloLivro"  to doc.getString("tituloLivro"),
-                            "autoresLivro" to doc.getString("autoresLivro"),
-                            "capaUrl"      to doc.getString("capaUrl"),
-                            "nomeUsuario"  to doc.getString("nomeUsuario"),
-                            "usuarioId"    to uid
-                        )
+                    val usuarioId = doc.getString("usuarioId") ?: continue
+
+                    val pedido = mapOf(
+                        "pedidoId" to doc.id,
+                        "usuarioId" to usuarioId,
+                        "nomeUsuario" to doc.getString("nomeUsuario"),
+                        "livroId" to doc.getString("livroId"),
+                        "tituloLivro" to doc.getString("tituloLivro"),
+                        "autoresLivro" to doc.getString("autoresLivro"),
+                        "capaUrl" to doc.getString("capaUrl")
                     )
+
+                    pedidosPorUsuario
+                        .getOrPut(usuarioId) { mutableListOf() }
+                        .add(pedido)
                 }
 
-                for ((_, reservas) in porUsuario) {
-                    val nomeUsuario = reservas.first()["nomeUsuario"] as? String ?: "Usuário"
-                    val usuarioId   = reservas.first()["usuarioId"]   as? String ?: ""
-                    adicionarGrupoDevolucao(nomeUsuario, usuarioId, reservas)
+                for ((_, pedidos) in pedidosPorUsuario) {
+                    val nomeUsuario = pedidos.first()["nomeUsuario"] as? String ?: "Usuário"
+                    adicionarGrupoDevolucao(nomeUsuario, pedidos)
                 }
             }
-            .addOnFailureListener {
-                Toast.makeText(this, "Erro ao carregar devoluções", Toast.LENGTH_SHORT).show()
+            .addOnFailureListener { erro ->
+                Toast.makeText(
+                    this,
+                    "Erro ao carregar devoluções: ${erro.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
     }
 
     private fun adicionarGrupoDevolucao(
         nomeUsuario: String,
-        usuarioId: String,
-        reservas: List<Map<String, Any?>>
+        pedidos: List<Map<String, Any?>>
     ) {
         val ctx = this
 
         val tvNome = TextView(ctx).apply {
-            text     = nomeUsuario
+            text = nomeUsuario
             textSize = 18f
             setTextColor(0xFFF1F1F1.toInt())
             setTypeface(null, android.graphics.Typeface.BOLD)
+
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
-            ).apply { setMargins(0, dpToPx(14), 0, dpToPx(6)) }
+            ).apply {
+                setMargins(0, dpToPx(14), 0, dpToPx(6))
+            }
         }
+
         containerDevolucoes.addView(tvNome)
 
         val card = CardView(ctx).apply {
             setCardBackgroundColor(0xFF2E2E2E.toInt())
-            radius        = dpToPx(8).toFloat()
+            radius = dpToPx(8).toFloat()
             cardElevation = dpToPx(2).toFloat()
-            layoutParams  = LinearLayout.LayoutParams(
+
+            layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
-            ).apply { setMargins(0, 0, 0, dpToPx(8)) }
+            ).apply {
+                setMargins(0, 0, 0, dpToPx(8))
+            }
         }
 
         val cardContent = LinearLayout(ctx).apply {
             orientation = LinearLayout.VERTICAL
-            val p = dpToPx(12)
-            setPadding(p, p, p, p)
+            val padding = dpToPx(12)
+            setPadding(padding, padding, padding, padding)
         }
 
-        reservas.forEachIndexed { index, reserva ->
+        for ((index, pedido) in pedidos.withIndex()) {
             if (index > 0) {
-                val divider = View(ctx).apply {
+                val divisor = View(ctx).apply {
                     setBackgroundColor(0xFF3A3A3A.toInt())
                     layoutParams = LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT, dpToPx(1)
-                    ).apply { setMargins(0, dpToPx(14), 0, dpToPx(14)) }
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        dpToPx(1)
+                    ).apply {
+                        setMargins(0, dpToPx(14), 0, dpToPx(14))
+                    }
                 }
-                cardContent.addView(divider)
+
+                cardContent.addView(divisor)
             }
-            cardContent.addView(criarLinhaLivro(reserva))
+
+            cardContent.addView(criarLinhaLivro(pedido))
         }
 
         val tvPergunta = TextView(ctx).apply {
-            text     = "Devolução realizada?"
+            text = "Devolução realizada?"
             textSize = 15f
             setTextColor(0xFFF1F1F1.toInt())
             setTypeface(null, android.graphics.Typeface.BOLD)
+
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
-            ).apply { setMargins(0, dpToPx(14), 0, dpToPx(8)) }
+            ).apply {
+                setMargins(0, dpToPx(14), 0, dpToPx(8))
+            }
         }
+
         cardContent.addView(tvPergunta)
 
         val btnConfirmar = Button(ctx).apply {
             text = "Confirmar"
             setTextColor(0xFFFFFFFF.toInt())
-            textSize  = 13f
+            textSize = 13f
             isAllCaps = false
-            backgroundTintList = android.content.res.ColorStateList.valueOf(0xFF19A1E4.toInt())
+            backgroundTintList =
+                android.content.res.ColorStateList.valueOf(0xFF19A1E4.toInt())
+
             layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, dpToPx(42)
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                dpToPx(42)
             )
-            setOnClickListener { confirmarDevolucao(usuarioId, reservas) }
+
+            setOnClickListener {
+                confirmarDevolucao(pedidos)
+            }
         }
+
         cardContent.addView(btnConfirmar)
 
         card.addView(cardContent)
         containerDevolucoes.addView(card)
     }
 
-    // Devolução confirmada → status "devolvido"
-    private fun confirmarDevolucao(usuarioId: String, reservas: List<Map<String, Any?>>) {
-        val batch = db.batch()
-        for (reserva in reservas) {
-            val id  = reserva["reservaId"] as? String ?: continue
-            val ref = db.collection("Reservas").document(id)
-            batch.update(ref, "status", "devolvido")
+    private fun confirmarDevolucao(pedidos: List<Map<String, Any?>>) {
+        for (pedido in pedidos) {
+            val pedidoId = pedido["pedidoId"] as? String ?: continue
+
+            db.collection("Pedidos")
+                .document(pedidoId)
+                .update("status", "devolvido")
         }
-        batch.commit()
-            .addOnSuccessListener {
-                Toast.makeText(this, "Devolução confirmada!", Toast.LENGTH_SHORT).show()
-                carregarDevolucoes()
-            }
-            .addOnFailureListener {
-                Toast.makeText(this, "Erro ao confirmar devolução", Toast.LENGTH_SHORT).show()
-            }
+
+        Toast.makeText(this, "Devolução confirmada!", Toast.LENGTH_SHORT).show()
+        carregarDevolucoes()
     }
 
-    // ─────────────────────────────────────────────────────────────
-    //  Helpers
-    // ─────────────────────────────────────────────────────────────
+    private fun criarLinhaLivro(pedido: Map<String, Any?>): LinearLayout {
+        val ctx = this
 
-    private fun criarLinhaLivro(reserva: Map<String, Any?>): LinearLayout {
-        val ctx     = this
-        val titulo  = reserva["tituloLivro"]  as? String ?: "Sem título"
-        val autores = reserva["autoresLivro"] as? String ?: ""
-        val capa    = reserva["capaUrl"]      as? String
+        val titulo = pedido["tituloLivro"] as? String ?: "Sem título"
+        val autores = pedido["autoresLivro"] as? String ?: ""
+        val capaBase64 = pedido["capaUrl"] as? String
 
-        val row = LinearLayout(ctx).apply {
+        val linha = LinearLayout(ctx).apply {
             orientation = LinearLayout.HORIZONTAL
-            gravity     = android.view.Gravity.CENTER_VERTICAL
+            gravity = android.view.Gravity.CENTER_VERTICAL
+
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
         }
 
-        // Capa
-        val capaCard = androidx.cardview.widget.CardView(ctx).apply {
+        val cardCapa = CardView(ctx).apply {
             setCardBackgroundColor(0xFF1C1C1C.toInt())
-            radius        = dpToPx(8).toFloat()
+            radius = dpToPx(8).toFloat()
             cardElevation = 0f
-            layoutParams  = LinearLayout.LayoutParams(dpToPx(78), dpToPx(108))
+
+            layoutParams = LinearLayout.LayoutParams(
+                dpToPx(78),
+                dpToPx(108)
+            )
         }
+
         val imgCapa = ImageView(ctx).apply {
             scaleType = ImageView.ScaleType.CENTER_CROP
+
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT
             )
-            if (!capa.isNullOrEmpty()) {
-                try {
-                    val bytes  = Base64.decode(capa, Base64.DEFAULT)
-                    val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
-                    setImageBitmap(bitmap)
-                } catch (e: Exception) {
-                    setImageResource(R.drawable.bg_book_cover_placeholder)
-                }
-            } else {
-                setImageResource(R.drawable.bg_book_cover_placeholder)
+
+            carregarCapaNesteImageView(this, capaBase64)
+        }
+
+        cardCapa.addView(imgCapa)
+        linha.addView(cardCapa)
+
+        val areaTextos = LinearLayout(ctx).apply {
+            orientation = LinearLayout.VERTICAL
+
+            layoutParams = LinearLayout.LayoutParams(
+                0,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                1f
+            ).apply {
+                setMargins(dpToPx(18), 0, 0, 0)
             }
         }
-        capaCard.addView(imgCapa)
-        row.addView(capaCard)
 
-        // Textos
-        val info = LinearLayout(ctx).apply {
-            orientation = LinearLayout.VERTICAL
-            layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
-                .apply { setMargins(dpToPx(18), 0, 0, 0) }
-        }
         val tvTitulo = TextView(ctx).apply {
-            text     = titulo
+            text = titulo
             textSize = 18f
             setTextColor(0xFFF1F1F1.toInt())
             setTypeface(null, android.graphics.Typeface.BOLD)
         }
+
         val tvAutor = TextView(ctx).apply {
-            text     = if (autores.isNotEmpty()) "Autor:\n$autores" else "Autor: —"
+            text = if (autores.isNotEmpty()) {
+                "Autor:\n$autores"
+            } else {
+                "Autor: -"
+            }
+
             textSize = 14f
             setTextColor(0xFFF1F1F1.toInt())
         }
-        info.addView(tvTitulo)
-        info.addView(tvAutor)
-        row.addView(info)
 
-        return row
+        areaTextos.addView(tvTitulo)
+        areaTextos.addView(tvAutor)
+
+        linha.addView(areaTextos)
+
+        return linha
     }
 
-    private fun dpToPx(dp: Int): Int =
-        (dp * resources.displayMetrics.density).toInt()
+    private fun carregarCapaNesteImageView(imageView: ImageView, capaBase64: String?) {
+        if (!capaBase64.isNullOrEmpty()) {
+            try {
+                val bytes = Base64.decode(capaBase64, Base64.DEFAULT)
+                val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+                imageView.setImageBitmap(bitmap)
+                return
+            } catch (erro: Exception) {
+                imageView.setImageResource(R.drawable.bg_book_cover_placeholder)
+            }
+        } else {
+            imageView.setImageResource(R.drawable.bg_book_cover_placeholder)
+        }
+    }
+
+    private fun dpToPx(dp: Int): Int {
+        return (dp * resources.displayMetrics.density).toInt()
+    }
 }

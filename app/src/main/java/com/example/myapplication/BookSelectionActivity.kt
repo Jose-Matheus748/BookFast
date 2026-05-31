@@ -203,18 +203,15 @@ class BookSelectionActivity : AppCompatActivity() {
     }
 
     private fun reservarLivro(livro: Book) {
-        Log.d("BookSelection", "Entrou em reservarLivro: ${livro.title} / id: ${livro.id}")
-
         if (livro.id.isEmpty()) {
             Toast.makeText(this, "Livro não encontrado.", Toast.LENGTH_SHORT).show()
-            Log.d("BookSelection", "Parou porque livro.id está vazio")
             return
         }
 
-        val reservaId = "$usuarioId-${livro.id}"
+        val pedidoId = "$usuarioId-${livro.id}"
 
-        val reserva = hashMapOf(
-            "dataReserva"   to Timestamp.now(),
+        val pedido = hashMapOf(
+            "dataPedido"    to Timestamp.now(),
             "usuarioId"     to usuarioId,
             "nomeUsuario"   to "Nome do Usuário 1",
             "livroId"       to livro.id,
@@ -224,14 +221,10 @@ class BookSelectionActivity : AppCompatActivity() {
             "status"        to "pendente"
         )
 
-        Log.d("BookSelection", "Tentando salvar em Reservas/$reservaId")
-
-        db.collection("Reservas")
-            .document(reservaId)
-            .set(reserva)
+        db.collection("Pedidos")
+            .document(pedidoId)
+            .set(pedido)
             .addOnSuccessListener {
-                Log.d("BookSelection", "Reserva salva com sucesso em Reservas/$reservaId")
-
                 Toast.makeText(
                     this,
                     "Sua solicitação foi enviada, aguarde aprovação!",
@@ -241,11 +234,9 @@ class BookSelectionActivity : AppCompatActivity() {
                 finish()
             }
             .addOnFailureListener { erro ->
-                Log.e("BookSelection", "Erro ao salvar reserva", erro)
-
                 Toast.makeText(
                     this,
-                    "Erro ao reservar: ${erro.message}",
+                    "Erro ao enviar pedido: ${erro.message}",
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -258,10 +249,10 @@ class BookSelectionActivity : AppCompatActivity() {
         }
 
         for (livro in livrosSelecionados) {
-            val reservaId = "$usuarioId-${livro.id}"
+            val pedidoId = "$usuarioId-${livro.id}"
 
-            val reserva = hashMapOf(
-                "dataReserva"   to Timestamp.now(),
+            val pedido = hashMapOf(
+                "dataPedido"    to Timestamp.now(),
                 "usuarioId"     to usuarioId,
                 "nomeUsuario"   to "Nome do Usuário 1",
                 "livroId"       to livro.id,
@@ -271,12 +262,17 @@ class BookSelectionActivity : AppCompatActivity() {
                 "status"        to "pendente"
             )
 
-            db.collection("Reservas")
-                .document(reservaId)
-                .set(reserva)
+            db.collection("Pedidos")
+                .document(pedidoId)
+                .set(pedido)
         }
 
-        Toast.makeText(this, "Todos os livros selecionados foram enviados para reserva!", Toast.LENGTH_SHORT).show()
+        Toast.makeText(
+            this,
+            "Todos os pedidos foram enviados para aprovação!",
+            Toast.LENGTH_SHORT
+        ).show()
+
         finish()
     }
 
