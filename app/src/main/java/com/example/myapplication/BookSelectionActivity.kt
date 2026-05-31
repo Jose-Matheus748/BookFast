@@ -1,8 +1,13 @@
 package com.example.myapplication
 
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Base64
+import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.CheckBox
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
@@ -27,6 +32,13 @@ class BookSelectionActivity : AppCompatActivity() {
     private lateinit var btnReservarLivrosSelecionados: Button
     private lateinit var btnReservarTodosOsLivros: Button
     private lateinit var btnEntrarNaFila: Button
+    private lateinit var imgLivroIndisponivel: ImageView
+    private lateinit var tituloLivroIndisponivel: TextView
+    private lateinit var autoresLivroIndisponivel: TextView
+    private lateinit var checkLivroIndisponivel: CheckBox
+    private lateinit var cardLivroIndisponivel: View
+    private lateinit var dataDisponibilidade: TextView
+    private var livroIndisponivelId: String = ""
 
     private lateinit var cardLivros: View
     private lateinit var adapter: SelectedBookAdapter
@@ -46,14 +58,24 @@ class BookSelectionActivity : AppCompatActivity() {
 
         salvarLivroRecebidoComoSelecionado()
         carregarLivrosSelecionados()
+        carregarLivroIndisponivel()
 
         btnReservarTodosOsLivros.setOnClickListener {
             reservarTodosOsLivrosSelecionados()
         }
 
         btnEntrarNaFila.setOnClickListener {
-            val livroId = "id-livro-indisponivel"
-            entrarNaFila(livroId)
+            if (livroIndisponivelId.isEmpty()) {
+                Toast.makeText(this, "Livro indisponível não carregado.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if (!checkLivroIndisponivel.isChecked) {
+                Toast.makeText(this, "Marque o livro antes de entrar na fila.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            entrarNaFila(livroIndisponivelId)
         }
 
         HeaderNavigation.setup(this)
@@ -69,19 +91,26 @@ class BookSelectionActivity : AppCompatActivity() {
         btnReservarLivrosSelecionados   = findViewById(R.id.btnReservarLivrosSelecionados)
         btnReservarTodosOsLivros        = findViewById(R.id.btnReservarTodosOsLivros)
         btnEntrarNaFila                 = findViewById(R.id.btnEntrarNaFila)
+        imgLivroIndisponivel            = findViewById(R.id.imgLivroIndisponivel)
+        tituloLivroIndisponivel         = findViewById(R.id.tituloLivroIndisponivel)
+        autoresLivroIndisponivel        = findViewById(R.id.autoresLivroIndisponivel)
+        checkLivroIndisponivel          = findViewById(R.id.checkLivroIndisponivel)
+        cardLivroIndisponivel           = findViewById(R.id.cardLivroIndisponivel)
+        dataDisponibilidade             = findViewById(R.id.dataDisponibilidade)
 
         cardLivros = findViewById(R.id.cardLivros)
-        cardLivros.visibility = View.GONE // esconde o card mockado/antigo para deixar so a lista real aparecer
+        cardLivros.visibility = View.GONE
+        cardLivroIndisponivel.visibility = View.GONE
     }
 
     private fun prepararRecyclerView() {
         adapter = SelectedBookAdapter(
             livros = livrosSelecionados,
-                onReservar =  { livro -> reservarLivro(livro) },
-                onRemover  =  { livro -> removerLivroSelecionado(livro) }
+            onReservar = { livro -> reservarLivro(livro) },
+            onRemover = { livro -> removerLivroSelecionado(livro) }
         )
 
-        recyclerLivrosSelecionados.layoutManager = LinearLayoutManager(this) // define que os cards aparecem um embaixo do outro
+        recyclerLivrosSelecionados.layoutManager = LinearLayoutManager(this)
         recyclerLivrosSelecionados.adapter = adapter
     }
 
@@ -101,31 +130,30 @@ class BookSelectionActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onTabUnselected(tab: TabLayout.Tab) {} // quando uma aba deixa de estar selecionada
-            override fun onTabReselected(tab: TabLayout.Tab) {} // quanto o usuario clica de novo na aba que ja foi selecionada
+            override fun onTabUnselected(tab: TabLayout.Tab) {}
+            override fun onTabReselected(tab: TabLayout.Tab) {}
         })
     }
 
-    // pega o livro recebido da tela anterior e grava ele em Reservas
     private fun salvarLivroRecebidoComoSelecionado() {
         val livroId = intent.getStringExtra("LIVRO_ID") ?: return
-        val reservaId = "$usuarioId-$livroId" // id unico para evitar duplicar o mesmo livro para o mesmo usuario
+        val reservaId = "$usuarioId-$livroId"
 
         db.collection("Livros")
             .document(livroId)
-            .get() // consulta no banco de dados esse documento com esse livroId
+            .get()
             .addOnSuccessListener { docLivro ->
-                if (!docLivro.exists()) return@addOnSuccessListener // se o documento não existir. pare somente este bloco do addSuccesListener
+                if (!docLivro.exists()) return@addOnSuccessListener
 
                 val autores = (docLivro.get("autores") as? List<*>)
                     ?.filterIsInstance<String>()
-                    ?.joinToString(", ") // "autor1", "autor2" -> "autor1, autor2"
-
+                    ?.joinToString(", ")
                     ?: "Autor não informado"
 
                 val reserva = hashMapOf(
                     "dataReserva"   to Timestamp.now(),
                     "usuarioId"     to usuarioId,
+                    "nomeUsuario"   to "Nome do Usuário 1",
                     "livroId"       to livroId,
                     "tituloLivro"   to (docLivro.getString("titulo") ?: "Sem título"),
                     "autoresLivro"  to autores,
@@ -135,21 +163,20 @@ class BookSelectionActivity : AppCompatActivity() {
 
                 db.collection("Reservas")
                     .document(reservaId)
-                    .set(reserva) // salva no banco de dados, a reserva
-                    .addOnSuccessListener { // quando salvar der certo, atualiza a tela, buscando novamente os livros selecionados pelo usuario
-                        carregarLivrosSelecionados() // para poder aparecer na lista depois que eu salvar
+                    .set(reserva)
+                    .addOnSuccessListener {
+                        carregarLivrosSelecionados()
                     }
             }
     }
 
-    // lê da coleção Reservas todos os livros selecionados daquele usuário e atualiza a lista na tela.
     private fun carregarLivrosSelecionados() {
         db.collection("Reservas")
-            .whereEqualTo("usuarioId", usuarioId)   // na coleção, quero campos onde o usuarioId seja igual ao usuarioId atual
-            .whereEqualTo("status", "selecionado")  // filtro para trazer apenas livros selecionados
-            .get() // consulta no banco de dados esses documentos
+            .whereEqualTo("usuarioId", usuarioId)
+            .whereEqualTo("status", "selecionado")
+            .get()
             .addOnSuccessListener { resultado ->
-                livrosSelecionados.clear() // limpa a lista local antes de adicionar os livros de novo, para não duplicar os livros na tela
+                livrosSelecionados.clear()
 
                 for (docLivroSelecionado in resultado) {
                     val livro = Book(
@@ -157,12 +184,13 @@ class BookSelectionActivity : AppCompatActivity() {
                         title       = docLivroSelecionado.getString("tituloLivro") ?: "Sem título",
                         author      = docLivroSelecionado.getString("autoresLivro") ?: "Sem autores",
                         capaBase64  = docLivroSelecionado.getString("capaUrl"),
-                        imageUrl    = R.drawable.bg_book_cover_placeholder // se a capa Base64 não carregar, o app usa essa imagem padrão
+                        imageUrl    = R.drawable.bg_book_cover_placeholder
                     )
-                    livrosSelecionados.add(livro) // adiciona esse livro na lista local, para cada volta do for
+
+                    livrosSelecionados.add(livro)
                 }
 
-                adapter.atualizarLista(livrosSelecionados) // adapter atualiza a tela com a nova lista de livros
+                adapter.atualizarLista(livrosSelecionados)
 
                 if (livrosSelecionados.isEmpty()) {
                     textNenhumLivroSelecionado.visibility = View.VISIBLE
@@ -174,44 +202,78 @@ class BookSelectionActivity : AppCompatActivity() {
             }
     }
 
+    private fun reservarLivro(livro: Book) {
+        Log.d("BookSelection", "Entrou em reservarLivro: ${livro.title} / id: ${livro.id}")
 
-    private fun reservarLivro(livro: Book) { // a função precisa saber qual livro está sendo clicado
+        if (livro.id.isEmpty()) {
+            Toast.makeText(this, "Livro não encontrado.", Toast.LENGTH_SHORT).show()
+            Log.d("BookSelection", "Parou porque livro.id está vazio")
+            return
+        }
+
         val reservaId = "$usuarioId-${livro.id}"
+
+        val reserva = hashMapOf(
+            "dataReserva"   to Timestamp.now(),
+            "usuarioId"     to usuarioId,
+            "nomeUsuario"   to "Nome do Usuário 1",
+            "livroId"       to livro.id,
+            "tituloLivro"   to livro.title,
+            "autoresLivro"  to livro.author,
+            "capaUrl"       to (livro.capaBase64 ?: ""),
+            "status"        to "pendente"
+        )
+
+        Log.d("BookSelection", "Tentando salvar em Reservas/$reservaId")
 
         db.collection("Reservas")
             .document(reservaId)
-            .update( // para atualizar campos de um documento ja existente
-                mapOf( // lista de campos para serem atualizados dentro do documento
-                    "status"      to "pendente",
-                    "dataReserva" to Timestamp.now()
-                )
-            )
-            .addOnSuccessListener { // usuario solicitou a reserva, agora precisa de aprovação do admin
-                Toast.makeText(this, "Sua solicitação foi enviada, aguarde aprovação!", Toast.LENGTH_SHORT).show()
-                finish() // termina, e volta a tela anterior
+            .set(reserva)
+            .addOnSuccessListener {
+                Log.d("BookSelection", "Reserva salva com sucesso em Reservas/$reservaId")
+
+                Toast.makeText(
+                    this,
+                    "Sua solicitação foi enviada, aguarde aprovação!",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                finish()
             }
             .addOnFailureListener { erro ->
-                Toast.makeText(this, "Erro ao reservar: ${erro.message}", Toast.LENGTH_SHORT).show()
+                Log.e("BookSelection", "Erro ao salvar reserva", erro)
+
+                Toast.makeText(
+                    this,
+                    "Erro ao reservar: ${erro.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
     }
 
     private fun reservarTodosOsLivrosSelecionados() {
-        if (livrosSelecionados.isEmpty()) { // Isso impede que o código continue tentando reservar uma lista vazia.
+        if (livrosSelecionados.isEmpty()) {
             Toast.makeText(this, "Você não selecionou nenhum livro.", Toast.LENGTH_SHORT).show()
             return
         }
 
         for (livro in livrosSelecionados) {
-            val reservaId = "$usuarioId-${livro.id}" // para cara livro, cria um id do documento no firestore
+            val reservaId = "$usuarioId-${livro.id}"
+
+            val reserva = hashMapOf(
+                "dataReserva"   to Timestamp.now(),
+                "usuarioId"     to usuarioId,
+                "nomeUsuario"   to "Nome do Usuário 1",
+                "livroId"       to livro.id,
+                "tituloLivro"   to livro.title,
+                "autoresLivro"  to livro.author,
+                "capaUrl"       to (livro.capaBase64 ?: ""),
+                "status"        to "pendente"
+            )
 
             db.collection("Reservas")
                 .document(reservaId)
-                .update(
-                    mapOf(
-                            "status"      to "pendente",
-                            "dataReserva" to Timestamp.now()
-                    )
-                )
+                .set(reserva)
         }
 
         Toast.makeText(this, "Todos os livros selecionados foram enviados para reserva!", Toast.LENGTH_SHORT).show()
@@ -223,13 +285,16 @@ class BookSelectionActivity : AppCompatActivity() {
 
         db.collection("Reservas")
             .document(reservaId)
-            .delete() // apaga o livro no banco de dados, e ele deixa de estar selecionado para aquele usuario, caso eu desmarque o checkbox
+            .delete()
             .addOnSuccessListener {
-                carregarLivrosSelecionados() // atualiza a tela com a lista de livros selecionados, sem o livro que eu deletei
+                carregarLivrosSelecionados()
             }
     }
 
-    private fun entrarNaFila(livroId: String) { // a função precisa saber o id do livro para por na fila
+    private fun entrarNaFila(livroId: String) {
+
+        Log.e("Bookfast:", "livroId: $livroId")
+
         if (livroId.isEmpty()) {
             Toast.makeText(this, "Livro não encontrado.", Toast.LENGTH_SHORT).show()
             return
@@ -237,20 +302,102 @@ class BookSelectionActivity : AppCompatActivity() {
 
         val filaId = "$usuarioId-$livroId"
 
-        val fila = hashMapOf( // cria um mapa de dados para salvar na coleção Filas do firestoe
-            "usuarioId"       to usuarioId,
-            "livroId"         to livroId,
+        val fila = hashMapOf(
+            "usuarioId" to usuarioId,
+            "livroId" to livroId,
             "dataEntradaFila" to Timestamp.now()
         )
 
         db.collection("Filas")
             .document(filaId)
-            .set(fila) // atualiza no banco dados o documento com os dados da fila
+            .set(fila)
             .addOnSuccessListener {
-                Toast.makeText(this, "Você entrou na fila de espera!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this,
+                    "Você entrou na fila de espera!",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                finish()
             }
             .addOnFailureListener { erro ->
-                Toast.makeText(this, "Erro ao entrar na fila: ${erro.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this,
+                    "Erro ao entrar na fila: ${erro.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
+    }
+
+    private fun carregarLivroIndisponivel() {
+        livroIndisponivelId = ""
+        cardLivroIndisponivel.visibility = View.GONE
+
+        db.collection("Livros")
+            .get()
+            .addOnSuccessListener { resultadoLivros ->
+                for (docLivro in resultadoLivros) {
+                    val livroId = docLivro.id
+
+                    db.collection("Livros")
+                        .document(livroId)
+                        .collection("Exemplares")
+                        .get()
+                        .addOnSuccessListener { exemplares ->
+                            if (livroIndisponivelId.isNotEmpty()) {
+                                return@addOnSuccessListener
+                            }
+
+                            val temExemplarDisponivel = exemplares.any { exemplar ->
+                                val situacao = exemplar.getString("situacao")?.trim() ?: ""
+
+                                situacao.equals("Disponível", ignoreCase = true) ||
+                                        situacao.equals("Disponivel", ignoreCase = true)
+                            }
+
+                            if (!temExemplarDisponivel) {
+                                livroIndisponivelId = livroId
+
+                                val titulo = docLivro.getString("titulo") ?: "Sem título"
+
+                                val autores = (docLivro.get("autores") as? List<*>)
+                                    ?.filterIsInstance<String>()
+                                    ?.joinToString(", ")
+                                    ?: "Autor não informado"
+
+                                val capaBase64 = docLivro.getString("capaUrl")
+
+                                tituloLivroIndisponivel.text = titulo
+                                autoresLivroIndisponivel.text = autores
+
+                                carregarCapaLivroIndisponivel(capaBase64)
+
+                                cardLivroIndisponivel.visibility = View.VISIBLE
+                            }
+                        }
+                }
+            }
+            .addOnFailureListener { erro ->
+                Toast.makeText(
+                    this,
+                    "Erro ao carregar livro indisponível: ${erro.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+    }
+
+    private fun carregarCapaLivroIndisponivel(capaBase64: String?) {
+        if (!capaBase64.isNullOrBlank()) {
+            try {
+                val bytes = Base64.decode(capaBase64, Base64.DEFAULT)
+                val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+                imgLivroIndisponivel.setImageBitmap(bitmap)
+                return
+            } catch (erro: Exception) {
+                Log.e("BookSelection", "Erro ao carregar capa do livro indisponível", erro)
+            }
+        }
+
+        imgLivroIndisponivel.setImageResource(R.drawable.bg_book_cover_placeholder)
     }
 }

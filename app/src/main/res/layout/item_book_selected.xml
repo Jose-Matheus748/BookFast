@@ -82,7 +82,7 @@
             android:layout_marginHorizontal="12dp" />
 
         <Button
-            android:id="@+id/btnReservarLivroSelecionadoItem"
+            android:id="@+id/btnReservarLivroSelecionado"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginHorizontal="12dp"

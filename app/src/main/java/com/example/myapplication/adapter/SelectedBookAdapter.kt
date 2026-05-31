@@ -25,7 +25,7 @@ class SelectedBookAdapter(
         val titulo: TextView    = itemView.findViewById(R.id.tituloLivroSelecionadoItem)
         val autores: TextView   = itemView.findViewById(R.id.autoresLivroSelecionadoItem)
         val check: CheckBox     = itemView.findViewById(R.id.checkLivroSelecionadoItem)
-        val btnReservar: Button = itemView.findViewById(R.id.btnReservarLivroSelecionadoItem)
+        val btnReservar: Button = itemView.findViewById(R.id.btnReservarLivroSelecionado)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -53,7 +53,12 @@ class SelectedBookAdapter(
         }
 
         holder.btnReservar.setOnClickListener {
-            onReservar(livro)
+            if (holder.check.isChecked) {
+                onReservar(livro)
+                Log.d("SelectedBookAdapter", "Reservando livro: ${livro.title}")
+            } else {
+                Log.d("SelectedBookAdapter", "Checkbox não marcado para livro: ${livro.title}")
+            }
         }
     }
 

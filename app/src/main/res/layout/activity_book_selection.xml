@@ -225,7 +225,7 @@
                 android:layout_marginBottom="12dp" />
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/cardLivros2"
+                android:id="@+id/cardLivroIndisponivel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
@@ -253,7 +253,7 @@
                             app:cardBackgroundColor="#1C1C1C">
 
                             <ImageView
-                                android:id="@+id/imgLivro15"
+                                android:id="@+id/imgLivroIndisponivel"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:scaleType="centerCrop"
@@ -270,7 +270,7 @@
                             android:paddingStart="12dp">
 
                             <TextView
-                                android:id="@+id/tituloLivro2"
+                                android:id="@+id/tituloLivroIndisponivel"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:text="@string/um_discurso_sobre_as_ci_ncias"
@@ -279,7 +279,7 @@
                                 android:textStyle="bold" />
 
                             <TextView
-                                android:id="@+id/autoresLivro2"
+                                android:id="@+id/autoresLivroIndisponivel"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
@@ -289,7 +289,7 @@
                                 android:textStyle="italic" />
 
                             <TextView
-                                android:id="@+id/textView17"
+                                android:id="@+id/dataDisponibilidade"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="6dp"
