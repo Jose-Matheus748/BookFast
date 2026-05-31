@@ -8,6 +8,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.activity.viewModels
+import androidx.lifecycle.Observer
 
 class LoginActivity : AppCompatActivity() {
 
@@ -55,6 +56,7 @@ class LoginActivity : AppCompatActivity() {
         textLinkRegister.setOnClickListener {
             navegarParaRegistroDoUsuario()
         }
+
 
     }
     private fun navegarParaRecuperacaoDeSenha() {
