@@ -21,10 +21,10 @@ class SelectedBookAdapter(
 ) : RecyclerView.Adapter<SelectedBookAdapter.ViewHolder>() {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val capa: ImageView = itemView.findViewById(R.id.imgLivroSelecionado)
-        val titulo: TextView = itemView.findViewById(R.id.tituloLivroSelecionadoItem)
-        val autores: TextView = itemView.findViewById(R.id.autoresLivroSelecionadoItem)
-        val check: CheckBox = itemView.findViewById(R.id.checkLivroSelecionadoItem)
+        val capa: ImageView     = itemView.findViewById(R.id.imgLivroSelecionado)
+        val titulo: TextView    = itemView.findViewById(R.id.tituloLivroSelecionadoItem)
+        val autores: TextView   = itemView.findViewById(R.id.autoresLivroSelecionadoItem)
+        val check: CheckBox     = itemView.findViewById(R.id.checkLivroSelecionadoItem)
         val btnReservar: Button = itemView.findViewById(R.id.btnReservarLivroSelecionadoItem)
     }
 
