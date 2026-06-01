@@ -1,9 +1,11 @@
 package com.example.myapplication
 
-import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.util.Base64
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -16,36 +18,26 @@ import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
 
 class EditProfileActivity : AppCompatActivity() {
 
-    // ── Views ──
     private lateinit var btnSalvar: Button
     private lateinit var btnVoltar: Button
     private lateinit var imgPencil: ImageView
     private lateinit var imgAvatar: ImageView
     private lateinit var editNome: EditText
 
-    // ── Firebase ──
-    private val auth    by lazy { FirebaseAuth.getInstance() }
-    private val db      by lazy { FirebaseFirestore.getInstance() }
-    private val storage by lazy { FirebaseStorage.getInstance() }
+    private val auth by lazy { FirebaseAuth.getInstance() }
+    private val db   by lazy { FirebaseFirestore.getInstance() }
 
-    // ── Estado ──
     private var novaFotoUri: Uri? = null
     private val favoritosVisiveis = mutableSetOf(1, 2, 3, 4)
 
-    // ── Picker de imagem da galeria ──
     private val pickImageLauncher =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             uri?.let {
                 novaFotoUri = it
-                // Mostra a prévia imediatamente usando Glide
-                Glide.with(this)
-                    .load(it)
-                    .circleCrop()
-                    .into(imgAvatar)
+                Glide.with(this).load(it).circleCrop().into(imgAvatar)
             }
         }
 
@@ -54,20 +46,17 @@ class EditProfileActivity : AppCompatActivity() {
         setContentView(R.layout.activity_editprofile)
 
         bindViews()
-        preencherNomeAtual()
+        preencherDadosAtuais()
         configurarRemocaoFavoritos()
         configurarBotoes()
-
-        carregarTipoEConfigurar() // ← substitui os dois setups diretos
+        carregarTipoEConfigurar()
     }
 
     private fun carregarTipoEConfigurar() {
         val uid = auth.currentUser?.uid ?: return
-
         db.collection("Usuarios").document(uid).get()
             .addOnSuccessListener { doc ->
                 val tipo = doc.getString("tipo") ?: "usuario"
-
                 if (tipo == "admin") {
                     HeaderAdminNavigation.setup(this)
                     FooterAdminNavigation.setup(this)
@@ -82,62 +71,43 @@ class EditProfileActivity : AppCompatActivity() {
             }
     }
 
-
-    // ── Bind ──
     private fun bindViews() {
-        btnSalvar  = findViewById(R.id.btnNext)
-        btnVoltar  = findViewById(R.id.btnVoltar)
-        imgPencil  = findViewById(R.id.imgPencil)
-        editNome   = findViewById(R.id.editTextTextEmailAddress4)
+        btnSalvar = findViewById(R.id.btnNext)
+        btnVoltar = findViewById(R.id.btnVoltar)
+        imgPencil = findViewById(R.id.imgPencil)
+        editNome  = findViewById(R.id.editTextTextEmailAddress4)
         imgAvatar = findViewById(R.id.imgAvatar)
     }
 
-    // ── Preenche o nome atual do usuário no campo ──
-    private fun preencherNomeAtual() {
+    private fun preencherDadosAtuais() {
         val user = auth.currentUser ?: return
         val uid  = user.uid
 
-        // Tenta primeiro o Firestore; fallback para displayName do Auth
         db.collection("Usuarios").document(uid).get()
             .addOnSuccessListener { doc ->
-                val nome = doc.getString("nome")
-                    ?: user.displayName
-                    ?: ""
-                editNome.setText(nome)
+                editNome.setText(doc.getString("nome") ?: user.displayName ?: "")
+
+                // Carrega foto salva em base64
+                val fotoBase64 = doc.getString("fotoBase64")
+                if (!fotoBase64.isNullOrEmpty()) {
+                    try {
+                        val bytes  = Base64.decode(fotoBase64, Base64.DEFAULT)
+                        val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+                        Glide.with(this).load(bitmap).circleCrop().into(imgAvatar)
+                    } catch (e: Exception) { /* mantém placeholder */ }
+                }
             }
             .addOnFailureListener {
                 editNome.setText(user.displayName ?: "")
             }
-
-        // Carrega foto atual (se houver) com Glide
-        user.photoUrl?.let { url ->
-            Glide.with(this)
-                .load(url)
-                .circleCrop()
-                .into(imgAvatar)
-        }
     }
 
-    // ── Botões principais ──
     private fun configurarBotoes() {
-
-        // Editar foto — abre a galeria
-        imgPencil.setOnClickListener {
-            pickImageLauncher.launch("image/*")
-        }
-
-        // Salvar alterações
-        btnSalvar.setOnClickListener {
-            salvarAlteracoes()
-        }
-
-        // Voltar
-        btnVoltar.setOnClickListener {
-            finish() // volta para a activity anterior sem recriar a pilha
-        }
+        imgPencil.setOnClickListener { pickImageLauncher.launch("image/*") }
+        btnSalvar.setOnClickListener { salvarAlteracoes() }
+        btnVoltar.setOnClickListener { finish() }
     }
 
-    // ── Lógica de salvar ──
     private fun salvarAlteracoes() {
         val user = auth.currentUser ?: run {
             Toast.makeText(this, "Usuário não autenticado.", Toast.LENGTH_SHORT).show()
@@ -145,7 +115,6 @@ class EditProfileActivity : AppCompatActivity() {
         }
 
         val novoNome = editNome.text.toString().trim()
-
         if (novoNome.isEmpty()) {
             editNome.error = "O nome não pode estar vazio"
             editNome.requestFocus()
@@ -155,44 +124,22 @@ class EditProfileActivity : AppCompatActivity() {
         btnSalvar.isEnabled = false
         btnSalvar.text      = "Salvando…"
 
-        if (novaFotoUri != null) {
-            // 1) Upload da foto → depois salva nome
-            uploadFotoESalvar(user.uid, novoNome, novaFotoUri!!)
-        } else {
-            // 2) Só atualiza o nome
-            atualizarNome(user.uid, novoNome, fotoUrl = null)
-        }
+        val fotoBase64 = novaFotoUri?.let { converterParaBase64(it) }
+        atualizarPerfil(user.uid, novoNome, fotoBase64)
     }
 
-    // ── Upload da foto para o Firebase Storage ──
-    private fun uploadFotoESalvar(uid: String, nome: String, uri: Uri) {
-        val ref = storage.reference.child("avatars/$uid.jpg")
-
-        ref.putFile(uri)
-            .addOnSuccessListener {
-                ref.downloadUrl.addOnSuccessListener { downloadUrl ->
-                    atualizarNome(uid, nome, downloadUrl.toString())
-                }
-            }
-            .addOnFailureListener { e ->
-                resetarBotaoSalvar()
-                Toast.makeText(this, "Erro ao enviar foto: ${e.message}", Toast.LENGTH_LONG).show()
-            }
-    }
-
-    // ── Atualiza nome no Auth + Firestore ──
-    private fun atualizarNome(uid: String, nome: String, fotoUrl: String?) {
+    private fun atualizarPerfil(uid: String, nome: String, fotoBase64: String?) {
         val user = auth.currentUser ?: return
 
-        // Monta a atualização do FirebaseAuth
-        val profileBuilder = UserProfileChangeRequest.Builder().setDisplayName(nome)
-        fotoUrl?.let { profileBuilder.setPhotoUri(Uri.parse(it)) }
+        // Atualiza displayName no FirebaseAuth
+        val profileUpdate = UserProfileChangeRequest.Builder()
+            .setDisplayName(nome)
+            .build()
 
-        user.updateProfile(profileBuilder.build())
+        user.updateProfile(profileUpdate)
             .addOnSuccessListener {
-                // Monta o mapa para o Firestore
                 val dados = mutableMapOf<String, Any>("nome" to nome)
-                fotoUrl?.let { dados["photoUrl"] = it }
+                fotoBase64?.let { dados["fotoBase64"] = it }
 
                 db.collection("Usuarios").document(uid)
                     .update(dados as Map<String, Any>)
@@ -202,12 +149,7 @@ class EditProfileActivity : AppCompatActivity() {
                         finish()
                     }
                     .addOnFailureListener { e ->
-                        // Auth foi salvo; avisa sobre o Firestore mas não bloqueia
-                        Toast.makeText(
-                            this,
-                            "Perfil salvo, mas erro no banco: ${e.message}",
-                            Toast.LENGTH_LONG
-                        ).show()
+                        Toast.makeText(this, "Perfil salvo, mas erro no banco: ${e.message}", Toast.LENGTH_LONG).show()
                         startActivity(Intent(this, PaginaPerfilActivity::class.java))
                         finish()
                     }
@@ -218,7 +160,25 @@ class EditProfileActivity : AppCompatActivity() {
             }
     }
 
-    // ── Remoção de favoritos (com animação) ──
+    // Converte URI da galeria para base64 (igual ao EditBookActivity)
+    private fun converterParaBase64(uri: Uri): String {
+        val inputStream    = contentResolver.openInputStream(uri)
+        val imagemOriginal = BitmapFactory.decodeStream(inputStream)
+        inputStream?.close()
+        val imagemRedimensionada = redimensionarBitmap(imagemOriginal, 300) // menor que livro pois é avatar
+        val outputStream = java.io.ByteArrayOutputStream()
+        imagemRedimensionada.compress(Bitmap.CompressFormat.JPEG, 70, outputStream)
+        return Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT)
+    }
+
+    private fun redimensionarBitmap(bitmap: Bitmap, max: Int): Bitmap {
+        val w = bitmap.width
+        val h = bitmap.height
+        if (w <= max && h <= max) return bitmap
+        val scale = if (w > h) max.toFloat() / w else max.toFloat() / h
+        return Bitmap.createScaledBitmap(bitmap, (w * scale).toInt(), (h * scale).toInt(), true)
+    }
+
     private fun configurarRemocaoFavoritos() {
         val itens = mapOf(
             R.id.btnRemoverFav1 to Pair(R.id.itemFav1, 1),
@@ -226,18 +186,12 @@ class EditProfileActivity : AppCompatActivity() {
             R.id.btnRemoverFav3 to Pair(R.id.itemFav3, 3),
             R.id.btnRemoverFav4 to Pair(R.id.itemFav4, 4)
         )
-
         itens.forEach { (btnId, par) ->
             val (itemId, numero) = par
             val btn  = findViewById<Button>(btnId)
             val item = findViewById<FrameLayout>(itemId)
-
             btn.setOnClickListener {
-                item.animate()
-                    .alpha(0f)
-                    .scaleX(0.8f)
-                    .scaleY(0.8f)
-                    .setDuration(200)
+                item.animate().alpha(0f).scaleX(0.8f).scaleY(0.8f).setDuration(200)
                     .withEndAction {
                         item.visibility = View.GONE
                         favoritosVisiveis.remove(numero)
@@ -245,30 +199,21 @@ class EditProfileActivity : AppCompatActivity() {
                         if (favoritosVisiveis.isEmpty()) {
                             Toast.makeText(this, "Nenhum favorito restante.", Toast.LENGTH_SHORT).show()
                         }
-                    }
-                    .start()
+                    }.start()
             }
         }
     }
 
-    // ── Persiste a remoção no Firestore ──
     private fun salvarRemocaoFavoritoNoFirestore(numeroFav: Int) {
         val uid = auth.currentUser?.uid ?: return
-        
-        // Adapte o caminho conforme o seu modelo de dados
         db.collection("Usuarios").document(uid)
             .collection("Favoritos").document("fav$numeroFav")
             .delete()
             .addOnFailureListener { e ->
-                Toast.makeText(
-                    this,
-                    "Livro removido da tela, mas erro ao sincronizar: ${e.message}",
-                    Toast.LENGTH_SHORT
-                ).show()
+                Toast.makeText(this, "Erro ao sincronizar: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
 
-    // ── Helper ──
     private fun resetarBotaoSalvar() {
         btnSalvar.isEnabled = true
         btnSalvar.text      = getString(R.string.salvar_altera_es)

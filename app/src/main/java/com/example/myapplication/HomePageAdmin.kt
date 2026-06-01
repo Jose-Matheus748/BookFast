@@ -233,25 +233,20 @@ class HomePageAdmin : AppCompatActivity() {
                 txtView.visibility = View.INVISIBLE
                 imagemParaLivro.remove(imgView)
             }
-    override fun onStart() {
-        super.onStart()
-
-        if (FirebaseAuth.getInstance().currentUser == null) {
-            startActivity(Intent(this, LoginActivity::class.java))
-            finish()
-        }
-    }
-
-    override fun onBackPressed() {
-        if (etSearch.isVisible) {
-            fecharBusca()
-        } else {
-            super.onBackPressed()
-        }
+        }   // ← este } fecha o forEachIndexed
 
         val totalGrupos = calcularTotalGrupos()
         btnAnterior.visibility = if (totalGrupos > 1) View.VISIBLE else View.GONE
         btnProximo.visibility  = if (totalGrupos > 1) View.VISIBLE else View.GONE
+    }   // ← este } fecha o mostrarGrupoDestaque
+
+
+    override fun onStart() {
+        super.onStart()
+        if (FirebaseAuth.getInstance().currentUser == null) {
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+        }
     }
 
     private fun exibirCapa(imgView: ImageView, livro: Book) {

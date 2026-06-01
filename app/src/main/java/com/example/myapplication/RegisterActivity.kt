@@ -64,7 +64,7 @@ class RegisterActivity : AppCompatActivity() {
                         "email" to email,
                         "tipo" to "user"
                     )
-                    db.collection("usuarios")
+                    db.collection("Usuarios")
                         .document(uid)
                         .set(usuario)
                         .addOnSuccessListener {

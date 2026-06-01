@@ -220,9 +220,9 @@ class HomePageActivity : AppCompatActivity() {
     }
 
     private fun mostrarGrupoDestaque() {
-        val imgViews  = listOf(img1, img2, img3)
-        val txtViews  = listOf(tituloDestaque1, tituloDestaque2, tituloDestaque3)
-        val inicio    = grupoAtual * tamanhoGrupo
+        val imgViews = listOf(img1, img2, img3)
+        val txtViews = listOf(tituloDestaque1, tituloDestaque2, tituloDestaque3)
+        val inicio   = grupoAtual * tamanhoGrupo
 
         imgViews.forEachIndexed { i, imgView ->
             val txtView = txtViews[i]
@@ -239,6 +239,13 @@ class HomePageActivity : AppCompatActivity() {
                 txtView.visibility = View.INVISIBLE
                 imagemParaLivro.remove(imgView)
             }
+        }   // ← este } fecha o forEachIndexed
+
+        val totalGrupos = calcularTotalGrupos()
+        btnAnterior.visibility = if (totalGrupos > 1) View.VISIBLE else View.GONE
+        btnProximo.visibility  = if (totalGrupos > 1) View.VISIBLE else View.GONE
+    }   // ← este } fecha o mostrarGrupoDestaque
+
 
     override fun onStart() {
         super.onStart()
@@ -247,19 +254,6 @@ class HomePageActivity : AppCompatActivity() {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
         }
-    }
-
-    override fun onBackPressed() {
-        if (etSearch.isVisible) {
-            fecharBusca()
-        } else {
-            super.onBackPressed()
-
-        }
-
-        val totalGrupos = calcularTotalGrupos()
-        btnAnterior.visibility = if (totalGrupos > 1) View.VISIBLE else View.GONE
-        btnProximo.visibility  = if (totalGrupos > 1) View.VISIBLE else View.GONE
     }
 
     private fun exibirCapa(imgView: ImageView, livro: Book) {
