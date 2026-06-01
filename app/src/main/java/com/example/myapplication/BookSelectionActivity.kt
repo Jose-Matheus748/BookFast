@@ -12,17 +12,18 @@ import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.adapter.SelectedBookAdapter
 import com.example.myapplication.model.Book
+import com.example.myapplication.utils.MultaUtils
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.firestore
-import java.util.Date
 
 class BookSelectionActivity : AppCompatActivity() {
 
@@ -44,8 +45,10 @@ class BookSelectionActivity : AppCompatActivity() {
 
     private lateinit var containerEmprestimos: LinearLayout
     private lateinit var containerFilaEspera: LinearLayout
+    private lateinit var containerLivrosAtrasados: LinearLayout
     private lateinit var txtTotalEmprestimos: TextView
     private lateinit var txtTotalFilaEspera: TextView
+    private lateinit var txtValorTotalMultas: TextView
 
     private lateinit var cardLivros: View
     private lateinit var adapter: SelectedBookAdapter
@@ -106,8 +109,10 @@ class BookSelectionActivity : AppCompatActivity() {
         dataDisponibilidade             = findViewById(R.id.dataDisponibilidade)
         containerEmprestimos            = findViewById(R.id.containerEmprestimos)
         containerFilaEspera             = findViewById(R.id.containerFilaEspera)
+        containerLivrosAtrasados        = findViewById(R.id.containerLivrosAtrasados)
         txtTotalEmprestimos             = findViewById(R.id.txtTotalEmprestimos)
         txtTotalFilaEspera              = findViewById(R.id.txtTotalFilaEspera)
+        txtValorTotalMultas             = findViewById(R.id.txtValorTotalMultas)
 
         cardLivros                          = findViewById(R.id.cardLivros)
         cardLivros.visibility               = View.GONE
@@ -395,6 +400,7 @@ class BookSelectionActivity : AppCompatActivity() {
 
     private fun carregarEmprestimos() {
         containerEmprestimos.removeAllViews()
+        containerLivrosAtrasados.removeAllViews()
 
         db.collection("Pedidos")
             .whereEqualTo("usuarioId", usuarioId)
@@ -402,6 +408,7 @@ class BookSelectionActivity : AppCompatActivity() {
             .get()
             .addOnSuccessListener { resultado ->
                 txtTotalEmprestimos.text = "${resultado.size()}/10"
+                var valorTotalMultas = 0
 
                 for (doc in resultado) {
                     val titulo = doc.getString("tituloLivro") ?: "Sem título"
@@ -409,17 +416,34 @@ class BookSelectionActivity : AppCompatActivity() {
                     val capaUrl = doc.getString("capaUrl")
                     val livroId = doc.getString("livroId") ?: ""
                     val pedidoId = doc.id
+                    val dataVencimento = doc.getTimestamp("dataVencimento")
+                    val valorMultaLivro = MultaUtils.calcularValorMulta(dataVencimento)
+
+                    valorTotalMultas += valorMultaLivro
 
                     val card = criarCardEmprestimo(
                         pedidoId = pedidoId,
                         livroId = livroId,
                         titulo = titulo,
                         autores = autores,
-                        capaUrl = capaUrl
+                        capaUrl = capaUrl,
+                        dataVencimento = dataVencimento
                     )
 
                     containerEmprestimos.addView(card)
+
+                    if (valorMultaLivro > 0) {
+                        val cardAtrasado = criarCardLivroAtrasado(
+                            titulo = titulo,
+                            capaUrl = capaUrl,
+                            dataVencimento = dataVencimento
+                        )
+
+                        containerLivrosAtrasados.addView(cardAtrasado)
+                    }
                 }
+
+                txtValorTotalMultas.text = MultaUtils.formatarValorMulta(valorTotalMultas)
             }
     }
 
@@ -455,7 +479,8 @@ class BookSelectionActivity : AppCompatActivity() {
         livroId: String,
         titulo: String,
         autores: String,
-        capaUrl: String?
+        capaUrl: String?,
+        dataVencimento: Timestamp?
     ): View {
         val card = CardView(this).apply {
             setCardBackgroundColor(0xFF2E2E2E.toInt())
@@ -517,7 +542,7 @@ class BookSelectionActivity : AppCompatActivity() {
         }
 
         val txtVencimento = TextView(this).apply {
-            text = "Vencimento: em breve"
+            text = "Vencimento: ${MultaUtils.formatarData(dataVencimento)}"
             textSize = 12f
             setTextColor(0xFFF0C040.toInt())
         }
@@ -555,7 +580,7 @@ class BookSelectionActivity : AppCompatActivity() {
             }
 
             setOnClickListener {
-                renovarEmprestimo(pedidoId, livroId)
+                mostrarDialogoRenovacao(pedidoId, livroId, dataVencimento)
             }
         }
 
@@ -652,7 +677,121 @@ class BookSelectionActivity : AppCompatActivity() {
         return card
     }
 
-    private fun renovarEmprestimo(pedidoId: String, livroId: String) {
+    private fun criarCardLivroAtrasado(
+        titulo: String,
+        capaUrl: String?,
+        dataVencimento: Timestamp?
+    ): View {
+        val card = CardView(this).apply {
+            setCardBackgroundColor(0xFF2E2E2E.toInt())
+            radius = dpToPx(12).toFloat()
+            cardElevation = dpToPx(4).toFloat()
+
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            ).apply {
+                setMargins(0, 0, 0, dpToPx(8))
+            }
+        }
+
+        val linhaLivro = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = android.view.Gravity.CENTER_VERTICAL
+            setPadding(dpToPx(12), dpToPx(12), dpToPx(12), dpToPx(12))
+        }
+
+        val imagemLivro = ImageView(this).apply {
+            alpha = 0.4f
+            scaleType = ImageView.ScaleType.CENTER_CROP
+
+            layoutParams = LinearLayout.LayoutParams(
+                dpToPx(72),
+                dpToPx(100)
+            )
+
+            carregarCapaNoImageView(this, capaUrl)
+        }
+
+        val areaTextos = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+
+            layoutParams = LinearLayout.LayoutParams(
+                0,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                1f
+            ).apply {
+                setMargins(dpToPx(12), 0, 0, 0)
+            }
+        }
+
+        val txtTitulo = TextView(this).apply {
+            text = titulo
+            textSize = 15f
+            setTextColor(0xFFFF6B6B.toInt())
+            setTypeface(null, android.graphics.Typeface.BOLD)
+        }
+
+        val txtVencido = TextView(this).apply {
+            text = "VENCIDO"
+            textSize = 10f
+            setTextColor(0xFFFF6B6B.toInt())
+            setTypeface(null, android.graphics.Typeface.BOLD)
+            setBackgroundColor(0xFF5C1C1C.toInt())
+            setPadding(dpToPx(8), dpToPx(2), dpToPx(8), dpToPx(2))
+
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            ).apply {
+                setMargins(0, dpToPx(4), 0, 0)
+            }
+        }
+
+        val txtDesde = TextView(this).apply {
+            text = "Desde: ${MultaUtils.formatarData(dataVencimento)}"
+            textSize = 12f
+            setTextColor(0xFF888888.toInt())
+
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            ).apply {
+                setMargins(0, dpToPx(6), 0, 0)
+            }
+        }
+
+        areaTextos.addView(txtTitulo)
+        areaTextos.addView(txtVencido)
+        areaTextos.addView(txtDesde)
+
+        linhaLivro.addView(imagemLivro)
+        linhaLivro.addView(areaTextos)
+        card.addView(linhaLivro)
+
+        return card
+    }
+
+    private fun mostrarDialogoRenovacao(
+        pedidoId: String,
+        livroId: String,
+        dataVencimentoAtual: Timestamp?
+    ) {
+        AlertDialog.Builder(this)
+            .setTitle("Renovar empréstimo")
+            .setMessage("Deseja renovar o livro por mais 10 dias?")
+            .setPositiveButton("Sim") { _, _ ->
+                renovarEmprestimo(pedidoId, livroId, dataVencimentoAtual)
+            }
+            .setNegativeButton("Não", null)
+            .show()
+    }
+
+    private fun renovarEmprestimo(
+        pedidoId: String,
+        livroId: String,
+        dataVencimentoAtual: Timestamp?
+    ) {
         db.collection("Filas")
             .whereEqualTo("livroId", livroId)
             .get()
@@ -670,11 +809,19 @@ class BookSelectionActivity : AppCompatActivity() {
                     return@addOnSuccessListener
                 }
 
-                verificarPedidosPendentesAntesDeRenovar(pedidoId, livroId)
+                verificarPedidosPendentesAntesDeRenovar(
+                    pedidoId,
+                    livroId,
+                    dataVencimentoAtual
+                )
             }
     }
 
-    private fun verificarPedidosPendentesAntesDeRenovar(pedidoId: String, livroId: String) {
+    private fun verificarPedidosPendentesAntesDeRenovar(
+        pedidoId: String,
+        livroId: String,
+        dataVencimentoAtual: Timestamp?
+    ) {
         db.collection("Pedidos")
             .whereEqualTo("livroId", livroId)
             .whereEqualTo("status", "pendente")
@@ -693,8 +840,8 @@ class BookSelectionActivity : AppCompatActivity() {
                     return@addOnSuccessListener
                 }
 
-                val seteDiasEmMillis = 7L * 24 * 60 * 60 * 1000
-                val novaDataVencimento = Timestamp(Date(System.currentTimeMillis() + seteDiasEmMillis))
+                val dataBaseRenovacao = dataVencimentoAtual?.toDate() ?: Timestamp.now().toDate()
+                val novaDataVencimento = MultaUtils.gerarDataVencimento(dataBaseRenovacao)
 
                 db.collection("Pedidos")
                     .document(pedidoId)

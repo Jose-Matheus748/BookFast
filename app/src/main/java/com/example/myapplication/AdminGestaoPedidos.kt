@@ -12,8 +12,10 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import com.example.myapplication.utils.MultaUtils
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.Firebase
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.firestore
 
 class AdminGestaoPedidos : AppCompatActivity() {
@@ -255,12 +257,21 @@ class AdminGestaoPedidos : AppCompatActivity() {
     }
 
     private fun confirmarRetirada(pedidos: List<Map<String, Any?>>) {
+        val dataRetirada = Timestamp.now()
+        val dataVencimento = MultaUtils.gerarDataVencimento(dataRetirada.toDate())
+
         for (pedido in pedidos) {
             val pedidoId = pedido["pedidoId"] as? String ?: continue
 
             db.collection("Pedidos")
                 .document(pedidoId)
-                .update("status", "retirado")
+                .update(
+                    mapOf(
+                        "status" to "retirado",
+                        "dataRetirada" to dataRetirada,
+                        "dataVencimento" to dataVencimento
+                    )
+                )
         }
 
         Toast.makeText(this, "Retirada confirmada!", Toast.LENGTH_SHORT).show()
@@ -305,7 +316,8 @@ class AdminGestaoPedidos : AppCompatActivity() {
                         "livroId" to doc.getString("livroId"),
                         "tituloLivro" to doc.getString("tituloLivro"),
                         "autoresLivro" to doc.getString("autoresLivro"),
-                        "capaUrl" to doc.getString("capaUrl")
+                        "capaUrl" to doc.getString("capaUrl"),
+                        "dataVencimento" to doc.getTimestamp("dataVencimento")
                     )
 
                     pedidosPorUsuario
@@ -349,6 +361,14 @@ class AdminGestaoPedidos : AppCompatActivity() {
 
         containerDevolucoes.addView(tvNome)
 
+        for (pedido in pedidos) {
+            containerDevolucoes.addView(criarCardDevolucao(pedido))
+        }
+    }
+
+    private fun criarCardDevolucao(pedido: Map<String, Any?>): CardView {
+        val ctx = this
+
         val card = CardView(ctx).apply {
             setCardBackgroundColor(0xFF2E2E2E.toInt())
             radius = dpToPx(8).toFloat()
@@ -368,23 +388,7 @@ class AdminGestaoPedidos : AppCompatActivity() {
             setPadding(padding, padding, padding, padding)
         }
 
-        for ((index, pedido) in pedidos.withIndex()) {
-            if (index > 0) {
-                val divisor = View(ctx).apply {
-                    setBackgroundColor(0xFF3A3A3A.toInt())
-                    layoutParams = LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        dpToPx(1)
-                    ).apply {
-                        setMargins(0, dpToPx(14), 0, dpToPx(14))
-                    }
-                }
-
-                cardContent.addView(divisor)
-            }
-
-            cardContent.addView(criarLinhaLivro(pedido))
-        }
+        cardContent.addView(criarLinhaLivroDevolucao(pedido))
 
         val tvPergunta = TextView(ctx).apply {
             text = "Devolução realizada?"
@@ -416,27 +420,69 @@ class AdminGestaoPedidos : AppCompatActivity() {
             )
 
             setOnClickListener {
-                confirmarDevolucao(pedidos)
+                confirmarDevolucao(pedido)
             }
         }
 
         cardContent.addView(btnConfirmar)
 
         card.addView(cardContent)
-        containerDevolucoes.addView(card)
+
+        return card
     }
 
-    private fun confirmarDevolucao(pedidos: List<Map<String, Any?>>) {
-        for (pedido in pedidos) {
-            val pedidoId = pedido["pedidoId"] as? String ?: continue
+    private fun confirmarDevolucao(pedido: Map<String, Any?>) {
+        val pedidoId = pedido["pedidoId"] as? String ?: return
 
-            db.collection("Pedidos")
-                .document(pedidoId)
-                .update("status", "devolvido")
+        db.collection("Pedidos")
+            .document(pedidoId)
+            .update(
+                mapOf(
+                    "status" to "devolvido",
+                    "dataDevolucao" to Timestamp.now()
+                )
+            )
+            .addOnSuccessListener {
+                Toast.makeText(this, "Devolução confirmada!", Toast.LENGTH_SHORT).show()
+                carregarDevolucoes()
+            }
+            .addOnFailureListener { erro ->
+                Toast.makeText(
+                    this,
+                    "Erro ao confirmar devolução: ${erro.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+    }
+
+    private fun criarLinhaLivroDevolucao(pedido: Map<String, Any?>): LinearLayout {
+        val linha = criarLinhaLivro(pedido)
+        val areaTextos = linha.getChildAt(1) as? LinearLayout ?: return linha
+        val dataVencimento = pedido["dataVencimento"] as? Timestamp
+        val valorMulta = MultaUtils.calcularValorMulta(dataVencimento)
+
+        val tvDataDevolucao = TextView(this).apply {
+            text = "Devolução: ${MultaUtils.formatarData(dataVencimento)}"
+            textSize = 13f
+            setTextColor(
+                if (valorMulta > 0) {
+                    0xFFFF6B6B.toInt()
+                } else {
+                    0xFFF0C040.toInt()
+                }
+            )
+
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            ).apply {
+                setMargins(0, dpToPx(6), 0, 0)
+            }
         }
 
-        Toast.makeText(this, "Devolução confirmada!", Toast.LENGTH_SHORT).show()
-        carregarDevolucoes()
+        areaTextos.addView(tvDataDevolucao)
+
+        return linha
     }
 
     private fun criarLinhaLivro(pedido: Map<String, Any?>): LinearLayout {
