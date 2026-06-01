@@ -8,38 +8,58 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 class PaginaPerfilAdmin : AppCompatActivity() {
 
-    lateinit var config: ImageView
-    lateinit var imgFortaleza300 : ImageView
+    private lateinit var config: ImageView
+    private lateinit var imgAvatarPerfil: ImageView
+
+    private val auth by lazy { FirebaseAuth.getInstance() }
+    private val db   by lazy { FirebaseFirestore.getInstance() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pagina_perfil_admin)
 
-        val textUserName = findViewById<TextView>(R.id.userName)
-        val userName = intent.getStringExtra("userName")
-        textUserName.text = "$userName"
+        config          = findViewById(R.id.btnConfig)
+        imgAvatarPerfil = findViewById(R.id.imgAvatarPerfil)
 
+        val textUserName  = findViewById<TextView>(R.id.userName)
         val textUserEmail = findViewById<TextView>(R.id.userEmail)
-        val userEmail = intent.getStringExtra("userEmail")
-        textUserEmail.text = userEmail
 
-        config = findViewById(R.id.btnConfig)
-        imgFortaleza300 = findViewById(R.id.capaFortaleza)
+        carregarDadosDoUsuario(textUserName, textUserEmail)
 
-        config.setOnClickListener {
-            abrirMenuConfig()
-        }
-
-        imgFortaleza300.setOnClickListener {
-            val intent = Intent(this, BookpageActivity::class.java)
-            startActivity(intent)
-        }
+        config.setOnClickListener { abrirMenuConfig() }
 
         HeaderAdminNavigation.setup(this)
         FooterAdminNavigation.setup(this)
+    }
+
+    private fun carregarDadosDoUsuario(textUserName: TextView, textUserEmail: TextView) {
+        val uid = auth.currentUser?.uid ?: return
+
+        db.collection("Usuarios").document(uid).get()
+            .addOnSuccessListener { doc ->
+                textUserName.text  = doc.getString("nome") ?: auth.currentUser?.displayName ?: "Usuário"
+                textUserEmail.text = auth.currentUser?.email ?: ""
+
+                val fotoBase64 = doc.getString("fotoBase64")
+                if (!fotoBase64.isNullOrEmpty()) {
+                    try {
+                        val bytes  = android.util.Base64.decode(fotoBase64, android.util.Base64.DEFAULT)
+                        val bitmap = android.graphics.BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+                        com.bumptech.glide.Glide.with(this)
+                            .load(bitmap)
+                            .circleCrop()
+                            .into(imgAvatarPerfil)
+                    } catch (e: Exception) { /* mantém placeholder */ }
+                }
+            }
+            .addOnFailureListener {
+                textUserName.text  = auth.currentUser?.displayName ?: "Usuário"
+                textUserEmail.text = auth.currentUser?.email ?: ""
+            }
     }
 
     private fun abrirMenuConfig() {
@@ -49,39 +69,20 @@ class PaginaPerfilAdmin : AppCompatActivity() {
 
         view.findViewById<LinearLayout>(R.id.textViewEditarPerfil).setOnClickListener {
             bottomSheet.dismiss()
-            val editIntent = Intent(this, EditProfileActivity::class.java)
-
-            editIntent.putExtra("userName", intent.getStringExtra("userName"))
-            editIntent.putExtra("userEmail", intent.getStringExtra("userEmail"))
-            editIntent.putExtra("userType", intent.getStringExtra("userType"))
-
-            startActivity(editIntent)
+            startActivity(Intent(this, EditProfileAdminActivity::class.java))
         }
 
         view.findViewById<LinearLayout>(R.id.textViewSobreApp).setOnClickListener {
             bottomSheet.dismiss()
-            val intent = Intent(this, AboutActivity::class.java)
-            intent.putExtra("userName", intent.getStringExtra("userName"))
-            intent.putExtra("userEmail", intent.getStringExtra("userEmail"))
-            intent.putExtra("userType", intent.getStringExtra("userType"))
-
-            startActivity(intent)
+            startActivity(Intent(this, AboutActivity::class.java))
         }
 
         view.findViewById<LinearLayout>(R.id.textViewSair).setOnClickListener {
-
             bottomSheet.dismiss()
-
-            FirebaseAuth.getInstance().signOut()
-
-            val intent = Intent(this, LoginActivity::class.java)
-
-            intent.flags =
-                Intent.FLAG_ACTIVITY_NEW_TASK or
-                        Intent.FLAG_ACTIVITY_CLEAR_TASK
-
-            startActivity(intent)
-
+            auth.signOut()
+            startActivity(Intent(this, LoginActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            })
             finish()
         }
 

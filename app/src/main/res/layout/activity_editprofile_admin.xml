@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#242424">
+
+    <include
+        android:id="@+id/headerInclude"
+        layout="@layout/component_header_admin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <include
+        android:id="@+id/componentFooter"
+        layout="@layout/component_footer_admin"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scrollbars="none"
+        android:fillViewport="true"
+        app:layout_constraintTop_toBottomOf="@id/headerInclude"
+        app:layout_constraintBottom_toTopOf="@id/componentFooter"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:paddingHorizontal="24dp"
+            android:paddingTop="32dp"
+            android:paddingBottom="24dp">
+
+            <FrameLayout
+                android:layout_width="100dp"
+                android:layout_height="100dp">
+
+                <ImageView
+                    android:id="@+id/imgAvatar"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:background="@drawable/bg_avatar_circle"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/userprofile_icon_black"
+                    android:contentDescription="Avatar" />
+
+                <ImageView
+                    android:id="@+id/imgPencil"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_gravity="bottom|end"
+                    android:background="@drawable/bg_pencil_circle"
+                    android:padding="5dp"
+                    android:src="@drawable/material_symbols_pencil"
+                    android:contentDescription="Editar foto"
+                    app:tint="#FFFFFF" />
+
+            </FrameLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/editar_perfil"
+                android:textColor="#F0F0F0"
+                android:textSize="22sp"
+                android:fontFamily="@font/poppins_semibold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/atualize_as_informa_es_da_sua_conta"
+                android:textColor="#888888"
+                android:textSize="13sp"
+                android:gravity="center" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="24dp"
+                android:background="#2E2E2E" />
+
+            <TextView
+                android:id="@+id/textView16"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/nome_de_usu_rio"
+                android:textColor="#BBBBBB"
+                android:textSize="13sp"
+                android:fontFamily="@font/poppins_semibold"
+                android:layout_marginBottom="6dp" />
+
+            <EditText
+                android:id="@+id/editTextTextEmailAddress4"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/bg_input_chat"
+                android:hint="@string/digite_seu_nome_de_usu_rio"
+                android:inputType="textPersonName"
+                android:paddingHorizontal="16dp"
+                android:textColor="#F0F0F0"
+                android:textColorHint="#666666"
+                android:textSize="15sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="@string/o_nome_ser_exibido_para_outros_usu_rios"
+                android:textColor="#555555"
+                android:textSize="11sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="28dp"
+                android:layout_marginBottom="24dp"
+                android:background="#2E2E2E" />
+
+            <Button
+                android:id="@+id/btnNext"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:backgroundTint="#19A1E4"
+                android:text="@string/salvar_altera_es"
+                android:textColor="#F0F0F0"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                app:cornerRadius="8dp" />
+
+            <Button
+                android:id="@+id/btnVoltar"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="12dp"
+                android:backgroundTint="#3A3A3A"
+                android:text="@string/voltar"
+                android:textColor="#BBBBBB"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                app:cornerRadius="8dp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

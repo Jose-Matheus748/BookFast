@@ -282,21 +282,40 @@ class AdminBookpageActivity : AppCompatActivity() {
     }
 
     private fun excluirLivro() {
+        // Primeiro busca todos os exemplares para deletá-los
         db.collection("Livros").document(livroId)
-            .delete()
-            .addOnSuccessListener {
-                AlertDialog.Builder(this)
-                    .setTitle("Sucesso")
-                    .setMessage("Livro excluído com sucesso!")
-                    .setPositiveButton("Voltar") { dialog, _ ->
-                        dialog.dismiss()
-                        startActivity(Intent(this, HomePageAdmin::class.java))
-                        finish()
+            .collection("Exemplares")
+            .get()
+            .addOnSuccessListener { exemplares ->
+                val batch = db.batch()
+
+                // Adiciona cada exemplar ao batch de deleção
+                for (exemplar in exemplares) {
+                    batch.delete(exemplar.reference)
+                }
+
+                // Adiciona o documento do livro ao mesmo batch
+                batch.delete(db.collection("Livros").document(livroId))
+
+                // Executa tudo em uma única operação atômica
+                batch.commit()
+                    .addOnSuccessListener {
+                        AlertDialog.Builder(this)
+                            .setTitle("Sucesso")
+                            .setMessage("Livro excluído com sucesso!")
+                            .setPositiveButton("Voltar") { dialog, _ ->
+                                dialog.dismiss()
+                                startActivity(Intent(this, HomePageAdmin::class.java))
+                                finish()
+                            }
+                            .show()
                     }
-                    .show()
+                    .addOnFailureListener { e ->
+                        Toast.makeText(this, "Erro ao excluir: ${e.message}", Toast.LENGTH_SHORT).show()
+                    }
             }
             .addOnFailureListener { e ->
-                Toast.makeText(this, "Erro ao excluir: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Erro ao buscar exemplares: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
 }
