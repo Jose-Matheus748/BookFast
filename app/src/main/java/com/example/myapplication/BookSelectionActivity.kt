@@ -565,28 +565,46 @@ class BookSelectionActivity : AppCompatActivity() {
             }
         }
 
-        val btnRenovar = Button(this).apply {
-            text = "Renovar"
-            textSize = 14f
-            setTextColor(0xFFF0F0F0.toInt())
-            backgroundTintList =
-                android.content.res.ColorStateList.valueOf(0xFF19A1E4.toInt())
+        val livroEstaAtrasado = MultaUtils.calcularValorMulta(dataVencimento) > 0
 
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                dpToPx(40)
-            ).apply {
-                setMargins(dpToPx(12), dpToPx(10), dpToPx(12), dpToPx(10))
+        val areaRenovacao = if (livroEstaAtrasado) {
+            TextView(this).apply {
+                text = "Livro atrasado não pode ser renovado"
+                textSize = 13f
+                setTextColor(0xFFFF6B6B.toInt())
+                setTypeface(null, android.graphics.Typeface.BOLD)
+
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                ).apply {
+                    setMargins(dpToPx(12), dpToPx(10), dpToPx(12), dpToPx(10))
+                }
             }
+        } else {
+            Button(this).apply {
+                text = "Renovar"
+                textSize = 14f
+                setTextColor(0xFFF0F0F0.toInt())
+                backgroundTintList =
+                    android.content.res.ColorStateList.valueOf(0xFF19A1E4.toInt())
 
-            setOnClickListener {
-                mostrarDialogoRenovacao(pedidoId, livroId, dataVencimento)
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    dpToPx(40)
+                ).apply {
+                    setMargins(dpToPx(12), dpToPx(10), dpToPx(12), dpToPx(10))
+                }
+
+                setOnClickListener {
+                    mostrarDialogoRenovacao(pedidoId, livroId, dataVencimento)
+                }
             }
         }
 
         conteudoCard.addView(linhaLivro)
         conteudoCard.addView(divisor)
-        conteudoCard.addView(btnRenovar)
+        conteudoCard.addView(areaRenovacao)
 
         card.addView(conteudoCard)
 
