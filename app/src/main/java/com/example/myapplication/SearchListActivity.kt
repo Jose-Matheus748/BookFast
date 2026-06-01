@@ -32,19 +32,21 @@ class SearchListActivity : AppCompatActivity() {
         HeaderNavigation.setup(this)
         FooterNavigation.setup(this)
 
-        btnSearch    = findViewById(R.id.btnSearch)
-        etSearchList = findViewById(R.id.etSearch)
+        btnSearch     = findViewById(R.id.btnSearch)
+        etSearchList  = findViewById(R.id.etSearch)
         recyclerBooks = findViewById(R.id.recyclerBooks)
 
-        prepararRecycler()
+        setupRecycler()
         fazerPesquisa()
         carregarLivros()
     }
 
-    private fun prepararRecycler() {
+    private fun setupRecycler() {
         adapter = BookAdapter(todosOsLivros) { livro ->
             val intent = Intent(this, BookpageActivity::class.java)
             intent.putExtra("LIVRO_ID", livro.id)
+            intent.putExtra("TITULO", livro.title)
+            intent.putExtra("AUTOR", livro.author)
             startActivity(intent)
         }
 
@@ -64,7 +66,6 @@ class SearchListActivity : AppCompatActivity() {
 
         etSearchList.addTextChangedListener { textoDigitado ->
             val query = textoDigitado.toString().trim()
-
             val filtrados = if (query.isEmpty()) {
                 todosOsLivros
             } else {
@@ -73,7 +74,6 @@ class SearchListActivity : AppCompatActivity() {
                             livro.author.contains(query, true)
                 }
             }
-
             adapter.atualizarLista(filtrados)
         }
     }
@@ -93,7 +93,6 @@ class SearchListActivity : AppCompatActivity() {
             .get()
             .addOnSuccessListener { resultado ->
                 todosOsLivros.clear()
-
                 for (documento in resultado) {
                     val autores = (documento.get("autores") as? List<*>)
                         ?.filterIsInstance<String>()

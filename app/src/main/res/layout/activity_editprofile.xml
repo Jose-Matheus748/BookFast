@@ -48,13 +48,13 @@
                 android:layout_height="100dp">
 
                 <ImageView
+                    android:id="@+id/imgAvatar"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:background="@drawable/bg_avatar_circle"
-                    android:padding="18dp"
+                    android:scaleType="centerCrop"
                     android:src="@drawable/userprofile_icon_black"
-                    android:contentDescription="Avatar"
-                    app:tint="#FFFFFF" />
+                    android:contentDescription="Avatar" />
 
                 <ImageView
                     android:id="@+id/imgPencil"
