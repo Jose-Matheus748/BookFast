@@ -13,6 +13,7 @@ import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.adapter.SelectedBookAdapter
@@ -21,6 +22,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.firestore
+import java.util.Date
 
 class BookSelectionActivity : AppCompatActivity() {
 
@@ -39,6 +41,11 @@ class BookSelectionActivity : AppCompatActivity() {
     private lateinit var cardLivroIndisponivel: View
     private lateinit var dataDisponibilidade: TextView
     private var livroIndisponivelId: String = ""
+
+    private lateinit var containerEmprestimos: LinearLayout
+    private lateinit var containerFilaEspera: LinearLayout
+    private lateinit var txtTotalEmprestimos: TextView
+    private lateinit var txtTotalFilaEspera: TextView
 
     private lateinit var cardLivros: View
     private lateinit var adapter: SelectedBookAdapter
@@ -87,7 +94,7 @@ class BookSelectionActivity : AppCompatActivity() {
         painelSelecionados              = findViewById(R.id.painelSelecionados)
         painelReservas                  = findViewById(R.id.painelReservas)
         recyclerLivrosSelecionados      = findViewById(R.id.recyclerLivrosSelecionados)
-        textNenhumLivroSelecionado      = findViewById(R.id.textNenhumLivroSelecionado)
+        textNenhumLivroSelecionado      =  findViewById(R.id.textNenhumLivroSelecionado)
         btnReservarLivrosSelecionados   = findViewById(R.id.btnReservarLivrosSelecionados)
         btnReservarTodosOsLivros        = findViewById(R.id.btnReservarTodosOsLivros)
         btnEntrarNaFila                 = findViewById(R.id.btnEntrarNaFila)
@@ -97,10 +104,14 @@ class BookSelectionActivity : AppCompatActivity() {
         checkLivroIndisponivel          = findViewById(R.id.checkLivroIndisponivel)
         cardLivroIndisponivel           = findViewById(R.id.cardLivroIndisponivel)
         dataDisponibilidade             = findViewById(R.id.dataDisponibilidade)
+        containerEmprestimos            = findViewById(R.id.containerEmprestimos)
+        containerFilaEspera             = findViewById(R.id.containerFilaEspera)
+        txtTotalEmprestimos             = findViewById(R.id.txtTotalEmprestimos)
+        txtTotalFilaEspera              = findViewById(R.id.txtTotalFilaEspera)
 
-        cardLivros = findViewById(R.id.cardLivros)
-        cardLivros.visibility = View.GONE
-        cardLivroIndisponivel.visibility = View.GONE
+        cardLivros                          = findViewById(R.id.cardLivros)
+        cardLivros.visibility               = View.GONE
+        cardLivroIndisponivel.visibility    = View.GONE
     }
 
     private fun prepararRecyclerView() {
@@ -126,6 +137,9 @@ class BookSelectionActivity : AppCompatActivity() {
                     1 -> {
                         painelSelecionados.visibility = View.GONE
                         painelReservas.visibility = View.VISIBLE
+
+                        carregarEmprestimos()
+                        carregarFilaDeEspera()
                     }
                 }
             }
@@ -151,14 +165,14 @@ class BookSelectionActivity : AppCompatActivity() {
                     ?: "Autor não informado"
 
                 val reserva = hashMapOf(
-                    "dataReserva"   to Timestamp.now(),
-                    "usuarioId"     to usuarioId,
-                    "nomeUsuario"   to "Nome do Usuário 1",
-                    "livroId"       to livroId,
-                    "tituloLivro"   to (docLivro.getString("titulo") ?: "Sem título"),
-                    "autoresLivro"  to autores,
-                    "capaUrl"       to (docLivro.getString("capaUrl") ?: ""),
-                    "status"        to "selecionado"
+                    "dataReserva" to Timestamp.now(),
+                    "usuarioId" to usuarioId,
+                    "nomeUsuario" to "Nome do Usuário 1",
+                    "livroId" to livroId,
+                    "tituloLivro" to (docLivro.getString("titulo") ?: "Sem título"),
+                    "autoresLivro" to autores,
+                    "capaUrl" to (docLivro.getString("capaUrl") ?: ""),
+                    "status" to "selecionado"
                 )
 
                 db.collection("Reservas")
@@ -180,11 +194,11 @@ class BookSelectionActivity : AppCompatActivity() {
 
                 for (docLivroSelecionado in resultado) {
                     val livro = Book(
-                        id          = docLivroSelecionado.getString("livroId") ?: "",
-                        title       = docLivroSelecionado.getString("tituloLivro") ?: "Sem título",
-                        author      = docLivroSelecionado.getString("autoresLivro") ?: "Sem autores",
-                        capaBase64  = docLivroSelecionado.getString("capaUrl"),
-                        imageUrl    = R.drawable.bg_book_cover_placeholder
+                        id = docLivroSelecionado.getString("livroId") ?: "",
+                        title = docLivroSelecionado.getString("tituloLivro") ?: "Sem título",
+                        author = docLivroSelecionado.getString("autoresLivro") ?: "Sem autores",
+                        capaBase64 = docLivroSelecionado.getString("capaUrl"),
+                        imageUrl = R.drawable.bg_book_cover_placeholder
                     )
 
                     livrosSelecionados.add(livro)
@@ -211,14 +225,14 @@ class BookSelectionActivity : AppCompatActivity() {
         val pedidoId = "$usuarioId-${livro.id}"
 
         val pedido = hashMapOf(
-            "dataPedido"    to Timestamp.now(),
-            "usuarioId"     to usuarioId,
-            "nomeUsuario"   to "Nome do Usuário 1",
-            "livroId"       to livro.id,
-            "tituloLivro"   to livro.title,
-            "autoresLivro"  to livro.author,
-            "capaUrl"       to (livro.capaBase64 ?: ""),
-            "status"        to "pendente"
+            "dataPedido" to Timestamp.now(),
+            "usuarioId" to usuarioId,
+            "nomeUsuario" to "Nome do Usuário 1",
+            "livroId" to livro.id,
+            "tituloLivro" to livro.title,
+            "autoresLivro" to livro.author,
+            "capaUrl" to (livro.capaBase64 ?: ""),
+            "status" to "pendente"
         )
 
         db.collection("Pedidos")
@@ -252,14 +266,14 @@ class BookSelectionActivity : AppCompatActivity() {
             val pedidoId = "$usuarioId-${livro.id}"
 
             val pedido = hashMapOf(
-                "dataPedido"    to Timestamp.now(),
-                "usuarioId"     to usuarioId,
-                "nomeUsuario"   to "Nome do Usuário 1",
-                "livroId"       to livro.id,
-                "tituloLivro"   to livro.title,
-                "autoresLivro"  to livro.author,
-                "capaUrl"       to (livro.capaBase64 ?: ""),
-                "status"        to "pendente"
+                "dataPedido" to Timestamp.now(),
+                "usuarioId" to usuarioId,
+                "nomeUsuario" to "Nome do Usuário 1",
+                "livroId" to livro.id,
+                "tituloLivro" to livro.title,
+                "autoresLivro" to livro.author,
+                "capaUrl" to (livro.capaBase64 ?: ""),
+                "status" to "pendente"
             )
 
             db.collection("Pedidos")
@@ -288,9 +302,6 @@ class BookSelectionActivity : AppCompatActivity() {
     }
 
     private fun entrarNaFila(livroId: String) {
-
-        Log.e("Bookfast:", "livroId: $livroId")
-
         if (livroId.isEmpty()) {
             Toast.makeText(this, "Livro não encontrado.", Toast.LENGTH_SHORT).show()
             return
@@ -382,6 +393,336 @@ class BookSelectionActivity : AppCompatActivity() {
             }
     }
 
+    private fun carregarEmprestimos() {
+        containerEmprestimos.removeAllViews()
+
+        db.collection("Pedidos")
+            .whereEqualTo("usuarioId", usuarioId)
+            .whereEqualTo("status", "retirado")
+            .get()
+            .addOnSuccessListener { resultado ->
+                txtTotalEmprestimos.text = "${resultado.size()}/10"
+
+                for (doc in resultado) {
+                    val titulo = doc.getString("tituloLivro") ?: "Sem título"
+                    val autores = doc.getString("autoresLivro") ?: "Sem autores"
+                    val capaUrl = doc.getString("capaUrl")
+                    val livroId = doc.getString("livroId") ?: ""
+                    val pedidoId = doc.id
+
+                    val card = criarCardEmprestimo(
+                        pedidoId = pedidoId,
+                        livroId = livroId,
+                        titulo = titulo,
+                        autores = autores,
+                        capaUrl = capaUrl
+                    )
+
+                    containerEmprestimos.addView(card)
+                }
+            }
+    }
+
+    private fun carregarFilaDeEspera() {
+        containerFilaEspera.removeAllViews()
+
+        db.collection("Pedidos")
+            .whereEqualTo("usuarioId", usuarioId)
+            .whereEqualTo("status", "pendente")
+            .get()
+            .addOnSuccessListener { resultado ->
+                txtTotalFilaEspera.text = "${resultado.size()}/3"
+
+                for (doc in resultado) {
+                    val titulo = doc.getString("tituloLivro") ?: "Sem título"
+                    val autores = doc.getString("autoresLivro") ?: "Sem autores"
+                    val capaUrl = doc.getString("capaUrl")
+
+                    val card = criarCardFilaEspera(
+                        titulo = titulo,
+                        autores = autores,
+                        capaUrl = capaUrl,
+                        textoStatus = "Aguardando aprovação"
+                    )
+
+                    containerFilaEspera.addView(card)
+                }
+            }
+    }
+
+    private fun criarCardEmprestimo(
+        pedidoId: String,
+        livroId: String,
+        titulo: String,
+        autores: String,
+        capaUrl: String?
+    ): View {
+        val card = CardView(this).apply {
+            setCardBackgroundColor(0xFF2E2E2E.toInt())
+            radius = dpToPx(12).toFloat()
+            cardElevation = dpToPx(4).toFloat()
+
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            ).apply {
+                setMargins(0, 0, 0, dpToPx(8))
+            }
+        }
+
+        val conteudoCard = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+        }
+
+        val linhaLivro = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = android.view.Gravity.CENTER_VERTICAL
+            setPadding(dpToPx(12), dpToPx(12), dpToPx(12), dpToPx(12))
+        }
+
+        val imagemLivro = ImageView(this).apply {
+            scaleType = ImageView.ScaleType.CENTER_CROP
+
+            layoutParams = LinearLayout.LayoutParams(
+                dpToPx(72),
+                dpToPx(100)
+            )
+
+            carregarCapaNoImageView(this, capaUrl)
+        }
+
+        val areaTextos = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+
+            layoutParams = LinearLayout.LayoutParams(
+                0,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                1f
+            ).apply {
+                setMargins(dpToPx(12), 0, 0, 0)
+            }
+        }
+
+        val txtTitulo = TextView(this).apply {
+            text = titulo
+            textSize = 15f
+            setTextColor(0xFFF0F0F0.toInt())
+            setTypeface(null, android.graphics.Typeface.BOLD)
+        }
+
+        val txtAutores = TextView(this).apply {
+            text = autores
+            textSize = 13f
+            setTextColor(0xFFAAAAAA.toInt())
+        }
+
+        val txtVencimento = TextView(this).apply {
+            text = "Vencimento: em breve"
+            textSize = 12f
+            setTextColor(0xFFF0C040.toInt())
+        }
+
+        areaTextos.addView(txtTitulo)
+        areaTextos.addView(txtAutores)
+        areaTextos.addView(txtVencimento)
+
+        linhaLivro.addView(imagemLivro)
+        linhaLivro.addView(areaTextos)
+
+        val divisor = View(this).apply {
+            setBackgroundColor(0xFF3A3A3A.toInt())
+
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                dpToPx(1)
+            ).apply {
+                setMargins(dpToPx(12), 0, dpToPx(12), 0)
+            }
+        }
+
+        val btnRenovar = Button(this).apply {
+            text = "Renovar"
+            textSize = 14f
+            setTextColor(0xFFF0F0F0.toInt())
+            backgroundTintList =
+                android.content.res.ColorStateList.valueOf(0xFF19A1E4.toInt())
+
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                dpToPx(40)
+            ).apply {
+                setMargins(dpToPx(12), dpToPx(10), dpToPx(12), dpToPx(10))
+            }
+
+            setOnClickListener {
+                renovarEmprestimo(pedidoId, livroId)
+            }
+        }
+
+        conteudoCard.addView(linhaLivro)
+        conteudoCard.addView(divisor)
+        conteudoCard.addView(btnRenovar)
+
+        card.addView(conteudoCard)
+
+        return card
+    }
+
+    private fun criarCardFilaEspera(
+        titulo: String,
+        autores: String,
+        capaUrl: String?,
+        textoStatus: String
+    ): View {
+        val card = CardView(this).apply {
+            setCardBackgroundColor(0xFF2E2E2E.toInt())
+            radius = dpToPx(12).toFloat()
+            cardElevation = dpToPx(4).toFloat()
+
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            ).apply {
+                setMargins(0, 0, 0, dpToPx(8))
+            }
+        }
+
+        val conteudoCard = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+        }
+
+        val linhaLivro = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = android.view.Gravity.CENTER_VERTICAL
+            setPadding(dpToPx(12), dpToPx(12), dpToPx(12), dpToPx(12))
+        }
+
+        val imagemLivro = ImageView(this).apply {
+            scaleType = ImageView.ScaleType.CENTER_CROP
+
+            layoutParams = LinearLayout.LayoutParams(
+                dpToPx(72),
+                dpToPx(100)
+            )
+
+            carregarCapaNoImageView(this, capaUrl)
+        }
+
+        val areaTextos = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+
+            layoutParams = LinearLayout.LayoutParams(
+                0,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                1f
+            ).apply {
+                setMargins(dpToPx(12), 0, 0, 0)
+            }
+        }
+
+        val txtTitulo = TextView(this).apply {
+            text = titulo
+            textSize = 15f
+            setTextColor(0xFFAAAAAA.toInt())
+            setTypeface(null, android.graphics.Typeface.BOLD)
+        }
+
+        val txtAutores = TextView(this).apply {
+            text = autores
+            textSize = 13f
+            setTextColor(0xFF777777.toInt())
+        }
+
+        val txtStatus = TextView(this).apply {
+            text = textoStatus
+            textSize = 12f
+            setTextColor(0xFF19A1E4.toInt())
+        }
+
+        areaTextos.addView(txtTitulo)
+        areaTextos.addView(txtAutores)
+        areaTextos.addView(txtStatus)
+
+        linhaLivro.addView(imagemLivro)
+        linhaLivro.addView(areaTextos)
+
+        conteudoCard.addView(linhaLivro)
+        card.addView(conteudoCard)
+
+        return card
+    }
+
+    private fun renovarEmprestimo(pedidoId: String, livroId: String) {
+        db.collection("Filas")
+            .whereEqualTo("livroId", livroId)
+            .get()
+            .addOnSuccessListener { resultadoFilas ->
+                val existeUsuarioNaFila = resultadoFilas.documents.any { doc ->
+                    doc.getString("usuarioId") != usuarioId
+                }
+
+                if (existeUsuarioNaFila) {
+                    Toast.makeText(
+                        this,
+                        "Não é possível renovar. Existe usuário na fila.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return@addOnSuccessListener
+                }
+
+                verificarPedidosPendentesAntesDeRenovar(pedidoId, livroId)
+            }
+    }
+
+    private fun verificarPedidosPendentesAntesDeRenovar(pedidoId: String, livroId: String) {
+        db.collection("Pedidos")
+            .whereEqualTo("livroId", livroId)
+            .whereEqualTo("status", "pendente")
+            .get()
+            .addOnSuccessListener { resultadoPedidos ->
+                val existePedidoDeOutroUsuario = resultadoPedidos.documents.any { doc ->
+                    doc.getString("usuarioId") != usuarioId
+                }
+
+                if (existePedidoDeOutroUsuario) {
+                    Toast.makeText(
+                        this,
+                        "Não é possível renovar. Existe pedido pendente para este livro.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return@addOnSuccessListener
+                }
+
+                val seteDiasEmMillis = 7L * 24 * 60 * 60 * 1000
+                val novaDataVencimento = Timestamp(Date(System.currentTimeMillis() + seteDiasEmMillis))
+
+                db.collection("Pedidos")
+                    .document(pedidoId)
+                    .update(
+                        mapOf(
+                            "dataRenovacao" to Timestamp.now(),
+                            "dataVencimento" to novaDataVencimento
+                        )
+                    )
+                    .addOnSuccessListener {
+                        Toast.makeText(
+                            this,
+                            "Empréstimo renovado!",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        carregarEmprestimos()
+                    }
+                    .addOnFailureListener { erro ->
+                        Toast.makeText(
+                            this,
+                            "Erro ao renovar: ${erro.message}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+            }
+    }
+
     private fun carregarCapaLivroIndisponivel(capaBase64: String?) {
         if (!capaBase64.isNullOrBlank()) {
             try {
@@ -395,5 +736,24 @@ class BookSelectionActivity : AppCompatActivity() {
         }
 
         imgLivroIndisponivel.setImageResource(R.drawable.bg_book_cover_placeholder)
+    }
+
+    private fun carregarCapaNoImageView(imageView: ImageView, capaBase64: String?) {
+        if (!capaBase64.isNullOrBlank()) {
+            try {
+                val bytes = Base64.decode(capaBase64, Base64.DEFAULT)
+                val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+                imageView.setImageBitmap(bitmap)
+                return
+            } catch (erro: Exception) {
+                Log.e("BookSelection", "Erro ao carregar capa", erro)
+            }
+        }
+
+        imageView.setImageResource(R.drawable.bg_book_cover_placeholder)
+    }
+
+    private fun dpToPx(dp: Int): Int {
+        return (dp * resources.displayMetrics.density).toInt()
     }
 }
