@@ -19,7 +19,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
 
-class EditProfileActivity : AppCompatActivity() {
+class EditProfileAdminActivity : AppCompatActivity() {
 
     private lateinit var btnSalvar: Button
     private lateinit var btnVoltar: Button
@@ -43,32 +43,15 @@ class EditProfileActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_editprofile)
+        setContentView(R.layout.activity_editprofile_admin)
 
         bindViews()
         preencherDadosAtuais()
         configurarRemocaoFavoritos()
         configurarBotoes()
-        carregarTipoEConfigurar()
-    }
 
-    private fun carregarTipoEConfigurar() {
-        val uid = auth.currentUser?.uid ?: return
-        db.collection("Usuarios").document(uid).get()
-            .addOnSuccessListener { doc ->
-                val tipo = doc.getString("tipo") ?: "usuario"
-                if (tipo == "admin") {
-                    HeaderAdminNavigation.setup(this)
-                    FooterAdminNavigation.setup(this)
-                } else {
-                    HeaderNavigation.setup(this)
-                    FooterNavigation.setup(this)
-                }
-            }
-            .addOnFailureListener {
-                HeaderNavigation.setup(this)
-                FooterNavigation.setup(this)
-            }
+        HeaderAdminNavigation.setup(this)
+        FooterAdminNavigation.setup(this)
     }
 
     private fun bindViews() {
@@ -130,7 +113,6 @@ class EditProfileActivity : AppCompatActivity() {
     private fun atualizarPerfil(uid: String, nome: String, fotoBase64: String?) {
         val user = auth.currentUser ?: return
 
-        // Atualiza displayName no FirebaseAuth
         val profileUpdate = UserProfileChangeRequest.Builder()
             .setDisplayName(nome)
             .build()
@@ -144,12 +126,12 @@ class EditProfileActivity : AppCompatActivity() {
                     .update(dados as Map<String, Any>)
                     .addOnSuccessListener {
                         Toast.makeText(this, "Alterações salvas!", Toast.LENGTH_SHORT).show()
-                        startActivity(Intent(this, PaginaPerfilActivity::class.java))
+                        startActivity(Intent(this, PaginaPerfilAdmin::class.java))
                         finish()
                     }
                     .addOnFailureListener { e ->
                         Toast.makeText(this, "Perfil salvo, mas erro no banco: ${e.message}", Toast.LENGTH_LONG).show()
-                        startActivity(Intent(this, PaginaPerfilActivity::class.java))
+                        startActivity(Intent(this, PaginaPerfilAdmin::class.java))
                         finish()
                     }
             }
@@ -159,12 +141,11 @@ class EditProfileActivity : AppCompatActivity() {
             }
     }
 
-    // Converte URI da galeria para base64 (igual ao EditBookActivity)
     private fun converterParaBase64(uri: Uri): String {
         val inputStream    = contentResolver.openInputStream(uri)
         val imagemOriginal = BitmapFactory.decodeStream(inputStream)
         inputStream?.close()
-        val imagemRedimensionada = redimensionarBitmap(imagemOriginal, 300) // menor que livro pois é avatar
+        val imagemRedimensionada = redimensionarBitmap(imagemOriginal, 300)
         val outputStream = java.io.ByteArrayOutputStream()
         imagemRedimensionada.compress(Bitmap.CompressFormat.JPEG, 70, outputStream)
         return Base64.encodeToString(outputStream.toByteArray(), Base64.DEFAULT)
