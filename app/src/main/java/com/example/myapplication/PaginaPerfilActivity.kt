@@ -1,12 +1,15 @@
 package com.example.myapplication
 
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Base64
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -14,9 +17,11 @@ import com.google.firebase.firestore.FirebaseFirestore
 class PaginaPerfilActivity : AppCompatActivity() {
 
     private val auth = FirebaseAuth.getInstance()
-    private val db = FirebaseFirestore.getInstance()
-    lateinit var config: ImageView
-    lateinit var imgFortaleza300 : ImageView
+    private val db   = FirebaseFirestore.getInstance()
+
+    private lateinit var config: ImageView
+    private lateinit var imgFortaleza300: ImageView
+    private lateinit var imgAvatarPerfil: ImageView  // ← adicione esse ImageView no seu layout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,57 +35,53 @@ class PaginaPerfilActivity : AppCompatActivity() {
             return
         }
 
-        val textUserName = findViewById<TextView>(R.id.userName)
-        val userName = intent.getStringExtra("userName")
-        textUserName.text = "$userName"
-
+        val textUserName  = findViewById<TextView>(R.id.userName)
         val textUserEmail = findViewById<TextView>(R.id.userEmail)
-        val userEmail = intent.getStringExtra("userEmail")
-        textUserEmail.text = userEmail
+        imgAvatarPerfil   = findViewById(R.id.imgAvatarPerfil) // ID do ImageView no layout
+        config            = findViewById(R.id.btnConfig)
+        imgFortaleza300   = findViewById(R.id.capaFortaleza)
 
-        val intentName = intent.getStringExtra("userName")
+        val intentName  = intent.getStringExtra("userName")
         val intentEmail = intent.getStringExtra("userEmail")
 
         if (!intentName.isNullOrEmpty() && !intentEmail.isNullOrEmpty()) {
-            textUserName.text = intentName
+            textUserName.text  = intentName
             textUserEmail.text = intentEmail
-        } else {
-            // Se não veio pelo Intent, busca os dados diretamente no Firestore
-            carregarDadosDoUsuario(textUserName, textUserEmail)
         }
 
-        config = findViewById(R.id.btnConfig)
-        imgFortaleza300 = findViewById(R.id.capaFortaleza)
+        // Sempre busca os dados atualizados do Firestore (incluindo foto)
+        carregarDadosDoUsuario(textUserName, textUserEmail)
 
-        config.setOnClickListener {
-            abrirMenuConfig()
-        }
+        config.setOnClickListener { abrirMenuConfig() }
 
         imgFortaleza300.setOnClickListener {
-            val intent = Intent(this, BookpageActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, BookpageActivity::class.java))
         }
 
         HeaderNavigation.setup(this)
         FooterNavigation.setup(this)
     }
-    private fun carregarDadosDoUsuario(
-        textUserName: TextView,
-        textUserEmail: TextView
-    ) {
+
+    private fun carregarDadosDoUsuario(textUserName: TextView, textUserEmail: TextView) {
         val uid = auth.currentUser?.uid ?: return
 
-        db.collection("usuarios")
-            .document(uid)
-            .get()
-            .addOnSuccessListener { documento ->
-                if (documento.exists()) {
-                    textUserName.text = documento.getString("nome") ?: "Usuário"
-                    textUserEmail.text = documento.getString("email")
-                        ?: auth.currentUser?.email ?: ""
+        db.collection("Usuarios").document(uid).get()
+            .addOnSuccessListener { doc ->
+                if (doc.exists()) {
+                    textUserName.text  = doc.getString("nome") ?: "Usuário"
+                    textUserEmail.text = doc.getString("email") ?: auth.currentUser?.email ?: ""
+
+                    // Carrega foto em base64
+                    val fotoBase64 = doc.getString("fotoBase64")
+                    if (!fotoBase64.isNullOrEmpty()) {
+                        try {
+                            val bytes  = Base64.decode(fotoBase64, Base64.DEFAULT)
+                            val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+                            Glide.with(this).load(bitmap).circleCrop().into(imgAvatarPerfil)
+                        } catch (e: Exception) { /* mantém placeholder */ }
+                    }
                 } else {
-                    // Documento não encontrado, usa os dados do Firebase Auth como fallback
-                    textUserName.text = "Usuário"
+                    textUserName.text  = "Usuário"
                     textUserEmail.text = auth.currentUser?.email ?: ""
                 }
             }
@@ -88,6 +89,7 @@ class PaginaPerfilActivity : AppCompatActivity() {
                 Toast.makeText(this, "Erro ao carregar perfil", Toast.LENGTH_SHORT).show()
             }
     }
+
     private fun abrirMenuConfig() {
         val bottomSheet = BottomSheetDialog(this)
         val view = layoutInflater.inflate(R.layout.component_user_options, null)
@@ -103,11 +105,14 @@ class PaginaPerfilActivity : AppCompatActivity() {
             startActivity(Intent(this, AboutActivity::class.java))
         }
 
+        // ← Adicione este bloco
         view.findViewById<LinearLayout>(R.id.textViewSair).setOnClickListener {
             bottomSheet.dismiss()
+            auth.signOut()
             val intent = Intent(this, LoginActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
+            finish()
         }
 
         bottomSheet.show()

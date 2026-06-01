@@ -16,6 +16,7 @@ import com.example.myapplication.model.Book
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
+import com.google.firebase.auth.FirebaseAuth
 
 class HomePageAdmin : AppCompatActivity() {
 
@@ -232,11 +233,20 @@ class HomePageAdmin : AppCompatActivity() {
                 txtView.visibility = View.INVISIBLE
                 imagemParaLivro.remove(imgView)
             }
-        }
+        }   // ← este } fecha o forEachIndexed
 
         val totalGrupos = calcularTotalGrupos()
         btnAnterior.visibility = if (totalGrupos > 1) View.VISIBLE else View.GONE
         btnProximo.visibility  = if (totalGrupos > 1) View.VISIBLE else View.GONE
+    }   // ← este } fecha o mostrarGrupoDestaque
+
+
+    override fun onStart() {
+        super.onStart()
+        if (FirebaseAuth.getInstance().currentUser == null) {
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+        }
     }
 
     private fun exibirCapa(imgView: ImageView, livro: Book) {

@@ -19,8 +19,28 @@ class AboutActivity : AppCompatActivity() {
         imgBack = findViewById(R.id.arrowBackId)
 
         imgBack.setOnClickListener {
-            val intent = Intent(this, PaginaPerfilActivity::class.java)
-            startActivity(intent)
+            val userType = intent.getStringExtra("userType")
+
+            if (userType == "admin") {
+                val adminIntent = Intent(this, PaginaPerfilAdmin::class.java)
+
+                adminIntent.putExtra("userName", intent.getStringExtra("userName"))
+                adminIntent.putExtra("userEmail", intent.getStringExtra("userEmail"))
+                adminIntent.putExtra("userType", userType)
+
+                startActivity(adminIntent)
+
+            } else {
+                val userIntent = Intent(this, PaginaPerfilActivity::class.java)
+
+                userIntent.putExtra("userName", intent.getStringExtra("userName"))
+                userIntent.putExtra("userEmail", intent.getStringExtra("userEmail"))
+                userIntent.putExtra("userType", userType)
+
+                startActivity(userIntent)
+            }
+
+            finish()
         }
 
         HeaderNavigation.setup(this)

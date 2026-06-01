@@ -16,6 +16,8 @@ import com.example.myapplication.model.Book
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
+import com.google.firebase.auth.FirebaseAuth
+
 
 class HomePageActivity : AppCompatActivity() {
 
@@ -210,6 +212,7 @@ class HomePageActivity : AppCompatActivity() {
         }
     }
 
+
     private fun calcularTotalGrupos(): Int {
         // Usa todos os livros para o carrossel; mínimo 1 grupo se houver livros
         return if (todosOsLivros.isEmpty()) 0
@@ -217,9 +220,9 @@ class HomePageActivity : AppCompatActivity() {
     }
 
     private fun mostrarGrupoDestaque() {
-        val imgViews  = listOf(img1, img2, img3)
-        val txtViews  = listOf(tituloDestaque1, tituloDestaque2, tituloDestaque3)
-        val inicio    = grupoAtual * tamanhoGrupo
+        val imgViews = listOf(img1, img2, img3)
+        val txtViews = listOf(tituloDestaque1, tituloDestaque2, tituloDestaque3)
+        val inicio   = grupoAtual * tamanhoGrupo
 
         imgViews.forEachIndexed { i, imgView ->
             val txtView = txtViews[i]
@@ -236,11 +239,21 @@ class HomePageActivity : AppCompatActivity() {
                 txtView.visibility = View.INVISIBLE
                 imagemParaLivro.remove(imgView)
             }
-        }
+        }   // ← este } fecha o forEachIndexed
 
         val totalGrupos = calcularTotalGrupos()
         btnAnterior.visibility = if (totalGrupos > 1) View.VISIBLE else View.GONE
         btnProximo.visibility  = if (totalGrupos > 1) View.VISIBLE else View.GONE
+    }   // ← este } fecha o mostrarGrupoDestaque
+
+
+    override fun onStart() {
+        super.onStart()
+
+        if (FirebaseAuth.getInstance().currentUser == null) {
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+        }
     }
 
     private fun exibirCapa(imgView: ImageView, livro: Book) {
