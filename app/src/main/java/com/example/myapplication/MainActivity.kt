@@ -7,6 +7,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
 import android.util.Log
+import com.google.firebase.appcheck.appCheck
+import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory
+
 
 class MainActivity: AppCompatActivity() {
     lateinit var btnNavegar: Button
@@ -14,6 +17,10 @@ class MainActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tela_inicial)
+
+        Firebase.appCheck.installAppCheckProviderFactory(
+            PlayIntegrityAppCheckProviderFactory.getInstance()
+        )
 
         val btnNavegar = findViewById<Button>(R.id.btnNavegar)
 

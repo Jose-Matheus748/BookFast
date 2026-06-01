@@ -5,12 +5,17 @@ import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import android.content.Intent
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 class RegisterActivity : AppCompatActivity() {
 
+    private val auth = FirebaseAuth.getInstance()
+    private val db = FirebaseFirestore.getInstance()
     lateinit var tvBoasvindas: TextView
     lateinit var etEmail: EditText
     lateinit var etSenha: EditText
@@ -71,11 +76,48 @@ class RegisterActivity : AppCompatActivity() {
                 finish()
 
             } else {
-                val intent = Intent(this, HomePageActivity::class.java)
-                intent.putExtra("userName", nome)
-                intent.putExtra("userEmail", email)
-                startActivity(intent)
-                finish()
+                // --- CORREÇÃO DA FALHA AQUI ---
+                // Desabilita o botão para evitar cliques duplos enquanto o Firebase responde
+                btnCriarConta.isEnabled = false
+
+                // 1. Cria o usuário no Firebase Authentication
+                auth.createUserWithEmailAndPassword(email, senha)
+                    .addOnSuccessListener { authResult ->
+                        val userId = authResult.user?.uid
+
+                        if (userId != null) {
+                            // Mapeia os dados usando as variáveis existentes para persistir no banco
+                            val userMap = hashMapOf(
+                                "nome" to nome,
+                                "email" to email
+                            )
+
+                            // 2. Salva no Firestore vinculando ao UID gerado
+                            db.collection("usuarios")
+                                .document(userId)
+                                .set(userMap)
+                                .addOnSuccessListener {
+                                    Toast.makeText(this, "Conta criada com sucesso!", Toast.LENGTH_SHORT).show()
+
+                                    // 3. Redireciona para a HomePage apenas após salvar no banco
+                                    val intent = Intent(this, HomePageActivity::class.java)
+                                    intent.putExtra("userName", nome)
+                                    intent.putExtra("userEmail", email)
+                                    startActivity(intent)
+                                    finish()
+                                }
+                                .addOnFailureListener { e ->
+                                    btnCriarConta.isEnabled = true
+                                    Log.e("FirestoreError", "Erro ao salvar dados do usuário", e)
+                                    Toast.makeText(this, "Erro ao salvar no banco de dados.", Toast.LENGTH_SHORT).show()
+                                }
+                        }
+                    }
+                    .addOnFailureListener { e ->
+                        btnCriarConta.isEnabled = true
+                        Log.e("AuthError", "Erro ao criar autenticação", e)
+                        Toast.makeText(this, "Erro ao criar conta: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
+                    }
             }
         }
     }
