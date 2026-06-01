@@ -67,7 +67,13 @@ class BookpageActivity : AppCompatActivity() {
         }
 
         btnSelecionar.setOnClickListener {
-            startActivity(Intent(this, BookSelectionActivity::class.java))
+            if (livroId.isEmpty()) {
+                Toast.makeText(this, "Livro não carregado ainda.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            val intent = Intent(this, BookSelectionActivity::class.java)
+            intent.putExtra("LIVRO_ID", livroId)
+            startActivity(intent)
         }
 
         btnFavoritar.setOnClickListener {
