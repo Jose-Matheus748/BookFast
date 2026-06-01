@@ -27,6 +27,7 @@ class BookpageActivity : AppCompatActivity() {
     private lateinit var lbNExemplares: TextView
     private lateinit var btnFavoritar: Button
 
+    private var capaBase64Atual: String? = null
     private var livroId      = ""
     private var isFavoritado = false
 
@@ -102,6 +103,7 @@ class BookpageActivity : AppCompatActivity() {
                 }
 
                 val capaBase64 = doc.getString("capaUrl") ?: ""
+                capaBase64Atual = capaBase64
                 val imgCapa = findViewById<ImageView>(R.id.capaFortaleza)
                 if (capaBase64.isNotEmpty()) {
                     try {
@@ -183,7 +185,7 @@ class BookpageActivity : AppCompatActivity() {
                 "livroId"    to livroId,
                 "titulo"     to findViewById<TextView>(R.id.tituloLivroId).text.toString(),
                 "autor"      to findViewById<TextView>(R.id.autorId).text.toString(),
-                "capaBase64" to ""
+                "capaBase64" to (capaBase64Atual ?: "")  // ← usar o valor real
             )
             refFavorito.set(dados)
                 .addOnSuccessListener {

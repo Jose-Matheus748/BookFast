@@ -9,7 +9,6 @@ import android.util.Base64
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
-import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -31,7 +30,6 @@ class EditProfileAdminActivity : AppCompatActivity() {
     private val db   by lazy { FirebaseFirestore.getInstance() }
 
     private var novaFotoUri: Uri? = null
-    private val favoritosVisiveis = mutableSetOf(1, 2, 3, 4)
 
     private val pickImageLauncher =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
@@ -47,7 +45,6 @@ class EditProfileAdminActivity : AppCompatActivity() {
 
         bindViews()
         preencherDadosAtuais()
-        configurarRemocaoFavoritos()
         configurarBotoes()
 
         HeaderAdminNavigation.setup(this)
@@ -159,40 +156,7 @@ class EditProfileAdminActivity : AppCompatActivity() {
         return Bitmap.createScaledBitmap(bitmap, (w * scale).toInt(), (h * scale).toInt(), true)
     }
 
-    private fun configurarRemocaoFavoritos() {
-        val itens = mapOf(
-            R.id.btnRemoverFav1 to Pair(R.id.itemFav1, 1),
-            R.id.btnRemoverFav2 to Pair(R.id.itemFav2, 2),
-            R.id.btnRemoverFav3 to Pair(R.id.itemFav3, 3),
-            R.id.btnRemoverFav4 to Pair(R.id.itemFav4, 4)
-        )
-        itens.forEach { (btnId, par) ->
-            val (itemId, numero) = par
-            val btn  = findViewById<Button>(btnId)
-            val item = findViewById<FrameLayout>(itemId)
-            btn.setOnClickListener {
-                item.animate().alpha(0f).scaleX(0.8f).scaleY(0.8f).setDuration(200)
-                    .withEndAction {
-                        item.visibility = View.GONE
-                        favoritosVisiveis.remove(numero)
-                        salvarRemocaoFavoritoNoFirestore(numero)
-                        if (favoritosVisiveis.isEmpty()) {
-                            Toast.makeText(this, "Nenhum favorito restante.", Toast.LENGTH_SHORT).show()
-                        }
-                    }.start()
-            }
-        }
-    }
 
-    private fun salvarRemocaoFavoritoNoFirestore(numeroFav: Int) {
-        val uid = auth.currentUser?.uid ?: return
-        db.collection("Usuarios").document(uid)
-            .collection("Favoritos").document("fav$numeroFav")
-            .delete()
-            .addOnFailureListener { e ->
-                Toast.makeText(this, "Erro ao sincronizar: ${e.message}", Toast.LENGTH_SHORT).show()
-            }
-    }
 
     private fun resetarBotaoSalvar() {
         btnSalvar.isEnabled = true

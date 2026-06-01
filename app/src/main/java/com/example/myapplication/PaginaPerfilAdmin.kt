@@ -12,47 +12,54 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class PaginaPerfilAdmin : AppCompatActivity() {
 
-    lateinit var config: ImageView
-    lateinit var imgFortaleza300: ImageView
+    private lateinit var config: ImageView
+    private lateinit var imgAvatarPerfil: ImageView
 
     private val auth by lazy { FirebaseAuth.getInstance() }
-    private val db by lazy { FirebaseFirestore.getInstance() }
+    private val db   by lazy { FirebaseFirestore.getInstance() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pagina_perfil_admin)
 
-        config = findViewById(R.id.btnConfig)
-        imgFortaleza300 = findViewById(R.id.capaFortaleza)
+        config          = findViewById(R.id.btnConfig)
+        imgAvatarPerfil = findViewById(R.id.imgAvatarPerfil)
 
-        val textUserName = findViewById<TextView>(R.id.userName)
+        val textUserName  = findViewById<TextView>(R.id.userName)
         val textUserEmail = findViewById<TextView>(R.id.userEmail)
 
-        val uid = auth.currentUser?.uid
-        if (uid != null) {
-            db.collection("Usuarios").document(uid).get()
-                .addOnSuccessListener { doc ->
-                    val nome = doc.getString("nome") ?: auth.currentUser?.displayName ?: "Usuário"
-                    val email = auth.currentUser?.email ?: ""
-                    textUserName.text = nome
-                    textUserEmail.text = email
-                }
-                .addOnFailureListener {
-                    textUserName.text = auth.currentUser?.displayName ?: "Usuário"
-                    textUserEmail.text = auth.currentUser?.email ?: ""
-                }
-        }
+        carregarDadosDoUsuario(textUserName, textUserEmail)
 
-        config.setOnClickListener {
-            abrirMenuConfig()
-        }
-
-        imgFortaleza300.setOnClickListener {
-            startActivity(Intent(this, BookpageActivity::class.java))
-        }
+        config.setOnClickListener { abrirMenuConfig() }
 
         HeaderAdminNavigation.setup(this)
         FooterAdminNavigation.setup(this)
+    }
+
+    private fun carregarDadosDoUsuario(textUserName: TextView, textUserEmail: TextView) {
+        val uid = auth.currentUser?.uid ?: return
+
+        db.collection("Usuarios").document(uid).get()
+            .addOnSuccessListener { doc ->
+                textUserName.text  = doc.getString("nome") ?: auth.currentUser?.displayName ?: "Usuário"
+                textUserEmail.text = auth.currentUser?.email ?: ""
+
+                val fotoBase64 = doc.getString("fotoBase64")
+                if (!fotoBase64.isNullOrEmpty()) {
+                    try {
+                        val bytes  = android.util.Base64.decode(fotoBase64, android.util.Base64.DEFAULT)
+                        val bitmap = android.graphics.BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+                        com.bumptech.glide.Glide.with(this)
+                            .load(bitmap)
+                            .circleCrop()
+                            .into(imgAvatarPerfil)
+                    } catch (e: Exception) { /* mantém placeholder */ }
+                }
+            }
+            .addOnFailureListener {
+                textUserName.text  = auth.currentUser?.displayName ?: "Usuário"
+                textUserEmail.text = auth.currentUser?.email ?: ""
+            }
     }
 
     private fun abrirMenuConfig() {
@@ -72,10 +79,10 @@ class PaginaPerfilAdmin : AppCompatActivity() {
 
         view.findViewById<LinearLayout>(R.id.textViewSair).setOnClickListener {
             bottomSheet.dismiss()
-            FirebaseAuth.getInstance().signOut()
-            val intent = Intent(this, LoginActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
+            auth.signOut()
+            startActivity(Intent(this, LoginActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            })
             finish()
         }
 

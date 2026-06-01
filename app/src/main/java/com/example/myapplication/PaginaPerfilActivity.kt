@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Base64
 import android.view.LayoutInflater
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -21,7 +22,6 @@ class PaginaPerfilActivity : AppCompatActivity() {
     private val db   = FirebaseFirestore.getInstance()
 
     private lateinit var config: ImageView
-    private lateinit var imgFortaleza300: ImageView
     private lateinit var imgAvatarPerfil: ImageView
     private lateinit var containerFavoritos: LinearLayout
 
@@ -41,17 +41,12 @@ class PaginaPerfilActivity : AppCompatActivity() {
         val textUserEmail = findViewById<TextView>(R.id.userEmail)
         imgAvatarPerfil   = findViewById(R.id.imgAvatarPerfil)
         config            = findViewById(R.id.btnConfig)
-        imgFortaleza300   = findViewById(R.id.capaFortaleza)
         containerFavoritos = findViewById(R.id.containerFavoritos)
 
         carregarDadosDoUsuario(textUserName, textUserEmail)
         carregarFavoritos()
 
         config.setOnClickListener { abrirMenuConfig() }
-
-        imgFortaleza300.setOnClickListener {
-            startActivity(Intent(this, BookpageActivity::class.java))
-        }
 
         HeaderNavigation.setup(this)
         FooterNavigation.setup(this)
@@ -111,7 +106,7 @@ class PaginaPerfilActivity : AppCompatActivity() {
                         layoutParams = LinearLayout.LayoutParams(
                             LinearLayout.LayoutParams.MATCH_PARENT,
                             LinearLayout.LayoutParams.WRAP_CONTENT
-                        ).apply { setMargins(0, 0, 0, 12) }
+                        ).apply { setMargins(0, 0, 0, dpToPx(10)) }  // só margem inferior entre linhas
                         weightSum = 2f
                     }
 
@@ -158,17 +153,27 @@ class PaginaPerfilActivity : AppCompatActivity() {
         val card = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             layoutParams = LinearLayout.LayoutParams(
-                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f
-            ).apply { setMargins(0, 0, 8, 0) }
-            setBackgroundResource(R.drawable.bg_container_exemplares)
-            setPadding(8, 8, 8, 8)
+                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f  // altura dinâmica
+            ).apply { setMargins(dpToPx(4), 0, dpToPx(4), 0) } // margem simétrica
+            setBackgroundColor(0xFF2E2E2E.toInt())
+            setPadding(dpToPx(8), dpToPx(8), dpToPx(8), dpToPx(10))
         }
 
+        // Capa com proporção de livro (3:4)
         val imgCapa = ImageView(this).apply {
             layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, dpToPx(150)
+                LinearLayout.LayoutParams.MATCH_PARENT, 0
+            ).also {
+                it.weight = 1f   // placeholder; altura real vem do AspectRatio abaixo
+            }
+            // Usa dimensão calculada em runtime via post
+            val widthPx = (resources.displayMetrics.widthPixels / 2) - dpToPx(32)
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                (widthPx * 1.35f).toInt()   // proporção 1 : 1.35  ≈ capa de livro
             )
-            scaleType = ImageView.ScaleType.FIT_CENTER
+            scaleType = ImageView.ScaleType.CENTER_CROP
+            setBackgroundColor(0xFF1A1A1A.toInt())  // fallback enquanto carrega
         }
 
         if (capaBase64.isNotEmpty()) {
@@ -185,7 +190,7 @@ class PaginaPerfilActivity : AppCompatActivity() {
 
         val tvTitulo = TextView(this).apply {
             text = titulo
-            textSize = 13f
+            textSize = 12f
             setTextColor(0xFFF0F0F0.toInt())
             setTypeface(null, android.graphics.Typeface.BOLD)
             maxLines = 2
@@ -193,15 +198,19 @@ class PaginaPerfilActivity : AppCompatActivity() {
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
-            ).apply { setMargins(0, 6, 0, 0) }
+            ).apply { setMargins(0, dpToPx(8), 0, 0) }
         }
 
         val tvAutor = TextView(this).apply {
             text = autor
-            textSize = 11f
+            textSize = 10f
             setTextColor(0xFF888888.toInt())
             maxLines = 1
             ellipsize = android.text.TextUtils.TruncateAt.END
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            ).apply { setMargins(0, dpToPx(2), 0, 0) }
         }
 
         card.addView(imgCapa)
@@ -209,9 +218,9 @@ class PaginaPerfilActivity : AppCompatActivity() {
         card.addView(tvAutor)
 
         card.setOnClickListener {
-            val intent = Intent(this, BookpageActivity::class.java)
-            intent.putExtra("LIVRO_ID", livroId)
-            startActivity(intent)
+            startActivity(Intent(this, BookpageActivity::class.java).apply {
+                putExtra("LIVRO_ID", livroId)
+            })
         }
 
         return card
