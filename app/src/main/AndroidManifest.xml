@@ -42,9 +42,7 @@
         <activity
             android:name=".ChatbotActivity"
             android:exported="true" />
-        <activity
-            android:name=".ForgotenPasswordActivity"
-            android:exported="false" />
+        <activity android:name=".ForgottenPasswordActivity" />
         <activity
             android:name=".NameRegisterActivity"
             android:exported="false" />

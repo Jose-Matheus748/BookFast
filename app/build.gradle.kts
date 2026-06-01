@@ -37,6 +37,12 @@ android {
 }
 
 dependencies {
+    // Coroutines (viewModelScope + await)
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    implementation("com.google.firebase:firebase-appcheck-playintegrity:17.1.2")
+    // ViewModel + LiveData (viewModelScope)
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -49,9 +55,17 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
     implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
-
+    implementation("com.google.firebase:firebase-auth-ktx:22.3.1")
     implementation("com.google.firebase:firebase-firestore-ktx")
     implementation("com.google.firebase:firebase-storage-ktx")
-
+    implementation("com.google.firebase:firebase-firestore-ktx:24.10.3")
     implementation("com.github.bumptech.glide:glide:4.16.0")
+    // ViewModel e LiveData
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
+    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
+    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
+
+    // Necessário para o "by viewModels()"
+    implementation ("androidx.activity:activity-ktx:1.8.2")
+
 }

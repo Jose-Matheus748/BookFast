@@ -7,9 +7,13 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.viewModels
+
+
 
 class LoginActivity : AppCompatActivity() {
 
+    private val viewModel: AuthViewModel by viewModels()
     private lateinit var inputEmailAddress: EditText
     private lateinit var inputPassword: EditText
     private lateinit var linkForgotPassword: TextView
@@ -26,6 +30,22 @@ class LoginActivity : AppCompatActivity() {
         btnLogin = findViewById(R.id.btnLogin)
         textLinkRegister = findViewById(R.id.textLinkRegister)
 
+
+        viewModel.loginResult.observe(this) { resultado ->
+            resultado.onSuccess { user ->
+                val destino = when (user.perfil) {
+                    "admin" -> Intent(this, HomePageAdmin::class.java)
+                    else -> Intent(this, HomePageActivity::class.java)
+                }
+                destino.putExtra("userName", user.nome)
+                destino.putExtra("userEmail", user.email)
+                destino.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(destino)
+            }.onFailure {
+                Toast.makeText(this, "Credenciais inválidas", Toast.LENGTH_SHORT).show()
+            }
+        }
+
         linkForgotPassword.setOnClickListener {
             navegarParaRecuperacaoDeSenha()
         }
@@ -37,10 +57,11 @@ class LoginActivity : AppCompatActivity() {
         textLinkRegister.setOnClickListener {
             navegarParaRegistroDoUsuario()
         }
-    }
 
+
+    }
     private fun navegarParaRecuperacaoDeSenha() {
-        val intent = Intent(this, ForgotenPasswordActivity::class.java)
+        val intent = Intent(this, ForgottenPasswordActivity::class.java)
         startActivity(intent)
     }
 
@@ -48,37 +69,12 @@ class LoginActivity : AppCompatActivity() {
         val email = inputEmailAddress.text.toString().trim()
         val password = inputPassword.text.toString().trim()
 
-        val userEmail = "usuario1@bookfast.com"
-        val userPassword = "123456"
-        val userName = "Usuario 1"
-
-        val adminEmail = "admin@bookfast.com"
-        val adminPassword = "admin123"
-        val adminName = "Admin"
-
         if (email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(
-                this,
-                "Por favor, preencha todos os campos",
-                Toast.LENGTH_SHORT
-            ).show()
-        } else if (email == userEmail && password == userPassword) {
-            val intent = Intent(this, HomePageActivity::class.java)
-            intent.putExtra("userName", userName)
-            intent.putExtra("userEmail", userEmail)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK // <-- adicione isso
-            startActivity(intent)
-        } else if (email == adminEmail && password == adminPassword) {
-            val intent = Intent(this, HomePageAdmin::class.java)
-            intent.putExtra("userName", adminName)
-            intent.putExtra("userEmail", adminEmail)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK // <-- e aqui
-            startActivity(intent)
-        } else {
-            val intent = Intent(this, HomePageActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK // <-- e aqui
-            startActivity(intent)
+            Toast.makeText(this, "Preencha todos os campos", Toast.LENGTH_SHORT).show()
+            return
         }
+
+        viewModel.login(email, password)
     }
 
     private fun navegarParaRegistroDoUsuario() {
