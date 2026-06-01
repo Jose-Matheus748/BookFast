@@ -20,7 +20,7 @@ object FooterNavigation {
 
         imageBooks.setOnClickListener {
             if (activity !is EmptyBookSelectionActivity) {
-                activity.startActivity(Intent(activity, EmptyBookSelectionActivity::class.java))
+                activity.startActivity(Intent(activity, BookSelectionActivity::class.java))
             }
         }
 

@@ -55,10 +55,12 @@ dependencies {
 
     // Firebase
     implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
-    implementation("com.google.firebase:firebase-auth-ktx:22.3.1")
+    implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-firestore-ktx")
     implementation("com.google.firebase:firebase-storage-ktx")
-	implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-appcheck-playintegrity")
+
+    // Imagens
     implementation("com.github.bumptech.glide:glide:4.16.0")
 
     testImplementation(libs.junit)
