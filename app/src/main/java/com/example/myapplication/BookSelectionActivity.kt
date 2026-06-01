@@ -23,6 +23,7 @@ import com.example.myapplication.utils.MultaUtils
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.Firebase
 import com.google.firebase.Timestamp
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.firestore
 
 class BookSelectionActivity : AppCompatActivity() {
@@ -56,19 +57,31 @@ class BookSelectionActivity : AppCompatActivity() {
     private val db = Firebase.firestore
     private val livrosSelecionados = mutableListOf<Book>()
 
-    private val usuarioId = "kcPVgjQXRdJjqXkA85m8"
+    private val auth = FirebaseAuth.getInstance()
+    private var usuarioId: String = ""
+    private var nomeUsuario: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_book_selection)
 
+        usuarioId = auth.currentUser?.uid ?: ""
+
+        if (usuarioId.isEmpty()) {
+            Toast.makeText(this, "Usuário não está logado.", Toast.LENGTH_SHORT).show()
+            finish()
+            return
+        }
+
         iniciarViews()
         prepararRecyclerView()
         configurarAbas()
 
-        salvarLivroRecebidoComoSelecionado()
-        carregarLivrosSelecionados()
-        carregarLivroIndisponivel()
+        carregarNomeUsuarioLogado {
+            salvarLivroRecebidoComoSelecionado()
+            carregarLivrosSelecionados()
+            carregarLivroIndisponivel()
+        }
 
         btnReservarTodosOsLivros.setOnClickListener {
             reservarTodosOsLivrosSelecionados()
@@ -90,6 +103,29 @@ class BookSelectionActivity : AppCompatActivity() {
 
         HeaderNavigation.setup(this)
         FooterNavigation.setup(this)
+    }
+
+    private fun carregarNomeUsuarioLogado(aoTerminar: () -> Unit) {
+        val usuarioAtual = auth.currentUser
+
+        nomeUsuario = usuarioAtual?.displayName
+            ?: usuarioAtual?.email
+            ?: "Usuário"
+
+        db.collection("usuarios")
+            .document(usuarioId)
+            .get()
+            .addOnSuccessListener { documentoUsuario ->
+                nomeUsuario = documentoUsuario.getString("nome")
+                    ?: usuarioAtual?.displayName
+                    ?: usuarioAtual?.email
+                    ?: "Usuário"
+
+                aoTerminar()
+            }
+            .addOnFailureListener {
+                aoTerminar()
+            }
     }
 
     private fun iniciarViews() {
@@ -172,7 +208,7 @@ class BookSelectionActivity : AppCompatActivity() {
                 val reserva = hashMapOf(
                     "dataReserva" to Timestamp.now(),
                     "usuarioId" to usuarioId,
-                    "nomeUsuario" to "Nome do Usuário 1",
+                    "nomeUsuario" to nomeUsuario,
                     "livroId" to livroId,
                     "tituloLivro" to (docLivro.getString("titulo") ?: "Sem título"),
                     "autoresLivro" to autores,
@@ -232,7 +268,7 @@ class BookSelectionActivity : AppCompatActivity() {
         val pedido = hashMapOf(
             "dataPedido" to Timestamp.now(),
             "usuarioId" to usuarioId,
-            "nomeUsuario" to "Nome do Usuário 1",
+            "nomeUsuario" to nomeUsuario,
             "livroId" to livro.id,
             "tituloLivro" to livro.title,
             "autoresLivro" to livro.author,
@@ -273,7 +309,7 @@ class BookSelectionActivity : AppCompatActivity() {
             val pedido = hashMapOf(
                 "dataPedido" to Timestamp.now(),
                 "usuarioId" to usuarioId,
-                "nomeUsuario" to "Nome do Usuário 1",
+                "nomeUsuario" to nomeUsuario,
                 "livroId" to livro.id,
                 "tituloLivro" to livro.title,
                 "autoresLivro" to livro.author,
