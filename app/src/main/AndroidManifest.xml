@@ -89,8 +89,8 @@
             android:name=".AdminBookpageReference"
             android:exported="true" />
         <activity
-            android:name=".AdminEditBookActivity"
-            android:exported="true" />
+            android:name=".EditProfileAdminActivity"
+            android:exported="false" />
         <activity
             android:name=".HomePageActivity"
             android:exported="false" />
