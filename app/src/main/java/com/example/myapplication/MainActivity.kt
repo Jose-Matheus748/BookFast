@@ -10,7 +10,6 @@ import android.util.Log
 import com.google.firebase.appcheck.appCheck
 import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory
 
-
 class MainActivity: AppCompatActivity() {
     lateinit var btnNavegar: Button
 

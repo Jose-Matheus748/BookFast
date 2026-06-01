@@ -32,9 +32,9 @@ class SearchListActivity : AppCompatActivity() {
         HeaderNavigation.setup(this)
         FooterNavigation.setup(this)
 
-        btnSearch     = findViewById(R.id.btnSearch)
-        etSearchList  = findViewById(R.id.etSearch)
-        recyclerBooks = findViewById(R.id.recyclerBooks)
+        btnSearch      = findViewById(R.id.btnSearch)
+        etSearchList   = findViewById(R.id.etSearch)
+        recyclerBooks  = findViewById(R.id.recyclerBooks)
 
         setupRecycler()
         fazerPesquisa()

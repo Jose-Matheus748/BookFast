@@ -60,8 +60,13 @@ class BookpageActivity : AppCompatActivity() {
             btnReferencia.backgroundTintList = android.content.res.ColorStateList.valueOf(corAtiva)
         }
 
-        btnSelecionar.setOnClickListener {
-            startActivity(Intent(this, BookSelectionActivity::class.java))
+        // Carrega o id do livro de forma global, para ser usado em outras activities
+        livroId = intent.getStringExtra("LIVRO_ID") ?: ""
+
+        if (livroId.isEmpty()) {
+            Toast.makeText(this, "Livro não encontrado", Toast.LENGTH_SHORT).show()
+            finish()
+            return
         }
 
         btnFavoritar.setOnClickListener {
@@ -70,6 +75,13 @@ class BookpageActivity : AppCompatActivity() {
 
         btnDetalhes.setOnClickListener   { mostrarDetalhes() }
         btnReferencia.setOnClickListener { mostrarReferencia() }
+
+        // FLUXO 1: Usuário clica em selecionar livro, o id desse livro é guardado, e passa para outra activity
+        btnSelecionar.setOnClickListener {
+            val intent = Intent(this, BookSelectionActivity::class.java)
+            intent.putExtra("LIVRO_ID", livroId)
+            startActivity(intent)
+        }
 
         btnCopiar.setOnClickListener {
             val texto = findViewById<TextView>(R.id.lbReferenciaId).text.toString()
@@ -81,13 +93,6 @@ class BookpageActivity : AppCompatActivity() {
         mostrarDetalhes()
 
         // ── Carrega dados do Firestore ──────────────────────────────────────
-        livroId = intent.getStringExtra("LIVRO_ID") ?: ""
-        if (livroId.isEmpty()) {
-            Toast.makeText(this, "Livro não encontrado", Toast.LENGTH_SHORT).show()
-            finish()
-            return
-        }
-
         db.collection("Livros").document(livroId)
             .get()
             .addOnSuccessListener { doc ->
@@ -147,7 +152,6 @@ class BookpageActivity : AppCompatActivity() {
                 Toast.makeText(this, "Erro ao carregar livro", Toast.LENGTH_SHORT).show()
                 finish()
             }
-
     }
 
 
